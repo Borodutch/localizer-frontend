@@ -1,15 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { User } from '../models/user'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
 export interface State {
-  user?: User
   snackbar: SnackbarState
   language?: String
   dark: Boolean
+  username?: String
 }
 
 interface LocalizedError {
@@ -25,7 +24,6 @@ interface SnackbarState {
 
 const storeOptions = {
   state: {
-    user: undefined,
     snackbar: {
       message: '',
       active: false,
@@ -33,14 +31,9 @@ const storeOptions = {
     },
     language: undefined,
     dark: false,
+    username: undefined,
   },
   mutations: {
-    setUser(state: State, user: User) {
-      state.user = user
-    },
-    logout(state: State) {
-      state.user = undefined
-    },
     setSnackbar(state: State, snackbar: SnackbarState) {
       state.snackbar = snackbar
     },
@@ -50,14 +43,17 @@ const storeOptions = {
     setDark(state: State, dark: Boolean) {
       state.dark = dark
     },
+    setUsername(state: State, username: String | undefined) {
+      state.username = username
+    },
   },
   getters: {
-    user: (state: State) => state.user,
     snackbar: (state: State) => state.snackbar,
     language: (state: State) => state.language,
     dark: (state: State) => state.dark,
+    username: (state: State) => state.username,
   },
-  plugins: [createPersistedState()],
+  plugins: [createPersistedState({ paths: ['username', 'language', 'dark'] })],
 }
 
 export const store = new Vuex.Store<State>(storeOptions)
@@ -65,15 +61,12 @@ export const store = new Vuex.Store<State>(storeOptions)
 // Getters
 const getters = store.getters
 
-export const user = () => getters.user as User | undefined
 export const snackbar = () => getters.snackbar as SnackbarState
 export const language = () => getters.language as string | undefined
 export const dark = () => getters.dark as boolean
+export const username = () => getters.username as string | undefined
 
 // Mutations
-export const setUser = (user: User) => {
-  store.commit('setUser', user)
-}
 export const setSnackbar = (snackbar: SnackbarState) => {
   store.commit('setSnackbar', snackbar)
 }
@@ -85,4 +78,7 @@ export const setLanguage = (language: String) => {
 }
 export const setDark = (dark: Boolean) => {
   store.commit('setDark', dark)
+}
+export const setUsername = (username: String | undefined) => {
+  store.commit('setUsername', username)
 }

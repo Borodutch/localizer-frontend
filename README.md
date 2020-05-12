@@ -1,18 +1,21 @@
-# Frontend code template
+# Localizer frontend
 
-This template to be used for frontend applications. Written in Vue.js with Vuetify and Vuex set up it is ready to be used. Facebook. Google and Telegram login is included.
+Run this on your server to allow users to help you with localizing your projects.
 
 ## Project setup
+
 ```
 yarn install
 ```
 
 ### Compiles and hot-reloads for development
+
 ```
 yarn serve
 ```
 
 ### Compiles and minifies for production
+
 ```
 yarn build
 ```

@@ -6855,16 +6855,6 @@ vue-cookie-law@^1.13.3:
   dependencies:
     tiny-cookie "^2.1.1"
 
-vue-facebook-signin-button@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/vue-facebook-signin-button/-/vue-facebook-signin-button-1.0.1.tgz#c6aadb160821846f2d7767fb8e691e0b9e682028"
-  integrity sha1-xqrbFgghhG8td2f7jmkeC55oICg=
-
-vue-google-signin-button@^1.0.2:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/vue-google-signin-button/-/vue-google-signin-button-1.0.4.tgz#733e9fea786ff730278c8eef8be9f594adc8d7b8"
-  integrity sha512-spmf+qPQQ1zAEndDxybYsf22U47eYPuvU9cb1N9YETmPQ4+UBG9ALLxgID1mHkusvBVclRyxmvJc3zc7hD56wg==
-
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
@@ -6905,11 +6895,6 @@ vue-style-loader@^4.1.0, vue-style-loader@^4.1.2:
   dependencies:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
-
-vue-telegram-login@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/vue-telegram-login/-/vue-telegram-login-2.1.0.tgz#a3b80acb88ab031ef46503975c1415fcc5d26c5f"
-  integrity sha512-d8ZdNQpWk9SDtGjMSjXv9yHJZePVtclPbacyBdyJjBLqhStEkfjivpyNz+1w/EJt5AozdZvYNgkHLOJo00zaTA==
 
 vue-template-compiler@^2.6.11:
   version "2.6.11"
