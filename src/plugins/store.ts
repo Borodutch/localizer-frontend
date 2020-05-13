@@ -9,6 +9,7 @@ export interface State {
   language?: String
   dark: Boolean
   username?: String
+  password?: String
 }
 
 interface LocalizedError {
@@ -32,6 +33,7 @@ const storeOptions = {
     language: undefined,
     dark: false,
     username: undefined,
+    password: undefined,
   },
   mutations: {
     setSnackbar(state: State, snackbar: SnackbarState) {
@@ -46,14 +48,22 @@ const storeOptions = {
     setUsername(state: State, username: String | undefined) {
       state.username = username
     },
+    setPassword(state: State, password: String | undefined) {
+      state.password = password
+    },
   },
   getters: {
     snackbar: (state: State) => state.snackbar,
     language: (state: State) => state.language,
     dark: (state: State) => state.dark,
     username: (state: State) => state.username,
+    password: (state: State) => state.password,
   },
-  plugins: [createPersistedState({ paths: ['username', 'language', 'dark'] })],
+  plugins: [
+    createPersistedState({
+      paths: ['username', 'language', 'dark', 'password'],
+    }),
+  ],
 }
 
 export const store = new Vuex.Store<State>(storeOptions)
@@ -65,6 +75,7 @@ export const snackbar = () => getters.snackbar as SnackbarState
 export const language = () => getters.language as string | undefined
 export const dark = () => getters.dark as boolean
 export const username = () => getters.username as string | undefined
+export const password = () => getters.password as string | undefined
 
 // Mutations
 export const setSnackbar = (snackbar: SnackbarState) => {
@@ -81,4 +92,7 @@ export const setDark = (dark: Boolean) => {
 }
 export const setUsername = (username: String | undefined) => {
   store.commit('setUsername', username)
+}
+export const setPassword = (password: String | undefined) => {
+  store.commit('setPassword', password)
 }
