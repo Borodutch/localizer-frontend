@@ -185,6 +185,9 @@ export default class LocalizationCard extends Vue {
         delete downvoted[variant._id]
         store.setDownvoted(downvoted)
       }
+      if (this.isUpvoted(variant._id)) {
+        return
+      }
       await api.upvoteVariant(key, variant._id)
       variant.upvotes++
       const upvoted = store.upvoted()
@@ -206,6 +209,9 @@ export default class LocalizationCard extends Vue {
         const upvoted = store.upvoted()
         delete upvoted[variant._id]
         store.setUpvoted(upvoted)
+      }
+      if (this.isDownvoted(variant._id)) {
+        return
       }
       await api.downvoteVariant(key, variant._id)
       variant.downvotes++
