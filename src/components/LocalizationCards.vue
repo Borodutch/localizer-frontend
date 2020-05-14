@@ -20,6 +20,11 @@
       :loadData='loadData'
       :admin='admin'
     )
+    v-pagination.mt-4(
+      v-model='safePage'
+      v-if='numberOfPages > 1'
+      :length='numberOfPages'
+    )
     TopContributors(
       :contributors='contributors'
     )
