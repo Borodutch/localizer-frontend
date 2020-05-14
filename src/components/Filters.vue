@@ -1,12 +1,12 @@
 <template lang="pug">
-  .mb-2.d-flex.justify-center
-    v-chip.mx-1(
+  .mb-2.d-flex.flex-wrap.justify-center
+    v-chip.mx-1.my-1(
       v-for='tag in tags'
       :key='tag'
       :color='$store.state.tags.indexOf(tag) > -1 ? "primary" : ""'
       @click='toggleTag(tag)'
     ) {{tag}}
-    v-chip.mx-1(
+    v-chip.mx-1.my-1(
       v-for='language in languages'
       :key='language'
       :color='$store.state.languages.indexOf(language) > -1 ? "primary" : ""'
