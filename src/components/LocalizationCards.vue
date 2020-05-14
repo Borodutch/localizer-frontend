@@ -1,10 +1,13 @@
 <template lang="pug">
   div
+    v-progress-linear(
+      v-if='loading'
+      indeterminate
+    )
     Filters(
       :languages='languages'
       :tags='tags'
       :setTagFilter='setTagFilter'
-      :setLanguageFilter='setLanguageFilter'
     )
     LocalizationCard(
       v-for='localization in filteredData' :key='localization.key'
@@ -35,12 +38,13 @@ import Filters from './Filters.vue'
 })
 export default class LocalizationCards extends Vue {
   data = [] as any[]
+  loading = false
 
   get filteredData() {
     return this.data
       .filter((l) => {
         for (const tag of l.tags) {
-          if (this.tagFilter.includes(tag)) {
+          if (store.tags().includes(tag)) {
             return true
           }
         }
@@ -49,7 +53,7 @@ export default class LocalizationCards extends Vue {
       .map((l) => {
         const newL = { ...l }
         newL.variants = newL.variants.filter((v: any) =>
-          this.languageFilter.includes(v.language)
+          store.languages().includes(v.language)
         )
         return newL
       })
@@ -58,21 +62,12 @@ export default class LocalizationCards extends Vue {
   languages = [] as any[]
   tags = [] as any[]
 
-  tagFilter = [] as any[]
-  languageFilter = [] as any[]
-
-  setTagFilter(newFilter: any) {
-    this.tagFilter = newFilter
-  }
-  setLanguageFilter(newFilter: any) {
-    this.languageFilter = newFilter
-  }
-
   mounted() {
     this.loadData()
   }
 
   async loadData() {
+    this.loading = true
     try {
       const data = await api.getLocalizations()
       this.data = data
@@ -101,6 +96,8 @@ export default class LocalizationCards extends Vue {
       this.tags = Array.from(tags)
     } catch (err) {
       store.setSnackbarError(err.response.data)
+    } finally {
+      this.loading = false
     }
   }
 }

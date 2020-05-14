@@ -10,6 +10,8 @@ export interface State {
   dark: Boolean
   username?: String
   password?: String
+  tags: String[]
+  languages: String[]
 }
 
 interface LocalizedError {
@@ -34,6 +36,8 @@ const storeOptions = {
     dark: false,
     username: undefined,
     password: undefined,
+    tags: [],
+    languages: [],
   },
   mutations: {
     setSnackbar(state: State, snackbar: SnackbarState) {
@@ -51,6 +55,12 @@ const storeOptions = {
     setPassword(state: State, password: String | undefined) {
       state.password = password
     },
+    setTags(state: State, tags: String[]) {
+      state.tags = tags
+    },
+    setLanguages(state: State, languages: String[]) {
+      state.languages = languages
+    },
   },
   getters: {
     snackbar: (state: State) => state.snackbar,
@@ -58,10 +68,12 @@ const storeOptions = {
     dark: (state: State) => state.dark,
     username: (state: State) => state.username,
     password: (state: State) => state.password,
+    tags: (state: State) => state.tags,
+    languages: (state: State) => state.languages,
   },
   plugins: [
     createPersistedState({
-      paths: ['username', 'language', 'dark', 'password'],
+      paths: ['username', 'language', 'dark', 'password', 'tags', 'languages'],
     }),
   ],
 }
@@ -76,6 +88,8 @@ export const language = () => getters.language as string | undefined
 export const dark = () => getters.dark as boolean
 export const username = () => getters.username as string | undefined
 export const password = () => getters.password as string | undefined
+export const tags = () => getters.tags as string[]
+export const languages = () => getters.languages as string[]
 
 // Mutations
 export const setSnackbar = (snackbar: SnackbarState) => {
@@ -102,4 +116,10 @@ export const setUsername = (username: String | undefined) => {
 }
 export const setPassword = (password: String | undefined) => {
   store.commit('setPassword', password)
+}
+export const setTags = (tags: String[]) => {
+  store.commit('setTags', tags)
+}
+export const setLanguages = (languages: String[]) => {
+  store.commit('setLanguages', languages)
 }
