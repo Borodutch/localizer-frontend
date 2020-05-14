@@ -36,7 +36,7 @@ const storeOptions = {
       color: 'success',
     },
     language: undefined,
-    dark: false,
+    dark: true,
     username: undefined,
     query: undefined,
     password: undefined,
