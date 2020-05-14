@@ -81,6 +81,13 @@ export const password = () => getters.password as string | undefined
 export const setSnackbar = (snackbar: SnackbarState) => {
   store.commit('setSnackbar', snackbar)
 }
+export const setSnackbarError = (message: String) => {
+  setSnackbar({
+    message,
+    color: 'error',
+    active: true,
+  })
+}
 export const hideSnackbar = () => {
   store.commit('setSnackbar', { ...store.state.snackbar, active: false })
 }
