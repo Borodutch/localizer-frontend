@@ -50,6 +50,42 @@ export async function deleteVariant(
   ).data
 }
 
+export async function upvoteVariant(key: string, id: string) {
+  return (
+    await axios.post(`${base}/localizations/upvote`, {
+      key,
+      id,
+    })
+  ).data
+}
+
+export async function downvoteVariant(key: string, id: string) {
+  return (
+    await axios.post(`${base}/localizations/downvote`, {
+      key,
+      id,
+    })
+  ).data
+}
+
+export async function removeUpvoteVariant(key: string, id: string) {
+  return (
+    await axios.post(`${base}/localizations/upvote/remove`, {
+      key,
+      id,
+    })
+  ).data
+}
+
+export async function removeDownvoteVariant(key: string, id: string) {
+  return (
+    await axios.post(`${base}/localizations/downvote/remove`, {
+      key,
+      id,
+    })
+  ).data
+}
+
 export async function deleteLocalization(key: string, password?: string) {
   return (
     await axios.post(`${base}/localizations/localization/delete`, {

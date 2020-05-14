@@ -80,6 +80,20 @@
             v-chip.px-1(x-small v-if='variant.createdAt') {{dateDisplay(variant.createdAt)}}
             v-chip.green.px-1(x-small v-if='variant.selected')
               v-icon(small color='white') done
+            v-chip.px-2.ml-2(
+              x-small
+              v-if='variant.selected'
+              :disabled='loading'
+              @click='downvoteVariant(variant, localization.key)'
+              :class='isDownvoted(variant._id) ? "red darken-2" : ""'
+            ) {{loading ? '🤔' : '👎'}}{{variant.downvotes ? ` ${variant.downvotes}` : ''}}
+            v-chip.px-2(
+              x-small
+              v-if='variant.selected'
+              :disabled='loading'
+              @click='upvoteVariant(variant, localization.key)'
+              :class='isUpvoted(variant._id) ? "green darken-2" : ""'
+            ) {{loading ? '🤔' : '👍'}}{{variant.upvotes ? ` ${variant.upvotes}` : ''}}
           p.mb-0.align-self-center {{variant.text.replace(/\n/gi, '\\n')}}
         v-divider
 </template>
@@ -161,8 +175,60 @@ export default class LocalizationCard extends Vue {
     }
   }
 
+  async upvoteVariant(variant: any, key: string) {
+    this.loading = true
+    try {
+      if (this.isDownvoted(variant._id)) {
+        await api.removeDownvoteVariant(key, variant._id)
+        variant.downvotes--
+        const downvoted = store.downvoted()
+        delete downvoted[variant._id]
+        store.setDownvoted(downvoted)
+      }
+      await api.upvoteVariant(key, variant._id)
+      variant.upvotes++
+      const upvoted = store.upvoted()
+      upvoted[variant._id] = true
+      store.setUpvoted(upvoted)
+    } catch (err) {
+      store.setSnackbarError(err.response.data)
+    } finally {
+      this.loading = false
+    }
+  }
+
+  async downvoteVariant(variant: any, key: string) {
+    this.loading = true
+    try {
+      if (this.isUpvoted(variant._id)) {
+        await api.removeUpvoteVariant(key, variant._id)
+        variant.upvotes--
+        const upvoted = store.upvoted()
+        delete upvoted[variant._id]
+        store.setUpvoted(upvoted)
+      }
+      await api.downvoteVariant(key, variant._id)
+      variant.downvotes++
+      const downvoted = store.downvoted()
+      downvoted[variant._id] = true
+      store.setDownvoted(downvoted)
+    } catch (err) {
+      store.setSnackbarError(err.response.data)
+    } finally {
+      this.loading = false
+    }
+  }
+
   dateDisplay(date: string) {
     return moment(date).format('L')
+  }
+
+  isUpvoted(id: string) {
+    return store.upvoted()[id]
+  }
+
+  isDownvoted(id: string) {
+    return store.downvoted()[id]
   }
 }
 </script>

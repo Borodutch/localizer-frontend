@@ -13,6 +13,8 @@ export interface State {
   password?: String
   tags: String[]
   languages: String[]
+  upvoted: Object
+  downvoted: Object
 }
 
 interface LocalizedError {
@@ -40,6 +42,8 @@ const storeOptions = {
     password: undefined,
     tags: [],
     languages: [],
+    upvoted: {},
+    downvoted: {},
   },
   mutations: {
     setSnackbar(state: State, snackbar: SnackbarState) {
@@ -66,6 +70,12 @@ const storeOptions = {
     setLanguages(state: State, languages: String[]) {
       state.languages = languages
     },
+    setUpvoted(state: State, upvoted: Object) {
+      state.upvoted = upvoted
+    },
+    setDownvoted(state: State, downvoted: Object) {
+      state.downvoted = downvoted
+    },
   },
   getters: {
     snackbar: (state: State) => state.snackbar,
@@ -76,10 +86,21 @@ const storeOptions = {
     password: (state: State) => state.password,
     tags: (state: State) => state.tags,
     languages: (state: State) => state.languages,
+    upvoted: (state: State) => state.upvoted,
+    downvoted: (state: State) => state.downvoted,
   },
   plugins: [
     createPersistedState({
-      paths: ['username', 'language', 'dark', 'password', 'tags', 'languages'],
+      paths: [
+        'username',
+        'language',
+        'dark',
+        'password',
+        'tags',
+        'languages',
+        'upvoted',
+        'downvoted',
+      ],
     }),
   ],
 }
@@ -97,6 +118,8 @@ export const query = () => getters.query as string | undefined
 export const password = () => getters.password as string | undefined
 export const tags = () => getters.tags as string[]
 export const languages = () => getters.languages as string[]
+export const upvoted = () => getters.upvoted as { [index: string]: boolean }
+export const downvoted = () => getters.downvoted as { [index: string]: boolean }
 
 // Mutations
 export const setSnackbar = (snackbar: SnackbarState) => {
@@ -132,4 +155,10 @@ export const setTags = (tags: String[]) => {
 }
 export const setLanguages = (languages: String[]) => {
   store.commit('setLanguages', languages)
+}
+export const setUpvoted = (upvoted: Object) => {
+  store.commit('setUpvoted', upvoted)
+}
+export const setDownvoted = (downvoted: Object) => {
+  store.commit('setDownvoted', downvoted)
 }
