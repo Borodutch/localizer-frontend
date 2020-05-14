@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    v-progress-linear(
+    v-progress-linear.mb-4(
       v-if='loading'
       indeterminate
     )

@@ -114,6 +114,8 @@ export default class LocalizationCard extends Vue {
     try {
       await api.postVariant(key, this.text, this.language, store.username())
       this.$props.loadData()
+      this.text = ''
+      this.edit = false
     } catch (err) {
       store.setSnackbarError(err.response.data)
     } finally {
