@@ -33,22 +33,22 @@
       ) {{tag}}
     v-card-text
       div(v-if='edit')
-        v-select.mb-1.mt-0.pt-0(
-          :label='$t("add.language")'
-          :items='languages'
-          :rules='languageRules'
-          v-model='language'
+        v-textarea.mb-1.mt-0.pt-0(
+          :label='$t("add.text")'
+          clearable
+          rows='1'
+          :rules='textRules'
+          auto-grow
+          no-resize
+          compact
+          v-model='text'
         )
         .d-flex
-          v-textarea.mb-1.mt-0.pt-0(
-            :label='$t("add.text")'
-            clearable
-            rows='1'
-            :rules='textRules'
-            auto-grow
-            no-resize
-            compact
-            v-model='text'
+          v-select.mb-1.mt-0.pt-0(
+            :label='$t("add.language")'
+            :items='languages'
+            :rules='languageRules'
+            v-model='language'
           )
           v-btn.ml-2(
             color='primary'
