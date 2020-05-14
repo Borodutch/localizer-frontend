@@ -79,7 +79,7 @@
             v-chip.px-1(x-small v-if='variant.username') {{variant.username.substr(0, 25)}}
             v-chip.green.px-1(x-small v-if='variant.selected')
               v-icon(small color='white') done
-          p.mb-0.align-self-center {{variant.text.replace('\n', '\\n')}}
+          p.mb-0.align-self-center {{variant.text.replace(/\n/gi, '\\n')}}
         v-divider
 </template>
 
