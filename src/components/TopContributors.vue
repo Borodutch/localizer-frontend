@@ -1,7 +1,7 @@
 <template lang="pug">
   div.mt-4(v-if='contributors.length')
     .headline.mb-2 {{$t('top')}}
-    v-chip(
+    v-chip.mx-1.my-1(
       v-for='contributor in contributors'
       :key='contributor.name'
     ) {{contributor.name}} {{contributor.number}}
