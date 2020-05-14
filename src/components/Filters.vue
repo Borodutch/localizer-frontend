@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.mb-2
+  .mb-2.d-flex.justify-center
     v-chip.mx-1(
       v-for='tag in tags'
       :key='tag'
@@ -24,7 +24,6 @@ import { Watch } from 'vue-property-decorator'
   props: {
     languages: Array,
     tags: Array,
-    setTagFilter: Function,
   },
 })
 export default class Filters extends Vue {

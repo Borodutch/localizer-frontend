@@ -15,7 +15,7 @@ export async function postVariant(
   return (
     await axios.post(`${base}/localizations/localization`, {
       key,
-      text,
+      text: text.replace(/ - /g, ' — ').replace(/  /g, ' '),
       language,
       username,
     })

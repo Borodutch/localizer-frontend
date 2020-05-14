@@ -7,14 +7,21 @@
     Filters(
       :languages='languages'
       :tags='tags'
-      :setTagFilter='setTagFilter'
+    )
+    v-pagination.mb-2(
+      v-model='safePage'
+      v-if='numberOfPages > 1'
+      :length='numberOfPages'
     )
     LocalizationCard(
-      v-for='localization in filteredData' :key='localization.key'
+      v-for='localization in filteredData.slice(displaySkip, displaySkip + pageSize)' :key='localization.key'
       :languages='languages'
       :localization='localization'
       :loadData='loadData'
       :admin='admin'
+    )
+    TopContributors(
+      :contributors='contributors'
     )
 </template>
 
@@ -25,12 +32,14 @@ import * as store from '../plugins/store'
 import * as api from '../utils/api'
 import { i18n } from '../plugins/i18n'
 import LocalizationCard from './LocalizationCard.vue'
+import TopContributors from './TopContributors.vue'
 import Filters from './Filters.vue'
 
 @Component({
   components: {
     LocalizationCard,
     Filters,
+    TopContributors,
   },
   props: {
     admin: Boolean,
@@ -39,6 +48,8 @@ import Filters from './Filters.vue'
 export default class LocalizationCards extends Vue {
   data = [] as any[]
   loading = false
+  page = 1
+  pageSize = 20
 
   get filteredData() {
     return this.data
@@ -57,6 +68,45 @@ export default class LocalizationCards extends Vue {
         )
         return newL
       })
+      .filter((l) => {
+        return !store.query() || l.key.indexOf(store.query()) > -1
+      })
+  }
+
+  get numberOfPages() {
+    return Math.floor(this.filteredData.length / this.pageSize)
+  }
+
+  get displaySkip() {
+    return (this.page <= this.numberOfPages ? this.page - 1 : 0) * this.pageSize
+  }
+
+  get safePage() {
+    return Math.floor(this.page <= this.numberOfPages ? this.page : 1)
+  }
+  set safePage(newPage: number) {
+    this.page = newPage
+  }
+
+  get contributors() {
+    const contributors = {} as { [index: string]: number }
+    for (const l of this.data) {
+      for (const v of l.variants) {
+        if (v.username && v.selected) {
+          if (contributors[v.username]) {
+            contributors[v.username]++
+          } else {
+            contributors[v.username] = 1
+          }
+        }
+      }
+    }
+    return Object.keys(contributors)
+      .map((k) => ({
+        name: k,
+        number: contributors[k],
+      }))
+      .sort((a, b) => (a.number > b.number ? -1 : 1))
   }
 
   languages = [] as any[]

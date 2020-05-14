@@ -9,6 +9,7 @@ export interface State {
   language?: String
   dark: Boolean
   username?: String
+  query?: String
   password?: String
   tags: String[]
   languages: String[]
@@ -35,6 +36,7 @@ const storeOptions = {
     language: undefined,
     dark: false,
     username: undefined,
+    query: undefined,
     password: undefined,
     tags: [],
     languages: [],
@@ -52,6 +54,9 @@ const storeOptions = {
     setUsername(state: State, username: String | undefined) {
       state.username = username
     },
+    setQuery(state: State, query: String | undefined) {
+      state.query = query
+    },
     setPassword(state: State, password: String | undefined) {
       state.password = password
     },
@@ -67,6 +72,7 @@ const storeOptions = {
     language: (state: State) => state.language,
     dark: (state: State) => state.dark,
     username: (state: State) => state.username,
+    query: (state: State) => state.query,
     password: (state: State) => state.password,
     tags: (state: State) => state.tags,
     languages: (state: State) => state.languages,
@@ -87,6 +93,7 @@ export const snackbar = () => getters.snackbar as SnackbarState
 export const language = () => getters.language as string | undefined
 export const dark = () => getters.dark as boolean
 export const username = () => getters.username as string | undefined
+export const query = () => getters.query as string | undefined
 export const password = () => getters.password as string | undefined
 export const tags = () => getters.tags as string[]
 export const languages = () => getters.languages as string[]
@@ -113,6 +120,9 @@ export const setDark = (dark: Boolean) => {
 }
 export const setUsername = (username: String | undefined) => {
   store.commit('setUsername', username)
+}
+export const setQuery = (query: String | undefined) => {
+  store.commit('setQuery', query)
 }
 export const setPassword = (password: String | undefined) => {
   store.commit('setPassword', password)

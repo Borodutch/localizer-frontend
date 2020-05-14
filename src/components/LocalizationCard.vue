@@ -77,6 +77,7 @@
               v-icon(x-small color='white') done
             v-chip.px-1(x-small) {{variant.language}}
             v-chip.px-1(x-small v-if='variant.username') {{variant.username.substr(0, 25)}}
+            v-chip.px-1(x-small v-if='variant.createdAt') {{dateDisplay(variant.createdAt)}}
             v-chip.green.px-1(x-small v-if='variant.selected')
               v-icon(small color='white') done
           p.mb-0.align-self-center {{variant.text.replace(/\n/gi, '\\n')}}
@@ -89,6 +90,7 @@ import Component from 'vue-class-component'
 import * as store from '../plugins/store'
 import { i18n } from '../plugins/i18n'
 import * as api from '../utils/api'
+import moment from 'moment'
 
 @Component({
   props: {
@@ -157,6 +159,10 @@ export default class LocalizationCard extends Vue {
     } finally {
       this.loading = false
     }
+  }
+
+  dateDisplay(date: string) {
+    return moment(date).format('L')
   }
 }
 </script>

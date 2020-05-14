@@ -1,14 +1,16 @@
 <template lang="pug">
   v-app(:dark='$store.state.dark')
-    cookie-law(
-      theme='blood-orange'
-      :buttonText='$t("cookie.button")'
-      :message='$t("cookie.message")'
-    )
-    Navbar
-    Snackbar
-    v-content
-      router-view
+    div(style='width: 100%' align='center')
+      div(style='maxWidth: 1000px;' align='left')
+        cookie-law(
+          theme='blood-orange'
+          :buttonText='$t("cookie.button")'
+          :message='$t("cookie.message")'
+        )
+        Navbar
+        Snackbar
+        v-content
+          router-view
 </template>
 
 <script lang="ts">

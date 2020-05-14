@@ -26,6 +26,8 @@ export const messages = {
       language: 'Язык',
     },
     close: 'Закрыть',
+    top: 'Топ контрибьюторов',
+    search: 'Поиск',
   },
   en: {
     title: 'Localizer',
@@ -54,5 +56,7 @@ export const messages = {
       language: 'Language',
     },
     close: 'Close',
+    top: 'Top contributors',
+    search: 'Search',
   },
 }

@@ -1,6 +1,6 @@
 <template lang="pug">
   nav
-    v-app-bar(flat app)
+    v-app-bar(flat app style='maxWidth: 1000px; margin: auto')
       // Title
       v-toolbar-title.text-uppercase.grey--text
         a(@click='goHome') {{$t('title')}}
