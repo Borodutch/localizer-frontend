@@ -28,6 +28,10 @@ export const messages = {
     close: 'Закрыть',
     top: 'Топ контрибьюторов',
     search: 'Поиск',
+    comment: {
+      new: 'Новый комментарий',
+      comments: 'Комментарии',
+    },
   },
   en: {
     title: 'Localizer',
@@ -58,5 +62,9 @@ export const messages = {
     close: 'Close',
     top: 'Top contributors',
     search: 'Search',
+    comment: {
+      new: 'New comment',
+      comments: 'Comments',
+    },
   },
 }

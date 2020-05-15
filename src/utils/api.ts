@@ -1,4 +1,5 @@
 import axios from 'axios'
+import * as store from '../plugins/store'
 
 const base = process.env.VUE_APP_API
 
@@ -91,6 +92,36 @@ export async function deleteLocalization(key: string, password?: string) {
     await axios.post(`${base}/localizations/localization/delete`, {
       key,
       password,
+    })
+  ).data
+}
+
+export async function leaveCommentToVariant(
+  text: string,
+  key: string,
+  id: string
+) {
+  return (
+    await axios.post(`${base}/localizations/comment`, {
+      username: store.username(),
+      text,
+      key,
+      id,
+    })
+  ).data
+}
+
+export async function deleteCommentToVariant(
+  key: string,
+  id: string,
+  commentId: string
+) {
+  return (
+    await axios.post(`${base}/localizations/comment/delete`, {
+      key,
+      id,
+      commentId,
+      password: store.password(),
     })
   ).data
 }
