@@ -82,14 +82,12 @@
               v-icon(small color='white') done
             v-chip.px-2.ml-2(
               x-small
-              v-if='variant.selected'
               :disabled='loading'
               @click='downvoteVariant(variant, localization.key)'
               :class='isDownvoted(variant._id) ? "red darken-2" : ""'
             ) {{loading ? '🤔' : '👎'}}{{variant.downvotes ? ` ${variant.downvotes}` : ''}}
             v-chip.px-2(
               x-small
-              v-if='variant.selected'
               :disabled='loading'
               @click='upvoteVariant(variant, localization.key)'
               :class='isUpvoted(variant._id) ? "green darken-2" : ""'
