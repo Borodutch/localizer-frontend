@@ -112,7 +112,7 @@ export default class LocalizationCard extends Vue {
   async deleteLocalization(key: string) {
     this.loading = true
     try {
-      await api.deleteLocalization(key, store.password())
+      await api.deleteLocalization(key)
       this.$props.loadData()
     } catch (err) {
       store.setSnackbarError(err.response.data)

@@ -23,30 +23,33 @@ export async function postVariant(
   ).data
 }
 
-export async function selectVariant(
-  key: string,
-  id: string,
-  password?: string
-) {
+export async function selectVariant(key: string, id: string) {
   return (
     await axios.post(`${base}/localizations/select`, {
       key,
       id,
-      password,
+      password: store.password(),
     })
   ).data
 }
 
-export async function deleteVariant(
-  key: string,
-  id: string,
-  password?: string
-) {
+export async function deleteVariant(key: string, id: string) {
   return (
     await axios.post(`${base}/localizations/delete`, {
       key,
       id,
-      password,
+      password: store.password(),
+    })
+  ).data
+}
+
+export async function editVariant(key: string, id: string, text: string) {
+  return (
+    await axios.post(`${base}/localizations/edit`, {
+      key,
+      id,
+      text,
+      password: store.password(),
     })
   ).data
 }
@@ -87,11 +90,11 @@ export async function removeDownvoteVariant(key: string, id: string) {
   ).data
 }
 
-export async function deleteLocalization(key: string, password?: string) {
+export async function deleteLocalization(key: string) {
   return (
     await axios.post(`${base}/localizations/localization/delete`, {
       key,
-      password,
+      password: store.password(),
     })
   ).data
 }

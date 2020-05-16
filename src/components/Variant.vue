@@ -10,7 +10,7 @@
           :loading='loading'
         )
           v-icon(x-small color='white') delete
-        v-chip.px-1.mr-2(
+        v-chip.px-1(
           x-small
           color='green'
           v-if='admin'
@@ -18,6 +18,14 @@
           :loading='loading'
         )
           v-icon(x-small color='white') done
+        v-chip.px-1.mr-2(
+          x-small
+          v-if='admin'
+          @click='edit = !edit'
+          :class='edit ? "green darken-2" : ""'
+          :loading='loading'
+        )
+          v-icon(x-small color='white') edit
         v-chip.px-1(x-small) {{variant.language}}
         v-chip.px-1(x-small v-if='variant.username') {{variant.username.substr(0, 25)}}
         v-chip.px-1(x-small v-if='variant.createdAt') {{dateDisplay(variant.createdAt)}}
@@ -41,6 +49,12 @@
           :class='commentsOpen ? "green darken-2" : ""'
         ) {{$t('comment.comments')}}{{variant.comments.length ? ` ${variant.comments.length}` : ''}}
       p.mb-0 {{variant.text.replace(/\n/gi, '\\n')}}
+      EditVariant(
+        v-if='edit'
+        :variant='variant'
+        :localizationKey='localization.key'
+        :closeEdit='closeEdit'
+      )
       Comments(
         v-if='commentsOpen'
         :variant='variant'
@@ -58,6 +72,7 @@ import * as store from '../plugins/store'
 import * as api from '../utils/api'
 import moment from 'moment'
 import Comments from './Comments.vue'
+import EditVariant from './EditVariant.vue'
 
 @Component({
   props: {
@@ -68,16 +83,18 @@ import Comments from './Comments.vue'
   },
   components: {
     Comments,
+    EditVariant,
   },
 })
 export default class Variant extends Vue {
   loading = false
   commentsOpen = false
+  edit = false
 
   async selectVariant(variant: any, key: string) {
     this.loading = true
     try {
-      await api.selectVariant(key, variant._id, store.password())
+      await api.selectVariant(key, variant._id)
       this.$props.loadData()
     } catch (err) {
       store.setSnackbarError(err.response.data)
@@ -89,7 +106,7 @@ export default class Variant extends Vue {
   async deleteVariant(variant: any, key: string) {
     this.loading = true
     try {
-      await api.deleteVariant(key, variant._id, store.password())
+      await api.deleteVariant(key, variant._id)
       this.$props.loadData()
     } catch (err) {
       store.setSnackbarError(err.response.data)
@@ -158,6 +175,10 @@ export default class Variant extends Vue {
     } finally {
       this.loading = false
     }
+  }
+
+  closeEdit() {
+    this.edit = false
   }
 }
 </script>
