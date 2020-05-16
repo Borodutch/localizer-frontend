@@ -8,6 +8,7 @@
       :languages='languages'
       :tags='tags'
       :nonlanguages='nonlanguages'
+      :makeAllViewed='makeAllViewed'
     )
     v-pagination.mb-2(
       v-model='safePage'
@@ -61,6 +62,9 @@ export default class LocalizationCards extends Vue {
   get filteredData() {
     return this.data
       .filter((l) => {
+        if (!l.tags || !l.tags.length) {
+          return true
+        }
         for (const tag of l.tags) {
           if (store.tags().includes(tag)) {
             return true
@@ -88,6 +92,30 @@ export default class LocalizationCards extends Vue {
       })
       .filter((l) => {
         return !store.query() || l.key.indexOf(store.query()) > -1
+      })
+      .filter((l) => {
+        // No filter
+        if (!store.newFilterOn()) {
+          return true
+        }
+        const viewedItems = store.viewedItems()
+        // Localization is new
+        if (!viewedItems[l._id]) {
+          return true
+        }
+        // Has new variants or comments
+        for (const variant of l.variants) {
+          if (!viewedItems[variant._id]) {
+            return true
+          }
+          for (const comments of variant.comments) {
+            if (!viewedItems[comments._id]) {
+              return true
+            }
+          }
+        }
+        // Fallback
+        return false
       })
   }
 
@@ -180,6 +208,20 @@ export default class LocalizationCards extends Vue {
     } finally {
       this.loading = false
     }
+  }
+
+  makeAllViewed() {
+    const viewed = {} as any
+    for (const localization of this.data) {
+      viewed[localization._id] = true
+      for (const variant of localization.variants) {
+        viewed[variant._id] = true
+        for (const comment of variant.comments) {
+          viewed[comment._id] = true
+        }
+      }
+    }
+    store.setViewedItems(viewed)
   }
 }
 </script>

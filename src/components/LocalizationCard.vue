@@ -43,7 +43,7 @@
         :color='$store.state.colors[tag]'
       )
         span {{tag}}
-        v-button.ml-2(
+        .ml-2(
           small
           v-if='admin'
           @click='deleteLocalizationTag(localization.key, tag)'
@@ -52,10 +52,16 @@
           v-icon(small v-if='!loading') close
           span(v-else) 🤔
       v-chip.mx-1.px-1(
+        v-if='!$store.state.viewedItems[localization._id]'
+        dark
+        small
+        @mouseover='setViewedItem(localization._id)'
+        color='primary'
+      ) {{$t('new')}}
+      v-chip.mx-1.px-1(
         dark
         small
         v-if='admin'
-        :key='tag'
         :color='addTag ? "green darken-2" : ""'
         @click='addTag = !addTag'
       )
@@ -255,6 +261,10 @@ export default class LocalizationCard extends Vue {
     } finally {
       this.loading = false
     }
+  }
+
+  setViewedItem(id: string) {
+    store.setViewedItem(id)
   }
 }
 </script>

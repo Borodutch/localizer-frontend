@@ -8,6 +8,7 @@ export interface State {
   snackbar: SnackbarState
   language?: String
   dark: Boolean
+  newFilterOn: Boolean
   username?: String
   query?: String
   password?: String
@@ -17,6 +18,7 @@ export interface State {
   upvoted: Object
   downvoted: Object
   colors: Object
+  viewedItems: Object
 }
 
 interface LocalizedError {
@@ -39,6 +41,7 @@ const storeOptions = {
     },
     language: undefined,
     dark: true,
+    newFilterOn: false,
     username: undefined,
     query: undefined,
     password: undefined,
@@ -48,6 +51,7 @@ const storeOptions = {
     upvoted: {},
     downvoted: {},
     colors: {},
+    viewedItems: {},
   },
   mutations: {
     setSnackbar(state: State, snackbar: SnackbarState) {
@@ -58,6 +62,9 @@ const storeOptions = {
     },
     setDark(state: State, dark: Boolean) {
       state.dark = dark
+    },
+    setNewFilterOn(state: State, newFilterOn: Boolean) {
+      state.newFilterOn = newFilterOn
     },
     setUsername(state: State, username: String | undefined) {
       state.username = username
@@ -86,11 +93,15 @@ const storeOptions = {
     setColors(state: State, colors: Object) {
       state.colors = colors
     },
+    setViewedItems(state: State, viewedItems: Object) {
+      state.viewedItems = viewedItems
+    },
   },
   getters: {
     snackbar: (state: State) => state.snackbar,
     language: (state: State) => state.language,
     dark: (state: State) => state.dark,
+    newFilterOn: (state: State) => state.newFilterOn,
     username: (state: State) => state.username,
     query: (state: State) => state.query,
     password: (state: State) => state.password,
@@ -100,6 +111,7 @@ const storeOptions = {
     upvoted: (state: State) => state.upvoted,
     downvoted: (state: State) => state.downvoted,
     colors: (state: State) => state.colors,
+    viewedItems: (state: State) => state.viewedItems,
   },
   plugins: [
     createPersistedState({
@@ -107,12 +119,14 @@ const storeOptions = {
         'username',
         'language',
         'dark',
+        'newFilterOn',
         'password',
         'tags',
         'languages',
         'nonlanguages',
         'upvoted',
         'downvoted',
+        'viewedItems',
       ],
     }),
   ],
@@ -126,6 +140,7 @@ const getters = store.getters
 export const snackbar = () => getters.snackbar as SnackbarState
 export const language = () => getters.language as string | undefined
 export const dark = () => getters.dark as boolean
+export const newFilterOn = () => getters.newFilterOn as boolean
 export const username = () => getters.username as string | undefined
 export const query = () => getters.query as string | undefined
 export const password = () => getters.password as string | undefined
@@ -134,7 +149,9 @@ export const languages = () => getters.languages as string[]
 export const nonlanguages = () => getters.nonlanguages as string[]
 export const upvoted = () => getters.upvoted as { [index: string]: boolean }
 export const downvoted = () => getters.downvoted as { [index: string]: boolean }
-export const colors = () => getters.downvoted as { [index: string]: string }
+export const colors = () => getters.colors as { [index: string]: string }
+export const viewedItems = () =>
+  getters.viewedItems as { [index: string]: boolean }
 
 // Mutations
 export const setSnackbar = (snackbar: SnackbarState) => {
@@ -155,6 +172,9 @@ export const setLanguage = (language: String) => {
 }
 export const setDark = (dark: Boolean) => {
   store.commit('setDark', dark)
+}
+export const setNewFilterOn = (newFilterOn: Boolean) => {
+  store.commit('setNewFilterOn', newFilterOn)
 }
 export const setUsername = (username: String | undefined) => {
   store.commit('setUsername', username)
@@ -182,4 +202,12 @@ export const setDownvoted = (downvoted: Object) => {
 }
 export const setColors = (colors: Object) => {
   store.commit('setColors', colors)
+}
+export const setViewedItems = (viewedItems: Object) => {
+  store.commit('setViewedItems', viewedItems)
+}
+export const setViewedItem = (id: string) => {
+  const change = {} as any
+  change[id] = true
+  store.commit('setViewedItems', { ...store.state.viewedItems, ...change })
 }

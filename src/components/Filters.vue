@@ -21,6 +21,20 @@
       :color='$store.state.nonlanguages.indexOf(nonlanguage) > -1 ? $store.state.colors[nonlanguage] : ""'
       @click='toggleNonlanguage(nonlanguage)'
     ) {{$t('no')}} {{nonlanguage}}
+    v-chip.mx-1.my-1(
+      dark
+      :color='$store.state.newFilterOn ? "primary" : ""'
+      @click='toggleNewFilterOn'
+    ) {{$t('new')}}
+    v-menu(offset-y)
+      template(v-slot:activator='{ on }')
+        v-btn.ml-2.mt-1(v-on='on' text icon)
+          v-icon keyboard_arrow_down
+      v-list
+        v-list-item(@click='makeAllViewed')
+          v-list-item-title Make all viewed
+        v-list-item(@click='makeAllNew')
+          v-list-item-title Make all new
 </template>
 
 <script lang="ts">
@@ -34,6 +48,7 @@ import { Watch } from 'vue-property-decorator'
     languages: Array,
     nonlanguages: Array,
     tags: Array,
+    makeAllViewed: Function,
   },
 })
 export default class Filters extends Vue {
@@ -61,6 +76,14 @@ export default class Filters extends Vue {
     } else {
       store.setNonlanguages(store.nonlanguages().concat([nonlanguage]))
     }
+  }
+
+  toggleNewFilterOn() {
+    store.setNewFilterOn(!store.newFilterOn())
+  }
+
+  makeAllNew() {
+    store.setViewedItems({})
   }
 }
 </script>

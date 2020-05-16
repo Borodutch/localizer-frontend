@@ -36,6 +36,7 @@ export const messages = {
       new: 'Новый тэг',
     },
     no: 'не',
+    new: 'новое',
   },
   en: {
     title: 'Localizer',
@@ -74,5 +75,6 @@ export const messages = {
       new: 'New tag',
     },
     no: 'not',
+    new: 'new',
   },
 }

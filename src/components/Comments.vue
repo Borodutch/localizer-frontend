@@ -22,6 +22,13 @@
           x-small
           v-if='comment.createdAt'
         ) {{dateDisplay(comment.createdAt)}}
+        v-chip.px-1(
+          x-small
+          v-if='!$store.state.viewedItems[comment._id]'
+          dark
+          @mouseover='setViewedItem(comment._id)'
+          color='primary'
+        ) {{$t('new')}}
       p.ma-0 {{comment.text}}
       v-divider
     v-textarea.mb-1.mt-0(
@@ -98,6 +105,10 @@ export default class Comments extends Vue {
     } finally {
       this.loading = false
     }
+  }
+
+  setViewedItem(id: string) {
+    store.setViewedItem(id)
   }
 }
 </script>

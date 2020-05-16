@@ -55,8 +55,15 @@
           dark
           x-small
           @click='commentsOpen = !commentsOpen'
-          :class='commentsOpen ? "green darken-2" : ""'
-        ) {{$t('comment.comments')}}{{variant.comments.length ? ` ${variant.comments.length}` : ''}}
+          :class='commentsOpen ? "green darken-2" : hasNewComments(variant) ? "primary" : ""'
+        ) {{$t('comment.comments')}}{{variant.comments.length ? ` ${variant.comments.length}` : ''}}{{hasNewComments(variant) ? `, ${$t("new")}` : ''}}
+        v-chip.px-1(
+          x-small
+          v-if='!$store.state.viewedItems[variant._id]'
+          dark
+          @mouseover='setViewedItem(variant._id)'
+          color='primary'
+        ) {{$t('new')}}
       p.mb-0 {{variant.text.replace(/\n/gi, '\\n')}}
       EditVariant(
         v-if='edit'
@@ -189,6 +196,20 @@ export default class Variant extends Vue {
 
   closeEdit() {
     this.edit = false
+  }
+
+  hasNewComments(variant: any) {
+    const viewedItems = store.viewedItems()
+    for (const comment of variant.comments) {
+      if (!viewedItems[comment._id]) {
+        return true
+      }
+    }
+    return false
+  }
+
+  setViewedItem(id: string) {
+    store.setViewedItem(id)
   }
 }
 </script>
