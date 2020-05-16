@@ -162,7 +162,7 @@ export default class LocalizationCard extends Vue {
         Object.keys(this.selected).filter((k) => !!this.selected[k])
       )
       this.selected = {}
-      this.edit = false
+      this.select = false
       this.$props.loadData()
     } catch (err) {
       store.setSnackbarError(err.response.data)
