@@ -5,7 +5,7 @@
         v-chip.px-1(
           x-small
           color='red'
-          v-if='admin'
+          v-if='admin && !select'
           @click='deleteVariant(variant, localization.key)'
           :loading='loading'
         )
@@ -13,7 +13,7 @@
         v-chip.px-1(
           x-small
           color='green'
-          v-if='admin'
+          v-if='admin && !select'
           @click='selectVariant(variant, localization.key)'
           :loading='loading'
         )
@@ -79,6 +79,7 @@ import EditVariant from './EditVariant.vue'
     variant: Object,
     loadData: Function,
     admin: Boolean,
+    select: Boolean,
     localization: Object,
   },
   components: {

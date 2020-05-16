@@ -43,6 +43,26 @@ export async function deleteVariant(key: string, id: string) {
   ).data
 }
 
+export async function selectVariants(key: string, ids: string[]) {
+  return (
+    await axios.post(`${base}/localizations/select`, {
+      key,
+      ids,
+      password: store.password(),
+    })
+  ).data
+}
+
+export async function deleteVariants(key: string, ids: string[]) {
+  return (
+    await axios.post(`${base}/localizations/delete`, {
+      key,
+      ids,
+      password: store.password(),
+    })
+  ).data
+}
+
 export async function editVariant(key: string, id: string, text: string) {
   return (
     await axios.post(`${base}/localizations/edit`, {

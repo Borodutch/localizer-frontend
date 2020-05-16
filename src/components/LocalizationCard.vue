@@ -11,6 +11,15 @@
       )
         v-icon(small) delete
       v-btn.mr-1(
+        v-if='admin'
+        small
+        icon
+        @click='select = !select'
+        :loading='loading'
+        :class='select ? "green darken-2" : ""'
+      )
+        v-icon(small) edit
+      v-btn.mr-1(
         v-if='!edit'
         small
         icon
@@ -56,13 +65,34 @@
             @click='save(localization.key)'
             :loading='loading'
           ) {{$t("add.save")}}
-      div(v-for='variant in localization.variants')
-        Variant(
-          :variant='variant'
-          :loadData='loadData'
-          :admin='admin'
-          :localization='localization'
+      div(v-if='select')
+        v-chip.px-1(
+          x-small
+          color='red'
+          @click='deleteVariants(localization.key)'
+          :loading='loading'
         )
+          v-icon(x-small color='white') delete
+        v-chip.px-1(
+          x-small
+          color='green'
+          @click='selectVariants(localization.key)'
+          :loading='loading'
+        )
+          v-icon(x-small color='white') done
+      div(v-for='variant in localization.variants')
+        .d-flex.direction-row
+          v-checkbox(
+            v-if='select'
+            v-model='selected[variant._id]'
+          )
+          Variant(
+            :variant='variant'
+            :loadData='loadData'
+            :admin='admin'
+            :localization='localization'
+            :select='select'
+          )
 </template>
 
 <script lang="ts">
@@ -89,11 +119,14 @@ export default class LocalizationCard extends Vue {
   language = ''
 
   edit = false
+  select = false
 
   textRules = [(v: any) => !!(v || '').trim() || i18n.t('errors.textLength')]
   languageRules = [(v: any) => !!(v || '').trim() || i18n.t('errors.language')]
 
   loading = false
+
+  selected = {} as any
 
   async save(key: string) {
     this.loading = true
@@ -113,6 +146,40 @@ export default class LocalizationCard extends Vue {
     this.loading = true
     try {
       await api.deleteLocalization(key)
+      this.$props.loadData()
+    } catch (err) {
+      store.setSnackbarError(err.response.data)
+    } finally {
+      this.loading = false
+    }
+  }
+
+  async deleteVariants(key: string) {
+    this.loading = true
+    try {
+      await api.deleteVariants(
+        key,
+        Object.keys(this.selected).filter((k) => !!this.selected[k])
+      )
+      this.selected = {}
+      this.edit = false
+      this.$props.loadData()
+    } catch (err) {
+      store.setSnackbarError(err.response.data)
+    } finally {
+      this.loading = false
+    }
+  }
+
+  async selectVariants(key: string) {
+    this.loading = true
+    try {
+      await api.selectVariants(
+        key,
+        Object.keys(this.selected).filter((k) => !!this.selected[k])
+      )
+      this.selected = {}
+      this.edit = false
       this.$props.loadData()
     } catch (err) {
       store.setSnackbarError(err.response.data)
