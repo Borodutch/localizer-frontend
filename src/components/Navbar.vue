@@ -11,6 +11,9 @@
       // Admin
       v-btn(text icon color='grey' @click='goToAdmin')
         v-icon(small) vpn_key
+      // Admin
+      v-btn(text icon color='grey' @click='goToCode')
+        v-icon(small) code
       // Language picker
       v-menu(offset-y)
         template(v-slot:activator='{ on }')
@@ -61,6 +64,9 @@ export default class Navbar extends Vue {
   }
   goToAdmin() {
     this.$router.replace('/admin')
+  }
+  goToCode() {
+    this.$router.replace('/code')
   }
 }
 </script>
