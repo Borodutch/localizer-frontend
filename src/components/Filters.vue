@@ -12,6 +12,12 @@
       :color='$store.state.languages.indexOf(language) > -1 ? "primary" : ""'
       @click='toggleLanguage(language)'
     ) {{language}}
+    v-chip.mx-1.my-1(
+      v-for='nonlanguage in nonlanguages'
+      :key='nonlanguage'
+      :color='$store.state.nonlanguages.indexOf(nonlanguage) > -1 ? "primary" : ""'
+      @click='toggleNonlanguage(nonlanguage)'
+    ) {{$t('no')}} {{nonlanguage}}
 </template>
 
 <script lang="ts">
@@ -23,6 +29,7 @@ import { Watch } from 'vue-property-decorator'
 @Component({
   props: {
     languages: Array,
+    nonlanguages: Array,
     tags: Array,
   },
 })
@@ -40,6 +47,16 @@ export default class Filters extends Vue {
       store.setLanguages(store.languages().filter((t) => t !== language))
     } else {
       store.setLanguages(store.languages().concat([language]))
+    }
+  }
+
+  toggleNonlanguage(nonlanguage: string) {
+    if (store.nonlanguages().indexOf(nonlanguage) > -1) {
+      store.setNonlanguages(
+        store.nonlanguages().filter((t) => t !== nonlanguage)
+      )
+    } else {
+      store.setNonlanguages(store.nonlanguages().concat([nonlanguage]))
     }
   }
 }

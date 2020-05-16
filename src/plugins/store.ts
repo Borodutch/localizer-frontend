@@ -13,6 +13,7 @@ export interface State {
   password?: String
   tags: String[]
   languages: String[]
+  nonlanguages: String[]
   upvoted: Object
   downvoted: Object
 }
@@ -42,6 +43,7 @@ const storeOptions = {
     password: undefined,
     tags: [],
     languages: [],
+    nonlanguages: [],
     upvoted: {},
     downvoted: {},
   },
@@ -70,6 +72,9 @@ const storeOptions = {
     setLanguages(state: State, languages: String[]) {
       state.languages = languages
     },
+    setNonlanguages(state: State, nonlanguages: String[]) {
+      state.nonlanguages = nonlanguages
+    },
     setUpvoted(state: State, upvoted: Object) {
       state.upvoted = upvoted
     },
@@ -86,6 +91,7 @@ const storeOptions = {
     password: (state: State) => state.password,
     tags: (state: State) => state.tags,
     languages: (state: State) => state.languages,
+    nonlanguages: (state: State) => state.nonlanguages,
     upvoted: (state: State) => state.upvoted,
     downvoted: (state: State) => state.downvoted,
   },
@@ -98,6 +104,7 @@ const storeOptions = {
         'password',
         'tags',
         'languages',
+        'nonlanguages',
         'upvoted',
         'downvoted',
       ],
@@ -118,6 +125,7 @@ export const query = () => getters.query as string | undefined
 export const password = () => getters.password as string | undefined
 export const tags = () => getters.tags as string[]
 export const languages = () => getters.languages as string[]
+export const nonlanguages = () => getters.nonlanguages as string[]
 export const upvoted = () => getters.upvoted as { [index: string]: boolean }
 export const downvoted = () => getters.downvoted as { [index: string]: boolean }
 
@@ -155,6 +163,9 @@ export const setTags = (tags: String[]) => {
 }
 export const setLanguages = (languages: String[]) => {
   store.commit('setLanguages', languages)
+}
+export const setNonlanguages = (nonlanguages: String[]) => {
+  store.commit('setNonlanguages', nonlanguages)
 }
 export const setUpvoted = (upvoted: Object) => {
   store.commit('setUpvoted', upvoted)

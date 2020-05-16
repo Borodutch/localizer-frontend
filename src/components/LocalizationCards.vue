@@ -7,6 +7,7 @@
     Filters(
       :languages='languages'
       :tags='tags'
+      :nonlanguages='nonlanguages'
     )
     v-pagination.mb-2(
       v-model='safePage'
@@ -64,12 +65,23 @@ export default class LocalizationCards extends Vue {
             return true
           }
         }
+        if (store.nonlanguages().length) {
+          let doesNotContainLanguage = true
+          for (const variant of l.variants) {
+            if (store.nonlanguages().includes(variant.language)) {
+              doesNotContainLanguage = false
+            }
+          }
+          return doesNotContainLanguage
+        }
         return false
       })
       .map((l) => {
         const newL = { ...l }
-        newL.variants = newL.variants.filter((v: any) =>
-          store.languages().includes(v.language)
+        newL.variants = newL.variants.filter(
+          (v: any) =>
+            store.languages().includes(v.language) ||
+            store.nonlanguages().includes(v.language)
         )
         return newL
       })
@@ -115,6 +127,7 @@ export default class LocalizationCards extends Vue {
   }
 
   languages = [] as any[]
+  nonlanguages = [] as any[]
   tags = [] as any[]
 
   mounted() {
@@ -148,6 +161,7 @@ export default class LocalizationCards extends Vue {
         }
       }
       this.languages = Array.from(languages)
+      this.nonlanguages = Array.from(languages)
       this.tags = Array.from(tags)
     } catch (err) {
       store.setSnackbarError(err.response.data)
