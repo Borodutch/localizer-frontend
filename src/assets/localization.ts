@@ -32,6 +32,9 @@ export const messages = {
       new: 'Новый комментарий',
       comments: 'Комментарии',
     },
+    tag: {
+      new: 'Новый тэг',
+    },
   },
   en: {
     title: 'Localizer',
@@ -65,6 +68,9 @@ export const messages = {
     comment: {
       new: 'New comment',
       comments: 'Comments',
+    },
+    tag: {
+      new: 'New tag',
     },
   },
 }

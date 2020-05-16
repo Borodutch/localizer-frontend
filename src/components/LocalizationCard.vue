@@ -39,7 +39,37 @@
         small
         v-for='tag in localization.tags'
         :key='tag'
-      ) {{tag}}
+      )
+        span {{tag}}
+        v-button.ml-2(
+          small
+          v-if='admin'
+          @click='deleteLocalizationTag(localization.key, tag)'
+          :disabled='loading'
+        )
+          v-icon(small v-if='!loading') close
+          span(v-else) 🤔
+      v-chip.mx-1.px-1(
+        small
+        v-if='admin'
+        :key='tag'
+        :color='addTag ? "green darken-2" : ""'
+        @click='addTag = !addTag'
+      )
+        v-icon(small v-if='!loading') {{addTag ? 'close' : 'add'}}
+      v-text-field.mx-1.mb-0.mt-4.px-0.py-0(
+        :label='$t("tag.new")'
+        v-if='addTag'
+        clearable
+        rows='1'
+        auto-grow
+        no-resize
+        compact
+        v-model='addTagText'
+        :append-outer-icon="!!addTagText ? 'send' : undefined"
+        @click:append-outer='saveNewTag'
+        :disabled='loading'
+      )
     v-card-text
       div(v-if='edit')
         v-textarea.mb-1.mt-0.pt-0(
@@ -117,9 +147,11 @@ import Variant from './Variant.vue'
 export default class LocalizationCard extends Vue {
   text = ''
   language = ''
+  addTagText = ''
 
   edit = false
   select = false
+  addTag = false
 
   textRules = [(v: any) => !!(v || '').trim() || i18n.t('errors.textLength')]
   languageRules = [(v: any) => !!(v || '').trim() || i18n.t('errors.language')]
@@ -142,11 +174,43 @@ export default class LocalizationCard extends Vue {
     }
   }
 
+  async saveNewTag() {
+    this.loading = true
+    try {
+      if (this.$props.localization.tags.indexOf(this.addTagText) < 0) {
+        await api.addLocalizationTag(
+          this.$props.localization.key,
+          this.addTagText
+        )
+        this.$props.localization.tags.push(this.addTagText)
+      }
+      this.addTagText = ''
+    } catch (err) {
+      store.setSnackbarError(err.response.data)
+    } finally {
+      this.loading = false
+    }
+  }
+
   async deleteLocalization(key: string) {
     this.loading = true
     try {
       await api.deleteLocalization(key)
       this.$props.loadData()
+    } catch (err) {
+      store.setSnackbarError(err.response.data)
+    } finally {
+      this.loading = false
+    }
+  }
+
+  async deleteLocalizationTag(key: string, tag: string) {
+    this.loading = true
+    try {
+      await api.deleteLocalizationTag(key, tag)
+      this.$props.localization.tags = this.$props.localization.tags.filter(
+        (t: string) => t !== tag
+      )
     } catch (err) {
       store.setSnackbarError(err.response.data)
     } finally {

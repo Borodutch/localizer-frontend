@@ -119,6 +119,26 @@ export async function deleteLocalization(key: string) {
   ).data
 }
 
+export async function deleteLocalizationTag(key: string, tag: string) {
+  return (
+    await axios.post(`${base}/localizations/localization/deleteTag`, {
+      key,
+      tag,
+      password: store.password(),
+    })
+  ).data
+}
+
+export async function addLocalizationTag(key: string, tag: string) {
+  return (
+    await axios.post(`${base}/localizations/localization/addTag`, {
+      key,
+      tag,
+      password: store.password(),
+    })
+  ).data
+}
+
 export async function leaveCommentToVariant(
   text: string,
   key: string,
