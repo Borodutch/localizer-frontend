@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div(style='width: 100%;')
     .my-1
       .mr-2
         v-chip.px-1(
