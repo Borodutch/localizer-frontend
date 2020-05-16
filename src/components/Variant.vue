@@ -3,6 +3,7 @@
     .my-1
       .mr-2
         v-chip.px-1(
+          dark
           x-small
           color='red'
           v-if='admin && !select'
@@ -11,6 +12,7 @@
         )
           v-icon(x-small color='white') delete
         v-chip.px-1(
+          dark
           x-small
           color='green'
           v-if='admin && !select'
@@ -19,6 +21,7 @@
         )
           v-icon(x-small color='white') done
         v-chip.px-1.mr-2(
+          dark
           x-small
           v-if='admin'
           @click='edit = !edit'
@@ -26,10 +29,14 @@
           :loading='loading'
         )
           v-icon(x-small color='white') edit
-        v-chip.px-1(x-small) {{variant.language}}
-        v-chip.px-1(x-small v-if='variant.username') {{variant.username.substr(0, 25)}}
-        v-chip.px-1(x-small v-if='variant.createdAt') {{dateDisplay(variant.createdAt)}}
-        v-chip.green.px-1(x-small v-if='variant.selected')
+        v-chip.px-1(
+          dark
+          x-small
+          :color='$store.state.colors[variant.language]'
+        ) {{variant.language}}
+        v-chip.px-1(dark x-small v-if='variant.username') {{variant.username.substr(0, 25)}}
+        v-chip.px-1(dark x-small v-if='variant.createdAt') {{dateDisplay(variant.createdAt)}}
+        v-chip.green.px-1(dark x-small v-if='variant.selected')
           v-icon(small color='white') done
         v-chip.px-2.ml-2(
           x-small
@@ -38,12 +45,14 @@
           :class='isDownvoted(variant._id) ? "red darken-2" : ""'
         ) {{loading ? '🤔' : '👎'}}{{variant.downvotes ? ` ${variant.downvotes}` : ''}}
         v-chip.px-2(
+          dark
           x-small
           :disabled='loading'
           @click='upvoteVariant(variant, localization.key)'
           :class='isUpvoted(variant._id) ? "green darken-2" : ""'
         ) {{loading ? '🤔' : '👍'}}{{variant.upvotes ? ` ${variant.upvotes}` : ''}}
         v-chip.mx-2(
+          dark
           x-small
           @click='commentsOpen = !commentsOpen'
           :class='commentsOpen ? "green darken-2" : ""'

@@ -1,21 +1,24 @@
 <template lang="pug">
-  .mb-2.d-flex.flex-wrap.justify-center
+  .mb-2.d-flex.flex-wrap.justify-center.white--text
     v-chip.mx-1.my-1(
+      dark
       v-for='tag in tags'
       :key='tag'
-      :color='$store.state.tags.indexOf(tag) > -1 ? "primary" : ""'
+      :color='$store.state.tags.indexOf(tag) > -1 ? $store.state.colors[tag] : ""'
       @click='toggleTag(tag)'
     ) {{tag}}
     v-chip.mx-1.my-1(
+      dark
       v-for='language in languages'
       :key='language'
-      :color='$store.state.languages.indexOf(language) > -1 ? "primary" : ""'
+      :color='$store.state.languages.indexOf(language) > -1 ? $store.state.colors[language] : ""'
       @click='toggleLanguage(language)'
     ) {{language}}
     v-chip.mx-1.my-1(
+      dark
       v-for='nonlanguage in nonlanguages'
-      :key='nonlanguage'
-      :color='$store.state.nonlanguages.indexOf(nonlanguage) > -1 ? "primary" : ""'
+      :key='`no-${nonlanguage}`'
+      :color='$store.state.nonlanguages.indexOf(nonlanguage) > -1 ? $store.state.colors[nonlanguage] : ""'
       @click='toggleNonlanguage(nonlanguage)'
     ) {{$t('no')}} {{nonlanguage}}
 </template>

@@ -40,6 +40,7 @@ import { i18n } from '../plugins/i18n'
 import LocalizationCard from './LocalizationCard.vue'
 import TopContributors from './TopContributors.vue'
 import Filters from './Filters.vue'
+const randomColor = require('randomcolor')
 
 @Component({
   components: {
@@ -163,6 +164,17 @@ export default class LocalizationCards extends Vue {
       this.languages = Array.from(languages)
       this.nonlanguages = Array.from(languages)
       this.tags = Array.from(tags)
+      const colors = {} as any
+      const names = Array.from(
+        this.languages.concat(this.tags).reduce((p, c) => {
+          p.add(c)
+          return p
+        }, new Set())
+      ) as string[]
+      for (const name of names) {
+        colors[name] = randomColor({ luminosity: 'dark', seed: name })
+      }
+      store.setColors(colors)
     } catch (err) {
       store.setSnackbarError(err.response.data)
     } finally {

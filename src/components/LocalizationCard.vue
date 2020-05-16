@@ -36,9 +36,11 @@
         v-icon(small) clear
       span.mx-1 {{localization.key}}
       v-chip.mx-1(
+        dark
         small
         v-for='tag in localization.tags'
         :key='tag'
+        :color='$store.state.colors[tag]'
       )
         span {{tag}}
         v-button.ml-2(
@@ -50,6 +52,7 @@
           v-icon(small v-if='!loading') close
           span(v-else) 🤔
       v-chip.mx-1.px-1(
+        dark
         small
         v-if='admin'
         :key='tag'
@@ -97,6 +100,7 @@
           ) {{$t("add.save")}}
       div(v-if='select')
         v-chip.px-1(
+          dark
           x-small
           color='red'
           @click='deleteVariants(localization.key)'
@@ -104,6 +108,7 @@
         )
           v-icon(x-small color='white') delete
         v-chip.px-1(
+          dark
           x-small
           color='green'
           @click='selectVariants(localization.key)'

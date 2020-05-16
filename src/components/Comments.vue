@@ -3,6 +3,7 @@
     .my-0(v-for='comment in variant.comments')
       div
         v-chip.px-1(
+          dark
           x-small
           color='red'
           v-if='admin && !!comment._id'
@@ -12,10 +13,12 @@
         )
           v-icon(x-small color='white') delete
         v-chip.px-1(
+          dark
           x-small
           v-if='comment.username'
         ) {{comment.username}}
         v-chip.px-1(
+          dark
           x-small
           v-if='comment.createdAt'
         ) {{dateDisplay(comment.createdAt)}}

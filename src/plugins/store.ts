@@ -16,6 +16,7 @@ export interface State {
   nonlanguages: String[]
   upvoted: Object
   downvoted: Object
+  colors: Object
 }
 
 interface LocalizedError {
@@ -46,6 +47,7 @@ const storeOptions = {
     nonlanguages: [],
     upvoted: {},
     downvoted: {},
+    colors: {},
   },
   mutations: {
     setSnackbar(state: State, snackbar: SnackbarState) {
@@ -81,6 +83,9 @@ const storeOptions = {
     setDownvoted(state: State, downvoted: Object) {
       state.downvoted = downvoted
     },
+    setColors(state: State, colors: Object) {
+      state.colors = colors
+    },
   },
   getters: {
     snackbar: (state: State) => state.snackbar,
@@ -94,6 +99,7 @@ const storeOptions = {
     nonlanguages: (state: State) => state.nonlanguages,
     upvoted: (state: State) => state.upvoted,
     downvoted: (state: State) => state.downvoted,
+    colors: (state: State) => state.colors,
   },
   plugins: [
     createPersistedState({
@@ -128,6 +134,7 @@ export const languages = () => getters.languages as string[]
 export const nonlanguages = () => getters.nonlanguages as string[]
 export const upvoted = () => getters.upvoted as { [index: string]: boolean }
 export const downvoted = () => getters.downvoted as { [index: string]: boolean }
+export const colors = () => getters.downvoted as { [index: string]: string }
 
 // Mutations
 export const setSnackbar = (snackbar: SnackbarState) => {
@@ -172,4 +179,7 @@ export const setUpvoted = (upvoted: Object) => {
 }
 export const setDownvoted = (downvoted: Object) => {
   store.commit('setDownvoted', downvoted)
+}
+export const setColors = (colors: Object) => {
+  store.commit('setColors', colors)
 }
