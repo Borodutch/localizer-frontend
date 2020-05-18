@@ -120,7 +120,7 @@ export default class LocalizationCards extends Vue {
   }
 
   get numberOfPages() {
-    return Math.floor(this.filteredData.length / this.pageSize)
+    return Math.ceil(this.filteredData.length / this.pageSize)
   }
 
   get displaySkip() {
