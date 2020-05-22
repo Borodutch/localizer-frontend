@@ -73,7 +73,10 @@ export default class LocalizationCards extends Vue {
         if (store.nonlanguages().length) {
           let doesNotContainLanguage = true
           for (const variant of l.variants) {
-            if (store.nonlanguages().includes(variant.language)) {
+            if (
+              variant.selected &&
+              store.nonlanguages().includes(variant.language)
+            ) {
               doesNotContainLanguage = false
             }
           }
