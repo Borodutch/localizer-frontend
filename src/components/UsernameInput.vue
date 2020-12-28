@@ -1,22 +1,25 @@
 <template lang="pug">
-  v-text-field(
-    :label="$t('username')"
-    v-model='username'
-  )
+v-text-field(:label='$t("username")', v-model='usernameProxy')
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import * as store from '../plugins/store'
+import { namespace } from 'vuex-class'
+
+const AppStore = namespace('AppStore')
 
 @Component
 export default class UsernameInput extends Vue {
-  get username() {
-    return store.username()
+  @AppStore.State username!: string
+
+  @AppStore.Mutation setUsername!: (username: string) => void
+
+  get usernameProxy() {
+    return this.username
   }
-  set username(newUsername: string | undefined) {
-    store.setUsername(newUsername)
+  set usernameProxy(newUsername: string) {
+    this.setUsername(newUsername)
   }
 }
 </script>

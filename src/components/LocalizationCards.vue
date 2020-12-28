@@ -1,47 +1,46 @@
 <template lang="pug">
-  div
-    v-progress-linear.mb-4(
-      v-if='loading'
-      indeterminate
-    )
-    Filters(
-      :languages='languages'
-      :tags='tags'
-      :nonlanguages='nonlanguages'
-      :makeAllViewed='makeAllViewed'
-    )
-    v-pagination.mb-2(
-      v-model='safePage'
-      v-if='numberOfPages > 1'
-      :length='numberOfPages'
-    )
-    LocalizationCard(
-      v-for='localization in filteredData.slice(displaySkip, displaySkip + pageSize)' :key='localization.key'
-      :languages='languages'
-      :localization='localization'
-      :loadData='loadData'
-      :admin='admin'
-    )
-    v-pagination.mt-4(
-      v-model='safePage'
-      v-if='numberOfPages > 1'
-      :length='numberOfPages'
-    )
-    TopContributors(
-      :contributors='contributors'
-    )
+div
+  v-progress-linear.mb-4(v-if='loading', indeterminate)
+  Filters(
+    :languages='languages',
+    :tags='localTags',
+    :nonlanguages='localNonlanguages',
+    :makeAllViewed='makeAllViewed'
+  )
+  v-pagination.mb-2(
+    v-model='safePage',
+    v-if='numberOfPages > 1',
+    :length='numberOfPages'
+  )
+  LocalizationCard(
+    v-for='localization in filteredData.slice(displaySkip, displaySkip + pageSize)',
+    :key='localization.key',
+    :languages='localLanguages',
+    :localization='localization',
+    :loadData='loadData',
+    :admin='admin'
+  )
+  v-pagination.mt-4(
+    v-model='safePage',
+    v-if='numberOfPages > 1',
+    :length='numberOfPages'
+  )
+  TopContributors(:contributors='contributors')
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import * as store from '../plugins/store'
-import * as api from '../utils/api'
-import { i18n } from '../plugins/i18n'
-import LocalizationCard from './LocalizationCard.vue'
-import TopContributors from './TopContributors.vue'
-import Filters from './Filters.vue'
+import * as api from '@/utils/api'
+import { i18n } from '@/plugins/i18n'
+import LocalizationCard from '@/components/LocalizationCard.vue'
+import TopContributors from '@/components/TopContributors.vue'
+import Filters from '@/components/Filters.vue'
+import { namespace } from 'vuex-class'
 const randomColor = require('randomcolor')
+
+const SnackbarStore = namespace('SnackbarStore')
+const DataStore = namespace('DataStore')
 
 @Component({
   components: {
@@ -54,6 +53,21 @@ const randomColor = require('randomcolor')
   },
 })
 export default class LocalizationCards extends Vue {
+  @DataStore.State viewedItems!: {
+    [index: string]: boolean
+  }
+  @DataStore.State tags!: string[]
+  @DataStore.State languages!: string[]
+  @DataStore.State nonlanguages!: string[]
+  @DataStore.State query!: string
+  @DataStore.State newFilterOn!: boolean
+
+  @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
+  @DataStore.Mutation setColors!: (colors: Object) => void
+  @DataStore.Mutation setViewedItems!: (viewedItems: {
+    [index: string]: boolean
+  }) => void
+
   data = [] as any[]
   loading = false
   page = 1
@@ -66,16 +80,16 @@ export default class LocalizationCards extends Vue {
           return true
         }
         for (const tag of l.tags) {
-          if (store.tags().includes(tag)) {
+          if (this.tags.includes(tag)) {
             return true
           }
         }
-        if (store.nonlanguages().length) {
+        if (this.nonlanguages.length) {
           let doesNotContainLanguage = true
           for (const variant of l.variants) {
             if (
               variant.selected &&
-              store.nonlanguages().includes(variant.language)
+              this.nonlanguages.includes(variant.language)
             ) {
               doesNotContainLanguage = false
             }
@@ -88,20 +102,20 @@ export default class LocalizationCards extends Vue {
         const newL = { ...l }
         newL.variants = newL.variants.filter(
           (v: any) =>
-            store.languages().includes(v.language) ||
-            store.nonlanguages().includes(v.language)
+            this.languages.includes(v.language) ||
+            this.nonlanguages.includes(v.language)
         )
         return newL
       })
       .filter((l) => {
-        return !store.query() || l.key.indexOf(store.query()) > -1
+        return !this.query || l.key.indexOf(this.query) > -1
       })
       .filter((l) => {
         // No filter
-        if (!store.newFilterOn()) {
+        if (!this.newFilterOn) {
           return true
         }
-        const viewedItems = store.viewedItems()
+        const viewedItems = this.viewedItems
         // Localization is new
         if (!viewedItems[l._id]) {
           return true
@@ -158,9 +172,9 @@ export default class LocalizationCards extends Vue {
       .sort((a, b) => (a.number > b.number ? -1 : 1))
   }
 
-  languages = [] as any[]
-  nonlanguages = [] as any[]
-  tags = [] as any[]
+  localLanguages = [] as any[]
+  localNonlanguages = [] as any[]
+  localTags = [] as any[]
 
   mounted() {
     this.loadData()
@@ -183,21 +197,21 @@ export default class LocalizationCards extends Vue {
         })
       })
       const languages = new Set<string>()
-      const tags = new Set<string>()
+      const localTags = new Set<string>()
       for (const localization of data) {
         for (const l of localization.variants.map((v: any) => v.language)) {
           languages.add(l)
         }
-        for (const tag of localization.tags) {
-          tags.add(tag)
+        for (const tag of localization.localTags) {
+          localTags.add(tag)
         }
       }
-      this.languages = Array.from(languages)
-      this.nonlanguages = Array.from(languages)
-      this.tags = Array.from(tags)
+      this.localLanguages = Array.from(languages)
+      this.localNonlanguages = Array.from(languages)
+      this.localTags = Array.from(localTags)
       const colors = {} as any
       const names = Array.from(
-        this.languages.concat(this.tags).reduce((p, c) => {
+        this.localLanguages.concat(this.localTags).reduce((p, c) => {
           p.add(c)
           return p
         }, new Set())
@@ -205,9 +219,9 @@ export default class LocalizationCards extends Vue {
       for (const name of names) {
         colors[name] = randomColor({ luminosity: 'dark', seed: name })
       }
-      store.setColors(colors)
+      this.setColors(colors)
     } catch (err) {
-      store.setSnackbarError(err.response.data)
+      this.setSnackbarError(err.response.data)
     } finally {
       this.loading = false
     }
@@ -224,7 +238,7 @@ export default class LocalizationCards extends Vue {
         }
       }
     }
-    store.setViewedItems(viewed)
+    this.setViewedItems(viewed)
   }
 }
 </script>

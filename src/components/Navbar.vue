@@ -1,41 +1,50 @@
 <template lang="pug">
-  nav
-    v-app-bar(flat app style='maxWidth: 1000px; margin: auto')
-      // Title
-      v-toolbar-title.text-uppercase.grey--text
-        a(@click='goHome') {{$t('title')}}
-      v-spacer
-      // Dark mode
-      v-btn(text icon color='grey' @click='toggleMode')
-        v-icon(small) brightness_2
-      // Admin
-      v-btn(text icon color='grey' @click='goToAdmin')
-        v-icon(small) vpn_key
-      // Admin
-      v-btn(text icon color='grey' @click='goToCode')
-        v-icon(small) code
-      // Language picker
-      v-menu(offset-y)
-        template(v-slot:activator='{ on }')
-          v-btn(text icon color='grey' v-on='on') {{currentLocale.icon}}
-        v-list
-          v-list-item(
-            v-for='locale in locales'
-            @click='changeLanguage(locale.code)'
-            :key="locale.code"
-          )
-            v-list-item-title {{locale.icon}}
+nav
+  v-app-bar(app, flat, :color='dark ? "#0D0D0D" : "white"')
+    // Title
+    img(src='/img/logo.svg')
+    v-spacer
+    // Language picker
+    v-menu(offset-y)
+      template(v-slot:activator='{ on }')
+        v-btn.navbar-button(text, v-on='on')
+          .mt-1 {{ currentLocale.icon }}
+      v-list
+        v-list-item.text-center(
+          v-for='locale in locales',
+          @click='changeLanguage(locale.code)',
+          :key='locale.code'
+        )
+          v-list-item-title.mt-1 {{ locale.icon }}
+    // Dark theme
+    v-btn.navbar-button(text, @click='toggleDark')
+      img(src='/img/moon.svg')
+    // Setup button
+    v-btn.setup-button.ml-2(
+      v-if='$vuetify.breakpoint.smAndUp',
+      text,
+      target='_blank',
+      href='https://blog.borodutch.com/how-to-setup-localizer-for-your-product/'
+    )
+      .setup-button-text {{ $t("home.setupButton") }}
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import * as store from '../plugins/store'
-import { i18n } from '../plugins/i18n'
-import * as api from '../utils/api'
+import store from '@/store'
+import { i18n } from '@/plugins/i18n'
+import { namespace } from 'vuex-class'
+
+const AppStore = namespace('AppStore')
 
 @Component
 export default class Navbar extends Vue {
+  @AppStore.State dark!: boolean
+
+  @AppStore.Mutation setLanguage!: (language: string) => void
+  @AppStore.Mutation setDark!: (dark: boolean) => void
+
   get locales() {
     return [
       { icon: '🇺🇸', code: 'en' },
@@ -49,42 +58,14 @@ export default class Navbar extends Vue {
       }
     }
   }
-
-  toggleMode() {
-    store.setDark(!store.dark())
-    ;(this.$vuetify.theme as any).dark = store.dark()
-  }
   changeLanguage(locale: string) {
     i18n.locale = locale
-    store.setLanguage(locale)
+    this.setLanguage(locale)
     document.title = i18n.t('title') as string
   }
-  goHome() {
-    this.$router.replace('/')
-  }
-  goToAdmin() {
-    this.$router.replace('/admin')
-  }
-  goToCode() {
-    this.$router.replace('/code')
+  toggleDark() {
+    this.setDark(!this.dark)
+    ;(this.$vuetify.theme as any).dark = this.dark
   }
 }
 </script>
-
-<style>
-nav a:link {
-  text-decoration: none;
-}
-
-nav a:visited {
-  text-decoration: none;
-}
-
-nav a:hover {
-  text-decoration: underline;
-}
-
-nav a:active {
-  text-decoration: underline;
-}
-</style>

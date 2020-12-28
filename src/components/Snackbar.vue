@@ -1,44 +1,51 @@
 <template lang="pug">
+div
   v-snackbar(
-    app
-    v-model='active'
-    :timeout='4000'
-    top
-    :color='color'
+    app,
+    v-model='safeActive',
+    :timeout='4000',
+    top,
+    :color='color',
     flat
   )
-    span {{text}}
-    v-btn(
-      color='white'
-      text
-      @click='active = false'
-    ) {{$t('close')}}
-
+    .d-flex.flex-ro2.justify-space-between.align-center
+      span {{ text }}
+      v-btn.ml-4(color='white', text, @click='hideSnackbar') {{ $t("close") }}
+  v-snackbar(app, v-model='refreshActive', bottom, flat, :timeout='-1')
+    .d-flex.flex-ro2.justify-space-between.align-center
+      span {{ $t("refreshRequest") }}
+      v-btn.ml-4(color='white', @click='reload', text) {{ $t("refresh") }}
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { i18n } from '../plugins/i18n'
-import * as store from '../plugins/store'
+import { i18n } from '@/plugins/i18n'
+import { namespace } from 'vuex-class'
+
+const SnackbarStore = namespace('SnackbarStore')
 
 @Component
 export default class Snackbar extends Vue {
-  get active() {
-    return store.snackbar().active
+  @SnackbarStore.State active!: boolean
+  @SnackbarStore.State color!: string
+  @SnackbarStore.State message!: string
+  @SnackbarStore.Mutation hideSnackbar!: () => void
+  @SnackbarStore.Mutation setActive!: (active: boolean) => void
+
+  get safeActive() {
+    return this.active
   }
-  set active(newValue: Boolean) {
-    store.hideSnackbar()
+  set safeActive(active: boolean) {
+    this.setActive(active)
   }
-  get color() {
-    return store.snackbar().color
-  }
+
   get text() {
-    const msg = store.snackbar().message
+    const msg = this.message
     return typeof msg === 'string'
       ? msg === 'Internal Server Error'
         ? i18n.t('errors.internal')
-        : i18n.t(store.snackbar().message.toString())
+        : i18n.t(this.message.toString())
       : (msg as any)[i18n.locale]
   }
 }

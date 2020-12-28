@@ -1,20 +1,21 @@
 <template lang="pug">
-  .v-container.pa-4
-    v-progress-linear.mb-4(
-      v-if='loading'
-      indeterminate
-    )
-    code {{data}}
+.v-container.pa-4
+  v-progress-linear.mb-4(v-if='loading', indeterminate)
+  code {{ data }}
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import * as api from '../utils/api'
-import * as store from '../plugins/store'
+import * as api from '@/utils/api'
+import { namespace } from 'vuex-class'
+
+const SnackbarStore = namespace('SnackbarStore')
 
 @Component
 export default class Code extends Vue {
+  @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
+
   loading = false
   data = ''
 
@@ -28,7 +29,7 @@ export default class Code extends Vue {
       const data = await api.getLocalizations()
       this.data = JSON.stringify(data, undefined, 2)
     } catch (err) {
-      store.setSnackbarError(err.response.data)
+      this.setSnackbarError(err.response.data)
     } finally {
       this.loading = false
     }
