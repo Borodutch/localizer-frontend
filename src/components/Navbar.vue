@@ -19,14 +19,6 @@ nav
     // Dark theme
     v-btn.navbar-button(text, @click='toggleDark')
       img(src='/img/moon.svg')
-    // Setup button
-    v-btn.setup-button.ml-2(
-      v-if='$vuetify.breakpoint.smAndUp',
-      text,
-      target='_blank',
-      href='https://blog.borodutch.com/how-to-setup-localizer-for-your-product/'
-    )
-      .setup-button-text {{ $t("home.setupButton") }}
 </template>
 
 <script lang="ts">
