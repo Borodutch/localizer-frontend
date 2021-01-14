@@ -7,7 +7,7 @@ WORKDIR /sources
 COPY . .
 RUN rm -f .env *.env
 RUN npm i --ignore-scripts
-RUN npm run build
+RUN ./node_modules/.bin/vue-cli-service build
 
 
 # 
