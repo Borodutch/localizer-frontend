@@ -22,34 +22,36 @@ yarn build
 
 
 ### Docker-compose example
+
+docker-compose.yml
 ```yaml
 version: '3'
 
 services:
+
   mongodb:
     image: mongo:latest
     container_name: localizer_mongo
     volumes:
-      - ./mongo-volumes:/data/db
+      - ./DATA/mongo-volumes:/data/db
+
   backend:
-    build:
-      context: ./localizer-backend
+    image: alexstep/localizer-backend
     container_name: localizer_backend
-    env_file:
-      - ./localizer-backend/.env
-    environment:
-      - MONGO=mongodb://mongodb:27017/localizer
-    ports:
-      - "1337:1337"
     depends_on:
       - mongodb
+    environment:
+      - MONGO=mongodb://mongodb:27017/localizer
+      - PASSWORD=123456789
+      - TELEGRAM_TOKEN=123
+      - TELEGRAM_ADMIN=123456789
+
   frontend:
-    build:
-      context: ./localizer-frontend
+    image: alexstep/localizer-frontend
     container_name: localizer_frontend
     ports:
-      - "8080:80"
-    depends_on:
-      - backend
+      - "4242:80"
 
 ```
+Service available on localhost:4242
+
