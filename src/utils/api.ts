@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 
-const base = process.env.VUE_APP_API
+const base = process.env.VUE_APP_API || '/api/'
 
 export async function getLocalizations() {
   return (await axios.get(`${base}/localizations`)).data
