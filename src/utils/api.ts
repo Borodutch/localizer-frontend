@@ -1,10 +1,33 @@
+import { Localization } from '@/models/Localization'
 import axios from 'axios'
 import store from '@/store'
 
 const base = process.env.VUE_APP_API || '/api/'
 
+function convertCreatedAt(item: any) {
+  item.createdAt = new Date(item.createdAt)
+  return item
+}
+
 export async function getLocalizations() {
   return (await axios.get(`${base}/localizations`)).data
+    .map(convertCreatedAt)
+    .map((localization: any) => {
+      localization.variants.forEach((variant: any) => {
+        variant.comments = variant.comments.map(convertCreatedAt)
+      })
+    })
+    .map((localization: Localization) => {
+      localization.variants = localization.variants.sort((a: any, b: any) => {
+        if (a.selected && !b.selected) {
+          return -1
+        } else if (!a.selected && b.selected) {
+          return 1
+        } else {
+          return 0
+        }
+      })
+    }) as Localization[]
 }
 
 export async function postVariant(

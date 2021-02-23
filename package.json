@@ -32,7 +32,7 @@
     "@vue/cli-service": "^4.5.11",
     "prettier": "prettier/prettier#cd2b8a32b5ef77eb0047e7517b1ea22d605a094a",
     "sass": "^1.32.8",
-    "sass-loader": "^11.0.1",
+    "sass-loader": "^10.1.1",
     "typescript": "^4.1.5",
     "vue-template-compiler": "^2.6.12"
   },

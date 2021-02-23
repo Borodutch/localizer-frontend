@@ -132,7 +132,6 @@ import { namespace } from 'vuex-class'
 
 const SnackbarStore = namespace('SnackbarStore')
 const AppStore = namespace('AppStore')
-const DataStore = namespace('DataStore')
 
 @Component({
   props: {

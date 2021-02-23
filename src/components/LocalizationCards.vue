@@ -3,8 +3,8 @@ div
   v-progress-linear.mb-4(v-if='loading', indeterminate)
   Filters(
     :languages='languages',
-    :tags='localTags',
-    :nonlanguages='localNonlanguages',
+    :tags='tags',
+    :nonlanguages='nonlanguages',
     :makeAllViewed='makeAllViewed'
   )
   v-pagination.mb-2(
@@ -15,7 +15,7 @@ div
   LocalizationCard(
     v-for='localization in filteredData.slice(displaySkip, displaySkip + pageSize)',
     :key='localization.key',
-    :languages='localLanguages',
+    :languages='languages',
     :localization='localization',
     :loadData='loadData',
     :admin='admin'
@@ -32,7 +32,6 @@ div
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import * as api from '@/utils/api'
-import { i18n } from '@/plugins/i18n'
 import LocalizationCard from '@/components/LocalizationCard.vue'
 import TopContributors from '@/components/TopContributors.vue'
 import Filters from '@/components/Filters.vue'
@@ -172,10 +171,6 @@ export default class LocalizationCards extends Vue {
       .sort((a, b) => (a.number > b.number ? -1 : 1))
   }
 
-  localLanguages = [] as any[]
-  localNonlanguages = [] as any[]
-  localTags = [] as any[]
-
   mounted() {
     this.loadData()
   }
@@ -202,16 +197,16 @@ export default class LocalizationCards extends Vue {
         for (const l of localization.variants.map((v: any) => v.language)) {
           languages.add(l)
         }
-        for (const tag of localization.localTags) {
+        for (const tag of localization.tags) {
           localTags.add(tag)
         }
       }
-      this.localLanguages = Array.from(languages)
-      this.localNonlanguages = Array.from(languages)
-      this.localTags = Array.from(localTags)
+      this.languages = Array.from(languages)
+      this.nonlanguages = Array.from(languages)
+      this.tags = Array.from(localTags)
       const colors = {} as any
       const names = Array.from(
-        this.localLanguages.concat(this.localTags).reduce((p, c) => {
+        this.languages.concat(this.tags).reduce((p, c) => {
           p.add(c)
           return p
         }, new Set())
@@ -221,10 +216,12 @@ export default class LocalizationCards extends Vue {
       }
       this.setColors(colors)
     } catch (err) {
+      console.error(err)
       this.setSnackbarError(err.response.data)
     } finally {
       this.loading = false
     }
+    console.log(this.languages)
   }
 
   makeAllViewed() {

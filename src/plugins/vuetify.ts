@@ -14,6 +14,9 @@ import Vuetify, {
   VLayout,
   VSnackbar,
   VMain,
+  VTextField,
+  VChip,
+  VProgressLinear,
 } from 'vuetify/lib'
 import 'vuetify/dist/vuetify.min.css'
 
@@ -33,6 +36,9 @@ Vue.use(Vuetify, {
     VLayout,
     VSnackbar,
     VMain,
+    VTextField,
+    VChip,
+    VProgressLinear,
   },
 })
 

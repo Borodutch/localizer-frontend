@@ -11,10 +11,6 @@ div
     .d-flex.flex-ro2.justify-space-between.align-center
       span {{ text }}
       v-btn.ml-4(color='white', text, @click='hideSnackbar') {{ $t("close") }}
-  v-snackbar(app, v-model='refreshActive', bottom, flat, :timeout='-1')
-    .d-flex.flex-ro2.justify-space-between.align-center
-      span {{ $t("refreshRequest") }}
-      v-btn.ml-4(color='white', @click='reload', text) {{ $t("refresh") }}
 </template>
 
 <script lang="ts">

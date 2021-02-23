@@ -40,7 +40,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 
 const AppStore = namespace('AppStore')
@@ -48,9 +47,6 @@ const DataStore = namespace('DataStore')
 
 @Component({
   props: {
-    languages: Array,
-    nonlanguages: Array,
-    tags: Array,
     makeAllViewed: Function,
   },
 })

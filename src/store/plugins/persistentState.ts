@@ -8,5 +8,8 @@ export default createPersistedState({
     'AppStore.password',
     'AppStore.query',
     'AppStore.newFilterOn',
+    'DataStore.upvoted',
+    'DataStore.downvoted',
+    'DataStore.viewedItems',
   ],
 })
