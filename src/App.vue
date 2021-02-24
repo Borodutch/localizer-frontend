@@ -2,11 +2,7 @@
 v-app
   div(style='width: 100%', align='center')
     div(style='maxwidth: 1000px', align='left')
-      cookie-law(
-        theme='blood-orange',
-        :buttonText='$t("cookie.button")',
-        :message='$t("cookie.message")'
-      )
+      CookieMessage
       Navbar
       Snackbar
       v-main
@@ -17,14 +13,14 @@ v-app
 import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import Snackbar from '@/components/Snackbar.vue'
-import CookieLaw from 'vue-cookie-law'
 import { i18n } from '@/plugins/i18n'
 import Component from 'vue-class-component'
 import { namespace } from 'vuex-class'
+import CookieMessage from '@/components/CookieMessage.vue'
 
 const AppStore = namespace('AppStore')
 
-@Component({ components: { Navbar, CookieLaw, Snackbar } })
+@Component({ components: { Navbar, Snackbar, CookieMessage } })
 export default class App extends Vue {
   @AppStore.State dark!: boolean
 

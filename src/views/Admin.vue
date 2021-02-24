@@ -2,9 +2,9 @@
 .v-container.pa-4
   .headline {{ $t("admin.title") }}
   .body-1 {{ $t("admin.description") }}
-  PasswordInput
-  SearchInput
-  LocalizationCards(admin)
+  //- PasswordInput
+  //- SearchInput
+  //- LocalizationCards(admin)
 </template>
 
 <script lang="ts">

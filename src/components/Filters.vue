@@ -4,96 +4,64 @@
     dark,
     v-for='tag in tags',
     :key='tag',
-    :color='$store.state.tags.indexOf(tag) > -1 ? $store.state.colors[tag] : ""',
+    :color='selectedTags.includes(tag) ? colors[tag] : undefined',
     @click='toggleTag(tag)'
   ) {{ tag }}
   v-chip.mx-1.my-1(
     dark,
     v-for='language in languages',
     :key='language',
-    :color='$store.state.languages.indexOf(language) > -1 ? $store.state.colors[language] : ""',
+    :color='selectedLanguages.includes(language) ? colors[language] : undefined',
     @click='toggleLanguage(language)'
   ) {{ language }}
   v-chip.mx-1.my-1(
     dark,
-    v-for='nonlanguage in nonlanguages',
+    v-for='nonlanguage in languages',
     :key='`no-${nonlanguage}`',
-    :color='$store.state.nonlanguages.indexOf(nonlanguage) > -1 ? $store.state.colors[nonlanguage] : ""',
+    :color='selectedNonlanguages.includes(nonlanguage) ? colors[nonlanguage] : undefined',
     @click='toggleNonlanguage(nonlanguage)'
   ) {{ $t("no") }} {{ nonlanguage }}
   v-chip.mx-1.my-1(
     dark,
-    :color='$store.state.newFilterOn ? "primary" : ""',
-    @click='toggleNewFilterOn'
+    :color='newFilterEnabled ? "primary" : undefined',
+    @click='toggleNewFilterEnabled'
   ) {{ $t("new") }}
   v-menu(offset-y)
     template(v-slot:activator='{ on }')
       v-btn.ml-2.mt-1(v-on='on', text, icon)
         v-icon keyboard_arrow_down
     v-list
-      v-list-item(@click='makeAllViewed')
+      v-list-item(@click='markAllLocalizationsViewed')
         v-list-item-title Make all viewed
-      v-list-item(@click='makeAllNew')
+      v-list-item(@click='markAllLocalizationsNew')
         v-list-item-title Make all new
 </template>
 
 <script lang="ts">
+import { ColorsMap } from '@/models/ColorsMap'
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { namespace } from 'vuex-class'
 
-const AppStore = namespace('AppStore')
 const DataStore = namespace('DataStore')
 
-@Component({
-  props: {
-    makeAllViewed: Function,
-  },
-})
+@Component
 export default class Filters extends Vue {
+  @DataStore.State colors!: ColorsMap
   @DataStore.State tags!: string[]
   @DataStore.State languages!: string[]
-  @DataStore.State nonlanguages!: string[]
-  @AppStore.State newFilterOn!: boolean
 
-  @DataStore.Mutation setTags!: (tags: string[]) => void
-  @DataStore.Mutation setLanguages!: (languages: string[]) => void
-  @DataStore.Mutation setNonlanguages!: (nonlanguages: string[]) => void
-  @DataStore.Mutation setViewedItems!: (viewedItems: Object) => void
-  @AppStore.Mutation setNewFilterOn!: (newFilterOn: boolean) => void
+  @DataStore.State selectedTags!: string[]
+  @DataStore.State selectedLanguages!: string[]
+  @DataStore.State selectedNonlanguages!: string[]
 
-  toggleTag(tag: string) {
-    if (this.tags.indexOf(tag) > -1) {
-      this.setTags(this.tags.filter((t: any) => t !== tag))
-    } else {
-      this.setTags(this.tags.concat([tag]))
-    }
-  }
+  @DataStore.State newFilterEnabled!: boolean
 
-  toggleLanguage(language: string) {
-    if (this.languages.indexOf(language) > -1) {
-      this.setLanguages(this.languages.filter((t) => t !== language))
-    } else {
-      this.setLanguages(this.languages.concat([language]))
-    }
-  }
-
-  toggleNonlanguage(nonlanguage: string) {
-    if (this.nonlanguages.indexOf(nonlanguage) > -1) {
-      this.setNonlanguages(
-        this.nonlanguages.filter((t: any) => t !== nonlanguage)
-      )
-    } else {
-      this.setNonlanguages(this.nonlanguages.concat([nonlanguage]))
-    }
-  }
-
-  toggleNewFilterOn() {
-    this.setNewFilterOn(!this.newFilterOn)
-  }
-
-  makeAllNew() {
-    this.setViewedItems({})
-  }
+  @DataStore.Mutation toggleTag!: (tag: string) => void
+  @DataStore.Mutation toggleLanguage!: (language: string) => void
+  @DataStore.Mutation toggleNonlanguage!: (nonlanguage: string) => void
+  @DataStore.Mutation markAllLocalizationsNew!: () => void
+  @DataStore.Mutation markAllLocalizationsViewed!: () => void
+  @DataStore.Mutation toggleNewFilterEnabled!: () => void
 }
 </script>

@@ -11,13 +11,13 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { namespace } from 'vuex-class'
 
-const AppStore = namespace('AppStore')
+const DataStore = namespace('DataStore')
 
 @Component
 export default class SearchInput extends Vue {
-  @AppStore.State query!: string
+  @DataStore.State query!: string
 
-  @AppStore.Mutation setQuery!: (query: string) => void
+  @DataStore.Mutation setQuery!: (query: string) => void
 
   get queryProxy() {
     return this.query

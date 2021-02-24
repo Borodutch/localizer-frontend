@@ -4,10 +4,10 @@ import { VuexModule, Module, Mutation } from 'vuex-module-decorators'
 export default class AppStore extends VuexModule {
   language: string = ''
   dark = false
+  isAdmin = false
+
   username: string = ''
-  query: string = ''
   password: string = ''
-  newFilterOn: boolean = false
 
   @Mutation
   setLanguage(language: string) {
@@ -18,6 +18,10 @@ export default class AppStore extends VuexModule {
   setDark(dark: boolean) {
     this.dark = dark
   }
+  @Mutation
+  setIsAdmin(isAdmin: boolean) {
+    this.isAdmin = isAdmin
+  }
 
   @Mutation
   setUsername(username: string) {
@@ -25,17 +29,7 @@ export default class AppStore extends VuexModule {
   }
 
   @Mutation
-  setQuery(query: string) {
-    this.query = query
-  }
-
-  @Mutation
   setPassword(password: string) {
     this.password = password
-  }
-
-  @Mutation
-  setNewFilterOn(newFilterOn: boolean) {
-    this.newFilterOn = newFilterOn
   }
 }
