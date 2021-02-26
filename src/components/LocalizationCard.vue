@@ -2,7 +2,7 @@
 v-card.mb-2
   v-card-title
     v-btn.mr-1(
-      v-if='admin',
+      v-if='isAdmin',
       color='red',
       small,
       icon,
@@ -11,10 +11,10 @@ v-card.mb-2
     )
       v-icon(small) delete
     v-btn.mr-1(
-      v-if='admin',
+      v-if='isAdmin',
       small,
       icon,
-      @click='select = !select',
+      @click='isEditActive = !isEditActive',
       :loading='loading',
       :class='select ? "green darken-2" : ""'
     )
@@ -29,19 +29,19 @@ v-card.mb-2
       small,
       v-for='tag in localization.tags',
       :key='tag',
-      :color='$store.state.colors[tag]'
+      :color='colors[tag]'
     )
       span {{ tag }}
       .ml-2(
         small,
-        v-if='admin',
+        v-if='isAdmin',
         @click='deleteLocalizationTag(localization.key, tag)',
         :disabled='loading'
       )
         v-icon(small, v-if='!loading') close
         span(v-else) 🤔
     v-chip.mx-1.px-1(
-      v-if='!$store.state.viewedItems[localization._id]',
+      v-if='!viewedItems[localization._id]',
       dark,
       small,
       @mouseover='setViewedItem(localization._id)',
@@ -50,7 +50,7 @@ v-card.mb-2
     v-chip.mx-1.px-1(
       dark,
       small,
-      v-if='admin',
+      v-if='isAdmin',
       :color='addTag ? "green darken-2" : ""',
       @click='addTag = !addTag'
     )
@@ -93,7 +93,7 @@ v-card.mb-2
           @click='save(localization.key)',
           :loading='loading'
         ) {{ $t("add.save") }}
-    div(v-if='select')
+    div(v-if='isEditActive')
       v-chip.px-1(
         dark,
         x-small,
@@ -112,14 +112,12 @@ v-card.mb-2
         v-icon(x-small, color='white') done
     div(v-for='variant in localization.variants')
       .d-flex.direction-row
-        v-checkbox(v-if='select', v-model='selected[variant._id]')
-        Variant(
-          :variant='variant',
-          :loadData='loadData',
-          :admin='admin',
-          :localization='localization',
-          :select='select'
-        )
+        v-checkbox(v-if='isEditActive', v-model='selected[variant._id]')
+        //- Variant(
+        //-   :variant='variant',
+        //-   :localization='localization',
+        //-   :select='select'
+        //- )
 </template>
 
 <script lang="ts">
@@ -127,35 +125,39 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { i18n } from '@/plugins/i18n'
 import * as api from '@/utils/api'
-import Variant from '@/components/Variant.vue'
+// import Variant from '@/components/Variant.vue'
 import { namespace } from 'vuex-class'
+import { ColorsMap } from '@/models/ColorsMap'
+import { ViewedItems } from '@/models/ViewedItems'
 
 const SnackbarStore = namespace('SnackbarStore')
 const AppStore = namespace('AppStore')
+const DataStore = namespace('DataStore')
 
 @Component({
   props: {
     localization: Object,
-    languages: Array,
-    loadData: Function,
-    admin: Boolean,
   },
   components: {
-    Variant,
+    // Variant,
   },
 })
 export default class LocalizationCard extends Vue {
   @AppStore.State username!: string
+  @AppStore.State isAdmin!: boolean
+  @DataStore.State colors!: ColorsMap
+  @DataStore.State viewedItems!: ViewedItems
 
   @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
-  @SnackbarStore.Mutation setViewedItem!: (id: string) => void
+  @DataStore.Mutation setViewedItem!: (id: string) => void
+  @DataStore.Mutation removeLocalization!: (key: string) => void
 
   text = ''
   language = ''
   addTagText = ''
 
   edit = false
-  select = false
+  isEditActive = false
   addTag = false
 
   textRules = [(v: any) => !!(v || '').trim() || i18n.t('errors.textLength')]
@@ -165,23 +167,24 @@ export default class LocalizationCard extends Vue {
 
   selected = {} as any
 
+  async deleteLocalization(key: string) {
+    this.performRequest(async () => {
+      await api.deleteLocalization(key)
+      this.removeLocalization(key)
+    })
+  }
+
   async save(key: string) {
-    this.loading = true
-    try {
+    this.performRequest(async () => {
       await api.postVariant(key, this.text, this.language, this.username)
       this.$props.loadData()
       this.text = ''
       this.edit = false
-    } catch (err) {
-      this.setSnackbarError(err.response.data)
-    } finally {
-      this.loading = false
-    }
+    })
   }
 
   async saveNewTag() {
-    this.loading = true
-    try {
+    this.performRequest(async () => {
       if (this.$props.localization.tags.indexOf(this.addTagText) < 0) {
         await api.addLocalizationTag(
           this.$props.localization.key,
@@ -190,59 +193,32 @@ export default class LocalizationCard extends Vue {
         this.$props.localization.tags.push(this.addTagText)
       }
       this.addTagText = ''
-    } catch (err) {
-      this.setSnackbarError(err.response.data)
-    } finally {
-      this.loading = false
-    }
-  }
-
-  async deleteLocalization(key: string) {
-    this.loading = true
-    try {
-      await api.deleteLocalization(key)
-      this.$props.loadData()
-    } catch (err) {
-      this.setSnackbarError(err.response.data)
-    } finally {
-      this.loading = false
-    }
+    })
   }
 
   async deleteLocalizationTag(key: string, tag: string) {
-    this.loading = true
-    try {
+    this.performRequest(async () => {
       await api.deleteLocalizationTag(key, tag)
       this.$props.localization.tags = this.$props.localization.tags.filter(
         (t: string) => t !== tag
       )
-    } catch (err) {
-      this.setSnackbarError(err.response.data)
-    } finally {
-      this.loading = false
-    }
+    })
   }
 
   async deleteVariants(key: string) {
-    this.loading = true
-    try {
+    this.performRequest(async () => {
       await api.deleteVariants(
         key,
         Object.keys(this.selected).filter((k) => !!this.selected[k])
       )
       this.selected = {}
-      this.select = false
+      this.isEditActive = false
       this.$props.loadData()
-    } catch (err) {
-      this.setSnackbarError(err.response.data)
-    } finally {
-      this.loading = false
-    }
+    })
   }
 
-  async selectVariants(key: string) {
-    this.loading = true
-    try {
+  selectVariants(key: string) {
+    this.performRequest(async () => {
       await api.selectVariants(
         key,
         Object.keys(this.selected).filter((k) => !!this.selected[k])
@@ -250,6 +226,13 @@ export default class LocalizationCard extends Vue {
       this.selected = {}
       this.edit = false
       this.$props.loadData()
+    })
+  }
+
+  async performRequest(requestFunction: () => Promise<unknown>) {
+    this.loading = true
+    try {
+      await requestFunction()
     } catch (err) {
       this.setSnackbarError(err.response.data)
     } finally {

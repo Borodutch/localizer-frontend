@@ -3,11 +3,11 @@ div
   LoadingIndicator
   Filters
   Pagination
-  //- LocalizationCard(
-  //-   v-for='localization in filteredData',
-  //-   :key='localization.key',
-  //-   :localization='localization'
-  //- )
+  LocalizationCard(
+    v-for='localization in filteredAndPaginatedData',
+    :key='localization.key',
+    :localization='localization'
+  )
   Pagination
   TopContributors
 </template>
@@ -15,7 +15,7 @@ div
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-// import LocalizationCard from '@/components/LocalizationCard.vue'
+import LocalizationCard from '@/components/LocalizationCard.vue'
 import TopContributors from '@/components/TopContributors.vue'
 import Filters from '@/components/Filters.vue'
 import Pagination from '@/components/Pagination.vue'
@@ -27,7 +27,7 @@ const DataStore = namespace('DataStore')
 
 @Component({
   components: {
-    // LocalizationCard,
+    LocalizationCard,
     Filters,
     TopContributors,
     Pagination,

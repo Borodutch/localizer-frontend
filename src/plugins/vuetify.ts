@@ -18,6 +18,9 @@ import Vuetify, {
   VChip,
   VProgressLinear,
   VPagination,
+  VCardText,
+  VCardTitle,
+  VCard,
 } from 'vuetify/lib'
 import 'vuetify/dist/vuetify.min.css'
 
@@ -41,6 +44,9 @@ Vue.use(Vuetify, {
     VChip,
     VProgressLinear,
     VPagination,
+    VCardText,
+    VCardTitle,
+    VCard,
   },
 })
 

@@ -196,6 +196,11 @@ export default class DataStore extends VuexModule {
     this.viewedItems = viewed
   }
 
+  @Mutation
+  setViewedItem(id: string) {
+    this.viewedItems[id] = true
+  }
+
   @MutationAction({
     mutate: ['localizations', 'colors', 'tags', 'languages', 'contributors'],
   })
@@ -246,5 +251,12 @@ export default class DataStore extends VuexModule {
       languages,
       contributors,
     }
+  }
+
+  @Mutation
+  removeLocalization(key: string) {
+    this.localizations = this.localizations.filter(
+      (localization) => localization.key !== key
+    )
   }
 }
