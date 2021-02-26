@@ -37,9 +37,24 @@ const DataStore = namespace('DataStore')
 export default class LocalizationCards extends Vue {
   @DataStore.Getter filteredAndPaginatedData!: Localization[]
   @DataStore.Action loadData!: () => void
+  @DataStore.Mutation setLoading!: (loading: boolean) => void
 
-  mounted() {
-    this.loadData()
+  async mounted() {
+    this.setLoading(true)
+    try {
+      await this.loadData()
+    } catch (err) {
+      console.error(err)
+      return {
+        localizations: [],
+        colors: {},
+        tags: [],
+        languages: [],
+        contributors: [],
+      }
+    } finally {
+      this.setLoading(false)
+    }
   }
 }
 </script>

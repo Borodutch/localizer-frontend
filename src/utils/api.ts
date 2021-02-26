@@ -16,6 +16,7 @@ export async function getLocalizations() {
       localization.variants.forEach((variant: any) => {
         variant.comments = variant.comments.map(convertCreatedAt)
       })
+      return localization
     })
     .map((localization: Localization) => {
       localization.variants = localization.variants.sort((a: any, b: any) => {
@@ -27,6 +28,7 @@ export async function getLocalizations() {
           return 0
         }
       })
+      return localization
     }) as Localization[]
 }
 

@@ -200,65 +200,51 @@ export default class DataStore extends VuexModule {
     mutate: ['localizations', 'colors', 'tags', 'languages', 'contributors'],
   })
   async loadData() {
-    this.loading = true
-    try {
-      // Get localizations
-      const localizations = await api.getLocalizations()
-      // Get languages and tags
-      const languages = new Set<string>()
-      const tags = new Set<string>()
-      for (const localization of localizations) {
-        for (const l of localization.variants.map((v: any) => v.language)) {
-          languages.add(l)
-        }
-        for (const tag of localization.tags) {
-          tags.add(tag)
-        }
+    // Get localizations
+    const localizations = await api.getLocalizations()
+    // Get languages and tags
+    const languages = new Set<string>()
+    const tags = new Set<string>()
+    for (const localization of localizations) {
+      for (const l of localization.variants.map((v: any) => v.language)) {
+        languages.add(l)
       }
-      // Get colors
-      const colors = {} as ColorsMap
-      const names = new Set([...tags, ...languages])
-      for (const name of names) {
-        colors[name] = randomColor({ luminosity: 'dark', seed: name })
+      for (const tag of localization.tags) {
+        tags.add(tag)
       }
-      // Get contributors
-      const contributorsMap = {} as { [index: string]: number }
-      for (const localization of localizations) {
-        for (const variant of localization.variants) {
-          if (variant.username && variant.selected) {
-            if (contributorsMap[variant.username]) {
-              contributorsMap[variant.username]++
-            } else {
-              contributorsMap[variant.username] = 1
-            }
+    }
+    // Get colors
+    const colors = {} as ColorsMap
+    const names = new Set([...tags, ...languages])
+    for (const name of names) {
+      colors[name] = randomColor({ luminosity: 'dark', seed: name })
+    }
+    // Get contributors
+    const contributorsMap = {} as { [index: string]: number }
+    for (const localization of localizations) {
+      for (const variant of localization.variants) {
+        if (variant.username && variant.selected) {
+          if (contributorsMap[variant.username]) {
+            contributorsMap[variant.username]++
+          } else {
+            contributorsMap[variant.username] = 1
           }
         }
       }
-      const contributors = Object.keys(contributorsMap)
-        .map((k) => ({
-          name: k,
-          number: contributorsMap[k],
-        }))
-        .sort((a, b) => (a.number > b.number ? -1 : 1))
-      // Return result
-      return {
-        localizations,
-        colors,
-        tags,
-        languages,
-        contributors,
-      }
-    } catch (err) {
-      console.error(err)
-      return {
-        localizations: [],
-        colors: {},
-        tags: [],
-        languages: [],
-        contributors: [],
-      }
-    } finally {
-      this.loading = false
+    }
+    const contributors = Object.keys(contributorsMap)
+      .map((k) => ({
+        name: k,
+        number: contributorsMap[k],
+      }))
+      .sort((a, b) => (a.number > b.number ? -1 : 1))
+    // Return result
+    return {
+      localizations,
+      colors,
+      tags,
+      languages,
+      contributors,
     }
   }
 }
