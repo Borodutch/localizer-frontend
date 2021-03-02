@@ -1,12 +1,11 @@
 <template lang="pug">
 v-app
-  div(style='width: 100%', align='center')
-    div(style='maxwidth: 1000px', align='left')
-      CookieMessage
-      Navbar
-      Snackbar
-      v-main
-        router-view
+  v-container
+    CookieMessage
+    Navbar
+    Snackbar
+    v-main
+      router-view
 </template>
 
 <script lang="ts">
@@ -30,3 +29,9 @@ export default class App extends Vue {
   }
 }
 </script>
+
+<style>
+.container {
+  max-width: 1000px !important;
+}
+</style>

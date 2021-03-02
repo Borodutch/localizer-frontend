@@ -21,6 +21,7 @@ import Vuetify, {
   VCardText,
   VCardTitle,
   VCard,
+  VContainer,
 } from 'vuetify/lib'
 import 'vuetify/dist/vuetify.min.css'
 
@@ -47,6 +48,7 @@ Vue.use(Vuetify, {
     VCardText,
     VCardTitle,
     VCard,
+    VContainer,
   },
 })
 
