@@ -11,15 +11,15 @@ div(style='width: 100%')
         :loading='loading'
       )
         v-icon(x-small, color='white') delete
-      //- v-chip.px-1(
-      //-   dark,
-      //-   x-small,
-      //-   color='green',
-      //-   v-if='admin && !select',
-      //-   @click='selectVariant(variant, localization.key)',
-      //-   :loading='loading'
-      //- )
-      //-   v-icon(x-small, color='white') done
+      v-chip.px-1(
+        dark,
+        x-small,
+        color='green',
+        v-if='isAdmin && !selectOrDeleteVariantsEnabled',
+        @click='selectVariant',
+        :loading='loading'
+      )
+        v-icon(x-small, color='white') done
       //- v-chip.px-1.mr-2(
       //-   dark,
       //-   x-small,
@@ -90,6 +90,11 @@ const SnackbarStore = namespace('SnackbarStore')
 const DataStore = namespace('DataStore')
 const AppStore = namespace('AppStore')
 
+// TODO: select variant
+// TODO: edit
+// TODO: comments
+// TODO: viewed items
+
 @Component({
   props: {
     variant: Object,
@@ -106,8 +111,6 @@ export default class Variant extends Vue {
   @DataStore.State downvoted!: { [index: string]: boolean }
   // @DataStore.State viewedItems!: { [index: string]: boolean }
 
-  // @DataStore.Mutation setUpvoted!: (upvoted: Object) => void
-  // @DataStore.Mutation setDownvoted!: (upvoted: Object) => void
   // @DataStore.Mutation setViewedItem!: (id: string) => void
   @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
   @DataStore.Mutation deleteLocalizationVariant!: (options: {
@@ -122,6 +125,10 @@ export default class Variant extends Vue {
     key: string
     variant: Variant
   }) => void
+  @DataStore.Mutation selectLocalizationVariant!: (options: {
+    key: string
+    variant: Variant
+  }) => void
   @DataStore.Mutation refreshLocalizations!: () => void
 
   @DataStore.State colors!: ColorsMap
@@ -131,17 +138,15 @@ export default class Variant extends Vue {
   // commentsOpen = false
   // edit = false
 
-  // async selectVariant(variant: any, key: string) {
-  //   this.loading = true
-  //   try {
-  //     await api.selectVariant(key, variant._id)
-  //     this.$props.loadData()
-  //   } catch (err) {
-  //     this.setSnackbarError(err.response.data)
-  //   } finally {
-  //     this.loading = false
-  //   }
-  // }
+  async selectVariant() {
+    const key = this.$props.localization.key
+    const variant = this.$props.variant
+    this.performRequest(async () => {
+      await api.selectVariant(key, variant._id)
+      this.selectLocalizationVariant({ key, variant })
+      this.refreshLocalizations()
+    })
+  }
 
   async deleteVariant() {
     const key = this.$props.localization.key

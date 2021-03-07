@@ -344,6 +344,33 @@ export default class DataStore extends VuexModule {
   }
 
   @Mutation
+  selectLocalizationVariant(options: { key: string; variant: Variant }) {
+    const localization = this.localizations.find(
+      (localization) => localization.key === options.key
+    )
+    if (!localization) {
+      return
+    }
+    for (const variant of localization.variants) {
+      if (variant.language === options.variant.language) {
+        variant.selected = false
+      }
+      if (variant._id === options.variant._id) {
+        variant.selected = true
+      }
+    }
+    localization.variants = localization.variants.sort((a: any, b: any) => {
+      if (a.selected && !b.selected) {
+        return -1
+      } else if (!a.selected && b.selected) {
+        return 1
+      } else {
+        return 0
+      }
+    })
+  }
+
+  @Mutation
   refreshLocalizations() {
     // localizations
     this.localizations = this.localizations
