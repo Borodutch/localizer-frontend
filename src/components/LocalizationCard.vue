@@ -116,7 +116,11 @@ v-card.mb-2
     div(v-for='variant in localization.variants')
       .d-flex.direction-row
         //- v-checkbox(v-if='editKeyEnabled', v-model='selected[variant._id]')
-        VariantView(:variant='variant', :localization='localization')
+        VariantView(
+          :variant='variant',
+          :localization='localization',
+          :selectOrDeleteVariantsEnabled='selectOrDeleteVariantsEnabled'
+        )
 </template>
 
 <script lang="ts">
@@ -133,6 +137,9 @@ import { Variant } from '@/models/Variant'
 const SnackbarStore = namespace('SnackbarStore')
 const AppStore = namespace('AppStore')
 const DataStore = namespace('DataStore')
+
+// TODO: selection and deletion
+// TODO: viewed items
 
 @Component({
   props: {

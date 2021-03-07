@@ -25,8 +25,8 @@ export default class DataStore extends VuexModule {
   selectedNonlanguages: string[] = []
   newFilterEnabled = false
 
-  upvoted: Object = {}
-  downvoted: Object = {}
+  upvoted: { [index: string]: boolean } = {}
+  downvoted: { [index: string]: boolean } = {}
   viewedItems: ViewedItems = {}
 
   query: string = ''
@@ -38,7 +38,7 @@ export default class DataStore extends VuexModule {
   get filteredAndPaginatedData() {
     return this.filteredData.slice(
       (this.page - 1) * this.pageSize,
-      this.pageSize
+      (this.page - 1) * this.pageSize + this.pageSize
     )
   }
 
@@ -293,6 +293,54 @@ export default class DataStore extends VuexModule {
     if (localization) {
       localization.variants.push(options.variant)
     }
+  }
+
+  @Mutation
+  deleteLocalizationVariant(options: { key: string; variant: Variant }) {
+    const localization = this.localizations.find(
+      (localization) => localization.key === options.key
+    )
+    if (localization) {
+      localization.variants = localization.variants.filter(
+        (variant) => variant._id !== options.variant._id
+      )
+    }
+  }
+
+  @Mutation
+  toggleUpvote(options: { key: string; variant: Variant }) {
+    const localization = this.localizations.find(
+      (localization) => localization.key === options.key
+    )
+    if (!localization) {
+      return
+    }
+    const variant = localization.variants.find(
+      (v) => v._id === options.variant._id
+    )
+    if (!variant) {
+      return
+    }
+    variant.upvotes += this.upvoted[options.variant._id] ? -1 : 1
+    this.upvoted[options.variant._id] = !this.upvoted[options.variant._id]
+  }
+
+  @Mutation
+  toggleDownvote(options: { key: string; variant: Variant }) {
+    const localization = this.localizations.find(
+      (localization) => localization.key === options.key
+    )
+    if (!localization) {
+      return
+    }
+    const variant = localization.variants.find(
+      (v) => v._id === options.variant._id
+    )
+    if (!variant) {
+      return
+    }
+    variant.downvotes += this.downvoted[options.variant._id] ? -1 : 1
+    this.downvoted[options.variant._id] = !this.downvoted[options.variant._id]
   }
 
   @Mutation

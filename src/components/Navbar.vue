@@ -25,6 +25,9 @@ nav
     // Code
     v-btn(text, icon, color='grey', @click='$router.replace("/code")')
       v-icon(small) code
+    // Refresh
+    v-btn(text, icon, color='grey', @click='refresh')
+      v-icon(small) autorenew
 </template>
 
 <script lang="ts">
@@ -34,6 +37,7 @@ import { i18n } from '@/plugins/i18n'
 import { namespace } from 'vuex-class'
 
 const AppStore = namespace('AppStore')
+const DataStore = namespace('DataStore')
 
 @Component
 export default class Navbar extends Vue {
@@ -43,6 +47,8 @@ export default class Navbar extends Vue {
   @AppStore.Mutation setLanguage!: (language: string) => void
   @AppStore.Mutation setDark!: (dark: boolean) => void
   @AppStore.Mutation toggleAdmin!: () => void
+  @DataStore.Mutation setLoading!: (loading: boolean) => void
+  @DataStore.Action loadData!: () => void
 
   get locales() {
     return [
@@ -73,6 +79,17 @@ export default class Navbar extends Vue {
   goHome() {
     if (this.$router.currentRoute.path !== '/') {
       this.$router.replace('/')
+    }
+  }
+
+  async refresh() {
+    this.setLoading(true)
+    try {
+      await this.loadData()
+    } catch (err) {
+      console.error(err)
+    } finally {
+      this.setLoading(false)
     }
   }
 }

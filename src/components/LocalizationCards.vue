@@ -45,13 +45,6 @@ export default class LocalizationCards extends Vue {
       await this.loadData()
     } catch (err) {
       console.error(err)
-      return {
-        localizations: [],
-        colors: {},
-        tags: [],
-        languages: [],
-        contributors: [],
-      }
     } finally {
       this.setLoading(false)
     }

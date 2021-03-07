@@ -2,15 +2,15 @@
 div(style='width: 100%')
   .my-1
     .mr-2
-      //- v-chip.px-1(
-      //-   dark,
-      //-   x-small,
-      //-   color='red',
-      //-   v-if='admin && !select',
-      //-   @click='deleteVariant(variant, localization.key)',
-      //-   :loading='loading'
-      //- )
-      //-   v-icon(x-small, color='white') delete
+      v-chip.px-1(
+        dark,
+        x-small,
+        color='red',
+        v-if='isAdmin && !selectOrDeleteVariantsEnabled',
+        @click='deleteVariant',
+        :loading='loading'
+      )
+        v-icon(x-small, color='white') delete
       //- v-chip.px-1(
       //-   dark,
       //-   x-small,
@@ -32,21 +32,21 @@ div(style='width: 100%')
       v-chip.px-1(dark, x-small, :color='colors[variant.language]') {{ variant.language }}
       v-chip.px-1(dark, x-small, v-if='variant.username') {{ variant.username.substr(0, 25) }}
       v-chip.px-1(dark, x-small, v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
-      //- v-chip.green.px-1(dark, x-small, v-if='variant.selected')
-      //-   v-icon(small, color='white') done
-      //- v-chip.px-2.ml-2(
-      //-   x-small,
-      //-   :disabled='loading',
-      //-   @click='downvoteVariant(variant, localization.key)',
-      //-   :class='isDownvoted(variant._id) ? "red darken-2" : ""'
-      //- ) {{ loading ? "🤔" : "👎" }}{{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
-      //- v-chip.px-2(
-      //-   dark,
-      //-   x-small,
-      //-   :disabled='loading',
-      //-   @click='upvoteVariant(variant, localization.key)',
-      //-   :class='isUpvoted(variant._id) ? "green darken-2" : ""'
-      //- ) {{ loading ? "🤔" : "👍" }}{{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
+      v-chip.green.px-1(dark, x-small, v-if='variant.selected')
+        v-icon(small, color='white') done
+      v-chip.px-2.ml-2(
+        x-small,
+        :disabled='loading',
+        @click='downvote',
+        :class='this.downvoted[variant._id] ? "red darken-2" : ""'
+      ) {{ loading ? "🤔" : "👎" }}{{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
+      v-chip.px-2(
+        dark,
+        x-small,
+        :disabled='loading',
+        @click='upvote',
+        :class='this.upvoted[variant._id] ? "green darken-2" : ""'
+      ) {{ loading ? "🤔" : "👍" }}{{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
       //- v-chip.mx-2(
       //-   dark,
       //-   x-small,
@@ -79,23 +79,22 @@ div(style='width: 100%')
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-// import * as api from '@/utils/api'
+import * as api from '@/utils/api'
 import moment from 'moment'
 // import Comments from '@/components/Comments.vue'
 // import EditVariant from '@/components/EditVariant.vue'
 import { namespace } from 'vuex-class'
 import { ColorsMap } from '@/models/ColorsMap'
 
-// const SnackbarStore = namespace('SnackbarStore')
+const SnackbarStore = namespace('SnackbarStore')
 const DataStore = namespace('DataStore')
+const AppStore = namespace('AppStore')
 
 @Component({
   props: {
     variant: Object,
     localization: Object,
-    // loadData: Function,
-    // admin: Boolean,
-    // select: Boolean,
+    selectOrDeleteVariantsEnabled: Boolean,
   },
   components: {
     // Comments,
@@ -103,18 +102,32 @@ const DataStore = namespace('DataStore')
   },
 })
 export default class Variant extends Vue {
-  // @DataStore.State upvoted!: { [index: string]: boolean }
-  // @DataStore.State downvoted!: { [index: string]: boolean }
+  @DataStore.State upvoted!: { [index: string]: boolean }
+  @DataStore.State downvoted!: { [index: string]: boolean }
   // @DataStore.State viewedItems!: { [index: string]: boolean }
 
   // @DataStore.Mutation setUpvoted!: (upvoted: Object) => void
   // @DataStore.Mutation setDownvoted!: (upvoted: Object) => void
   // @DataStore.Mutation setViewedItem!: (id: string) => void
-  // @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
+  @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
+  @DataStore.Mutation deleteLocalizationVariant!: (options: {
+    key: string
+    variant: Variant
+  }) => void
+  @DataStore.Mutation toggleUpvote!: (options: {
+    key: string
+    variant: Variant
+  }) => void
+  @DataStore.Mutation toggleDownvote!: (options: {
+    key: string
+    variant: Variant
+  }) => void
+  @DataStore.Mutation refreshLocalizations!: () => void
 
   @DataStore.State colors!: ColorsMap
+  @AppStore.State isAdmin!: boolean
 
-  // loading = false
+  loading = false
   // commentsOpen = false
   // edit = false
 
@@ -130,79 +143,49 @@ export default class Variant extends Vue {
   //   }
   // }
 
-  // async deleteVariant(variant: any, key: string) {
-  //   this.loading = true
-  //   try {
-  //     await api.deleteVariant(key, variant._id)
-  //     this.$props.loadData()
-  //   } catch (err) {
-  //     this.setSnackbarError(err.response.data)
-  //   } finally {
-  //     this.loading = false
-  //   }
-  // }
+  async deleteVariant() {
+    const key = this.$props.localization.key
+    const variant = this.$props.variant
+    this.performRequest(async () => {
+      await api.deleteVariant(key, variant._id)
+      this.deleteLocalizationVariant({ key, variant })
+      this.refreshLocalizations()
+    })
+  }
 
   dateDisplay(date: string) {
     return moment(date).format('L')
   }
 
-  // isUpvoted(id: string) {
-  //   return this.upvoted[id]
-  // }
+  async upvote() {
+    const key = this.$props.localization.key
+    const variant = this.$props.variant
+    const upvoted = this.upvoted[variant._id]
 
-  // isDownvoted(id: string) {
-  //   return this.downvoted[id]
-  // }
+    this.performRequest(async () => {
+      if (upvoted) {
+        await api.removeUpvoteVariant(key, variant._id)
+      } else {
+        await api.upvoteVariant(key, variant._id)
+      }
+      this.toggleUpvote({ key, variant })
+    })
+  }
 
-  // async upvoteVariant(variant: any, key: string) {
-  //   this.loading = true
-  //   try {
-  //     if (this.isDownvoted(variant._id)) {
-  //       await api.removeDownvoteVariant(key, variant._id)
-  //       variant.downvotes--
-  //       const downvoted = this.downvoted
-  //       delete downvoted[variant._id]
-  //       this.setDownvoted(downvoted)
-  //     }
-  //     if (this.isUpvoted(variant._id)) {
-  //       return
-  //     }
-  //     await api.upvoteVariant(key, variant._id)
-  //     variant.upvotes++
-  //     const upvoted = this.upvoted
-  //     upvoted[variant._id] = true
-  //     this.setUpvoted(upvoted)
-  //   } catch (err) {
-  //     this.setSnackbarError(err.response.data)
-  //   } finally {
-  //     this.loading = false
-  //   }
-  // }
+  async downvote() {
+    const key = this.$props.localization.key
+    const variant = this.$props.variant
+    const downvoted = this.downvoted[variant._id]
 
-  // async downvoteVariant(variant: any, key: string) {
-  //   this.loading = true
-  //   try {
-  //     if (this.isUpvoted(variant._id)) {
-  //       await api.removeUpvoteVariant(key, variant._id)
-  //       variant.upvotes--
-  //       const upvoted = this.upvoted
-  //       delete upvoted[variant._id]
-  //       this.setUpvoted(upvoted)
-  //     }
-  //     if (this.isDownvoted(variant._id)) {
-  //       return
-  //     }
-  //     await api.downvoteVariant(key, variant._id)
-  //     variant.downvotes++
-  //     const downvoted = this.downvoted
-  //     downvoted[variant._id] = true
-  //     this.setDownvoted(downvoted)
-  //   } catch (err) {
-  //     this.setSnackbarError(err.response.data)
-  //   } finally {
-  //     this.loading = false
-  //   }
-  // }
+    this.performRequest(async () => {
+      if (downvoted) {
+        await api.removeDownvoteVariant(key, variant._id)
+      } else {
+        await api.downvoteVariant(key, variant._id)
+      }
+      this.toggleDownvote({ key, variant })
+    })
+  }
 
   // closeEdit() {
   //   this.edit = false
@@ -217,5 +200,17 @@ export default class Variant extends Vue {
   //   }
   //   return false
   // }
+
+  async performRequest(requestFunction: () => Promise<unknown>) {
+    this.loading = true
+    try {
+      await requestFunction()
+    } catch (err) {
+      console.error(err)
+      this.setSnackbarError(err.response?.data || JSON.stringify(err))
+    } finally {
+      this.loading = false
+    }
+  }
 }
 </script>
