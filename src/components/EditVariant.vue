@@ -15,22 +15,28 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { i18n } from '@/plugins/i18n'
 import * as api from '@/utils/api'
 import moment from 'moment'
 import { namespace } from 'vuex-class'
+import { Variant } from '@/models/Variant'
 
 const SnackbarStore = namespace('SnackbarStore')
+const DataStore = namespace('DataStore')
 
 @Component({
   props: {
     variant: Object,
     localizationKey: String,
-    closeEdit: Function,
+    closeEditText: Function,
   },
 })
 export default class Comments extends Vue {
   @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
+  @DataStore.Mutation changeVariantText!: (options: {
+    key: string
+    variant: Variant
+    text: string
+  }) => void
 
   text = ''
   loading = false
@@ -40,15 +46,13 @@ export default class Comments extends Vue {
   }
 
   async save() {
+    const key = this.$props.localizationKey
+    const variant = this.$props.variant
     this.loading = true
     try {
-      await api.editVariant(
-        this.$props.localizationKey,
-        this.$props.variant._id,
-        this.text
-      )
-      this.$props.variant.text = this.text
-      this.$props.closeEdit()
+      await api.editVariant(key, variant._id, this.text)
+      this.changeVariantText({ key, variant, text: this.text })
+      this.$props.closeEditText()
     } catch (err) {
       this.setSnackbarError(err.response.data)
     } finally {
@@ -58,24 +62,6 @@ export default class Comments extends Vue {
 
   dateDisplay(date: string) {
     return moment(date).format('L')
-  }
-
-  async deleteVariantComment(comment: any) {
-    this.loading = true
-    try {
-      await api.deleteCommentToVariant(
-        this.$props.localizationKey,
-        this.$props.variant._id,
-        comment._id
-      )
-      this.$props.variant.comments = this.$props.variant.comments.filter(
-        (c: any) => c._id !== comment._id
-      )
-    } catch (err) {
-      this.setSnackbarError(err.response.data)
-    } finally {
-      this.loading = false
-    }
   }
 }
 </script>

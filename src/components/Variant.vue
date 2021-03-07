@@ -20,15 +20,15 @@ div(style='width: 100%')
         :loading='loading'
       )
         v-icon(x-small, color='white') done
-      //- v-chip.px-1.mr-2(
-      //-   dark,
-      //-   x-small,
-      //-   v-if='admin',
-      //-   @click='edit = !edit',
-      //-   :class='edit ? "green darken-2" : ""',
-      //-   :loading='loading'
-      //- )
-      //-   v-icon(x-small, color='white') edit
+      v-chip.px-1.mr-2(
+        dark,
+        x-small,
+        v-if='isAdmin',
+        @click='editTextEnabled = !editTextEnabled',
+        :class='editTextEnabled ? "green darken-2" : ""',
+        :loading='loading'
+      )
+        v-icon(x-small, color='white') edit
       v-chip.px-1(dark, x-small, :color='colors[variant.language]') {{ variant.language }}
       v-chip.px-1(dark, x-small, v-if='variant.username') {{ variant.username.substr(0, 25) }}
       v-chip.px-1(dark, x-small, v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
@@ -61,12 +61,12 @@ div(style='width: 100%')
       //-   color='primary'
       //- ) {{ $t("new") }}
     p.mb-0 {{ variant.text.replace(/\n/gi, "\\n") }}
-    //- EditVariant(
-    //-   v-if='edit',
-    //-   :variant='variant',
-    //-   :localizationKey='localization.key',
-    //-   :closeEdit='closeEdit'
-    //- )
+    EditVariant(
+      v-if='editTextEnabled',
+      :variant='variant',
+      :localizationKey='localization.key',
+      :closeEditText='() => { editTextEnabled = false; }'
+    )
     //- Comments(
     //-   v-if='commentsOpen',
     //-   :variant='variant',
@@ -82,7 +82,7 @@ import Component from 'vue-class-component'
 import * as api from '@/utils/api'
 import moment from 'moment'
 // import Comments from '@/components/Comments.vue'
-// import EditVariant from '@/components/EditVariant.vue'
+import EditVariant from '@/components/EditVariant.vue'
 import { namespace } from 'vuex-class'
 import { ColorsMap } from '@/models/ColorsMap'
 
@@ -90,8 +90,6 @@ const SnackbarStore = namespace('SnackbarStore')
 const DataStore = namespace('DataStore')
 const AppStore = namespace('AppStore')
 
-// TODO: select variant
-// TODO: edit
 // TODO: comments
 // TODO: viewed items
 
@@ -103,7 +101,7 @@ const AppStore = namespace('AppStore')
   },
   components: {
     // Comments,
-    // EditVariant,
+    EditVariant,
   },
 })
 export default class Variant extends Vue {
@@ -136,7 +134,7 @@ export default class Variant extends Vue {
 
   loading = false
   // commentsOpen = false
-  // edit = false
+  editTextEnabled = false
 
   async selectVariant() {
     const key = this.$props.localization.key
@@ -191,10 +189,6 @@ export default class Variant extends Vue {
       this.toggleDownvote({ key, variant })
     })
   }
-
-  // closeEdit() {
-  //   this.edit = false
-  // }
 
   // hasNewComments(variant: any) {
   //   const viewedItems = this.viewedItems
