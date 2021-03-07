@@ -1,4 +1,5 @@
 import { Variant } from '@/models/Variant'
+import { Comment } from '@/models/Comment'
 import { ColorsMap } from '@/models/ColorsMap'
 import { ViewedItems } from '@/models/ViewedItems'
 import { Contributor } from '@/models/Contributor'
@@ -431,6 +432,23 @@ export default class DataStore extends VuexModule {
       return
     }
     variant.text = options.text
+  }
+
+  @Mutation
+  addComment(options: { key: string; variant: Variant; comment: Comment }) {
+    const localization = this.localizations.find(
+      (localization) => localization.key === options.key
+    )
+    if (!localization) {
+      return
+    }
+    const variant = localization.variants.find(
+      (v) => v._id === options.variant._id
+    )
+    if (!variant) {
+      return
+    }
+    variant.comments.push(options.comment)
   }
 
   @Mutation

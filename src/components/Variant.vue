@@ -47,15 +47,15 @@ div(style='width: 100%')
         @click='upvote',
         :class='this.upvoted[variant._id] ? "green darken-2" : ""'
       ) {{ loading ? "🤔" : "👍" }}{{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
-      //- v-chip.mx-2(
-      //-   dark,
-      //-   x-small,
-      //-   @click='commentsOpen = !commentsOpen',
-      //-   :class='commentsOpen ? "green darken-2" : hasNewComments(variant) ? "primary" : ""'
-      //- ) {{ $t("comment.comments") }}{{ variant.comments.length ? ` ${variant.comments.length}` : "" }}{{ hasNewComments(variant) ? `, ${$t("new")}` : "" }}
+      v-chip.mx-2(
+        dark,
+        x-small,
+        @click='commentsOpen = !commentsOpen',
+        :class='commentsOpen ? "green darken-2" : hasNewComments(variant) ? "primary" : ""'
+      ) {{ $t("comment.comments") }}{{ variant.comments.length ? ` ${variant.comments.length}` : "" }}{{ hasNewComments(variant) ? `, ${$t("new")}` : "" }}
       //- v-chip.px-1(
       //-   x-small,
-      //-   v-if='!$store.state.viewedItems[variant._id]',
+      //-   v-if='!viewedItems[variant._id]',
       //-   dark,
       //-   @mouseover='setViewedItem(variant._id)',
       //-   color='primary'
@@ -67,12 +67,11 @@ div(style='width: 100%')
       :localizationKey='localization.key',
       :closeEditText='() => { editTextEnabled = false; }'
     )
-    //- Comments(
-    //-   v-if='commentsOpen',
-    //-   :variant='variant',
-    //-   :localizationKey='localization.key',
-    //-   :admin='admin'
-    //- )
+    Comments(
+      v-if='commentsOpen',
+      :variant='variant',
+      :localizationKey='localization.key'
+    )
   v-divider
 </template>
 
@@ -81,16 +80,16 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import * as api from '@/utils/api'
 import moment from 'moment'
-// import Comments from '@/components/Comments.vue'
+import Comments from '@/components/Comments.vue'
 import EditVariant from '@/components/EditVariant.vue'
 import { namespace } from 'vuex-class'
 import { ColorsMap } from '@/models/ColorsMap'
+import { ViewedItems } from '@/models/ViewedItems'
 
 const SnackbarStore = namespace('SnackbarStore')
 const DataStore = namespace('DataStore')
 const AppStore = namespace('AppStore')
 
-// TODO: comments
 // TODO: viewed items
 
 @Component({
@@ -100,14 +99,14 @@ const AppStore = namespace('AppStore')
     selectOrDeleteVariantsEnabled: Boolean,
   },
   components: {
-    // Comments,
+    Comments,
     EditVariant,
   },
 })
 export default class Variant extends Vue {
   @DataStore.State upvoted!: { [index: string]: boolean }
   @DataStore.State downvoted!: { [index: string]: boolean }
-  // @DataStore.State viewedItems!: { [index: string]: boolean }
+  @DataStore.State viewedItems!: ViewedItems
 
   // @DataStore.Mutation setViewedItem!: (id: string) => void
   @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
@@ -133,7 +132,7 @@ export default class Variant extends Vue {
   @AppStore.State isAdmin!: boolean
 
   loading = false
-  // commentsOpen = false
+  commentsOpen = false
   editTextEnabled = false
 
   async selectVariant() {
@@ -190,15 +189,14 @@ export default class Variant extends Vue {
     })
   }
 
-  // hasNewComments(variant: any) {
-  //   const viewedItems = this.viewedItems
-  //   for (const comment of variant.comments) {
-  //     if (!viewedItems[comment._id]) {
-  //       return true
-  //     }
-  //   }
-  //   return false
-  // }
+  hasNewComments(variant: any) {
+    for (const comment of variant.comments) {
+      if (!this.viewedItems[comment._id]) {
+        return true
+      }
+    }
+    return false
+  }
 
   async performRequest(requestFunction: () => Promise<unknown>) {
     this.loading = true

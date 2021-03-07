@@ -1,3 +1,4 @@
+import { Comment } from '@/models/Comment'
 import { Variant } from '@/models/Variant'
 import { Localization } from '@/models/Localization'
 import axios from 'axios'
@@ -177,7 +178,7 @@ export async function leaveCommentToVariant(
       key,
       id,
     })
-  ).data
+  ).data as Comment
 }
 
 export async function deleteCommentToVariant(

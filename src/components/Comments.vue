@@ -6,7 +6,7 @@
         dark,
         x-small,
         color='red',
-        v-if='admin && !!comment._id',
+        v-if='isAdmin',
         @click='deleteVariantComment(comment)',
         :loading='loading',
         :disabled='loading'
@@ -14,13 +14,13 @@
         v-icon(x-small, color='white') delete
       v-chip.px-1(dark, x-small, v-if='comment.username') {{ comment.username }}
       v-chip.px-1(dark, x-small, v-if='comment.createdAt') {{ dateDisplay(comment.createdAt) }}
-      v-chip.px-1(
-        x-small,
-        v-if='!$store.state.viewedItems[comment._id]',
-        dark,
-        @mouseover='setViewedItem(comment._id)',
-        color='primary'
-      ) {{ $t("new") }}
+      //- v-chip.px-1(
+      //-   x-small,
+      //-   v-if='!$store.state.viewedItems[comment._id]',
+      //-   dark,
+      //-   @mouseover='setViewedItem(comment._id)',
+      //-   color='primary'
+      //- ) {{ $t("new") }}
     p.ma-0 {{ comment.text }}
     v-divider
   v-textarea.mb-1.mt-0(
@@ -30,8 +30,8 @@
     auto-grow,
     no-resize,
     compact,
-    v-model='text',
-    :append-outer-icon='!!text ? "send" : undefined',
+    v-model='commentText',
+    :append-outer-icon='!!commentText ? "send" : undefined',
     @click:append-outer='save',
     :disabled='loading'
   )
@@ -43,46 +43,55 @@ import Component from 'vue-class-component'
 import * as api from '@/utils/api'
 import moment from 'moment'
 import { namespace } from 'vuex-class'
+import { Variant } from '@/models/Variant'
+import { Comment } from '@/models/Comment'
 
 const AppStore = namespace('AppStore')
 const DataStore = namespace('DataStore')
 const SnackbarStore = namespace('SnackbarStore')
 
+// TODO: viewed items
+
 @Component({
   props: {
     variant: Object,
     localizationKey: String,
-    admin: Boolean,
   },
 })
 export default class Comments extends Vue {
   @AppStore.State username!: string
+  @DataStore.State isAdmin!: string
 
   @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
-  @DataStore.Mutation setViewedItem!: (id: string) => void
+  @DataStore.Mutation addComment!: (options: {
+    key: string
+    variant: Variant
+    comment: Comment
+  }) => void
+  // @DataStore.Mutation setViewedItem!: (id: string) => void
+  @DataStore.Mutation refreshLocalizations!: () => void
 
-  text = ''
+  commentText = ''
   loading = false
 
-  async save() {
-    this.loading = true
-    try {
-      await api.leaveCommentToVariant(
-        this.text,
-        this.$props.localizationKey,
-        this.$props.variant._id
+  save() {
+    const key = this.$props.localizationKey
+    const variant = this.$props.variant
+
+    this.performRequest(async () => {
+      const comment = await api.leaveCommentToVariant(
+        this.commentText,
+        key,
+        variant._id
       )
-      this.$props.variant.comments.push({
-        username: this.username,
-        text: this.text,
-        createdAt: new Date(),
+      this.addComment({
+        key,
+        variant,
+        comment,
       })
-      this.text = ''
-    } catch (err) {
-      this.setSnackbarError(err.response.data)
-    } finally {
-      this.loading = false
-    }
+      this.refreshLocalizations()
+      this.commentText = ''
+    })
   }
 
   dateDisplay(date: string) {
@@ -102,6 +111,18 @@ export default class Comments extends Vue {
       )
     } catch (err) {
       this.setSnackbarError(err.response.data)
+    } finally {
+      this.loading = false
+    }
+  }
+
+  async performRequest(requestFunction: () => Promise<unknown>) {
+    this.loading = true
+    try {
+      await requestFunction()
+    } catch (err) {
+      console.error(err)
+      this.setSnackbarError(err.response?.data || JSON.stringify(err))
     } finally {
       this.loading = false
     }
