@@ -43,13 +43,13 @@ v-card.mb-2
       )
         v-icon(small, v-if='!loading') close
         span(v-else) 🤔
-    //- v-chip.mx-1.px-1(
-    //-   v-if='isNew',
-    //-   dark,
-    //-   small,
-    //-   @mouseover='setViewedProxy',
-    //-   color='primary'
-    //- ) {{ $t("new") }}
+    v-chip.mx-1.px-1(
+      v-if='!viewedItems[localization._id]',
+      dark,
+      small,
+      @click='setViewedProxy',
+      color='primary'
+    ) {{ $t("new") }}
     v-chip.ma-1.px-1(
       dark,
       small,
@@ -135,13 +135,11 @@ import VariantView from '@/components/Variant.vue'
 import { namespace } from 'vuex-class'
 import { ColorsMap } from '@/models/ColorsMap'
 import { Variant } from '@/models/Variant'
-// import { ViewedItems } from '@/models/ViewedItems'
+import { ViewedItems } from '@/models/ViewedItems'
 
 const SnackbarStore = namespace('SnackbarStore')
 const AppStore = namespace('AppStore')
 const DataStore = namespace('DataStore')
-
-// TODO: viewed items
 
 @Component({
   props: {
@@ -156,10 +154,10 @@ export default class LocalizationCard extends Vue {
   @AppStore.State isAdmin!: boolean
   @DataStore.State colors!: ColorsMap
   @DataStore.State languages!: string[]
-  // @DataStore.State viewedItems!: ViewedItems
+  @DataStore.State viewedItems!: ViewedItems
 
   @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
-  // @DataStore.Mutation setViewedItem!: (id: string) => void
+  @DataStore.Mutation setViewedItem!: (id: string) => void
   @DataStore.Mutation removeLocalization!: (key: string) => void
   @DataStore.Mutation removeLocalizationTag!: (options: {
     key: string
@@ -197,12 +195,6 @@ export default class LocalizationCard extends Vue {
   loading = false
 
   selectedVariants = {} as any
-
-  // isNew = false
-
-  // mounted() {
-  //   this.isNew = !this.viewedItems[this.$props.localization._id]
-  // }
 
   async deleteLocalization(key: string) {
     this.performRequest(async () => {
@@ -286,10 +278,10 @@ export default class LocalizationCard extends Vue {
     }
   }
 
-  // setViewedProxy() {
-  //   this.setViewedItem(this.$props.localization._id)
-  //   this.isNew = false
-  // }
+  setViewedProxy() {
+    this.setViewedItem(this.$props.localization._id)
+    this.refreshLocalizations()
+  }
 
   toggleAddTagEnabled() {
     this.addTagEnabled = !this.addTagEnabled
