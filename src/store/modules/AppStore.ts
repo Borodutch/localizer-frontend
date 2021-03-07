@@ -19,8 +19,8 @@ export default class AppStore extends VuexModule {
     this.dark = dark
   }
   @Mutation
-  setIsAdmin(isAdmin: boolean) {
-    this.isAdmin = isAdmin
+  toggleAdmin() {
+    this.isAdmin = !this.isAdmin
   }
 
   @Mutation

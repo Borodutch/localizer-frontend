@@ -2,7 +2,7 @@
 nav
   v-app-bar(app, flat, :color='dark ? "#0D0D0D" : "white"')
     // Title
-    img(src='/img/logo.svg')
+    img.logo(src='/img/logo.svg', @click='goHome')
     v-spacer
     // Language picker
     v-menu(offset-y)
@@ -19,12 +19,17 @@ nav
     // Dark theme
     v-btn.navbar-button(text, @click='toggleDark')
       img(src='/img/moon.svg')
+    // Admin
+    v-btn(text, :color='isAdmin ? "primary" : "grey"', @click='toggleAdmin')
+      v-icon(small) vpn_key
+    // Code
+    v-btn(text, icon, color='grey', @click='$router.replace("/code")')
+      v-icon(small) code
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import store from '@/store'
 import { i18n } from '@/plugins/i18n'
 import { namespace } from 'vuex-class'
 
@@ -33,9 +38,11 @@ const AppStore = namespace('AppStore')
 @Component
 export default class Navbar extends Vue {
   @AppStore.State dark!: boolean
+  @AppStore.State isAdmin!: boolean
 
   @AppStore.Mutation setLanguage!: (language: string) => void
   @AppStore.Mutation setDark!: (dark: boolean) => void
+  @AppStore.Mutation toggleAdmin!: () => void
 
   get locales() {
     return [
@@ -43,6 +50,7 @@ export default class Navbar extends Vue {
       { icon: '🇷🇺', code: 'ru' },
     ]
   }
+
   get currentLocale() {
     for (const locale of this.locales) {
       if (locale.code === i18n.locale) {
@@ -50,14 +58,28 @@ export default class Navbar extends Vue {
       }
     }
   }
+
   changeLanguage(locale: string) {
     i18n.locale = locale
     this.setLanguage(locale)
     document.title = i18n.t('title') as string
   }
+
   toggleDark() {
     this.setDark(!this.dark)
     ;(this.$vuetify.theme as any).dark = this.dark
   }
+
+  goHome() {
+    if (this.$router.currentRoute.path !== '/') {
+      this.$router.replace('/')
+    }
+  }
 }
 </script>
+
+<style scoped>
+.logo {
+  cursor: pointer;
+}
+</style>

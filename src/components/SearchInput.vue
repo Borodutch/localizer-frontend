@@ -1,9 +1,5 @@
 <template lang="pug">
-v-text-field.my-0.py-0(
-  :label='$t("search")',
-  v-model='queryProxy',
-  append-icon='search'
-)
+v-text-field(:label='$t("search")', v-model='queryProxy', append-icon='search')
 </template>
 
 <script lang="ts">

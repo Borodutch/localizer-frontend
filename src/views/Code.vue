@@ -1,7 +1,7 @@
 <template lang="pug">
 .v-container.pa-4
   v-progress-linear.mb-4(v-if='loading', indeterminate)
-  code {{ data }}
+  code(v-if='data') {{ data }}
 </template>
 
 <script lang="ts">
@@ -11,6 +11,8 @@ import * as api from '@/utils/api'
 import { namespace } from 'vuex-class'
 
 const SnackbarStore = namespace('SnackbarStore')
+
+// TODO: add refresh
 
 @Component
 export default class Code extends Vue {
