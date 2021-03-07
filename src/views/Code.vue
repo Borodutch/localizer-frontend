@@ -12,8 +12,6 @@ import { namespace } from 'vuex-class'
 
 const SnackbarStore = namespace('SnackbarStore')
 
-// TODO: add refresh
-
 @Component
 export default class Code extends Vue {
   @SnackbarStore.Mutation setSnackbarError!: (error: string) => void

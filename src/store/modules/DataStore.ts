@@ -452,6 +452,25 @@ export default class DataStore extends VuexModule {
   }
 
   @Mutation
+  deleteComment(options: { key: string; variant: Variant; comment: Comment }) {
+    const localization = this.localizations.find(
+      (localization) => localization.key === options.key
+    )
+    if (!localization) {
+      return
+    }
+    const variant = localization.variants.find(
+      (v) => v._id === options.variant._id
+    )
+    if (!variant) {
+      return
+    }
+    variant.comments = variant.comments.filter(
+      (comment) => comment._id !== options.comment._id
+    )
+  }
+
+  @Mutation
   refreshLocalizations() {
     // localizations
     this.localizations = this.localizations

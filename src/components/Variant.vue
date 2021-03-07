@@ -53,13 +53,13 @@ div(style='width: 100%')
         @click='commentsOpen = !commentsOpen',
         :class='commentsOpen ? "green darken-2" : hasNewComments(variant) ? "primary" : ""'
       ) {{ $t("comment.comments") }}{{ variant.comments.length ? ` ${variant.comments.length}` : "" }}{{ hasNewComments(variant) ? `, ${$t("new")}` : "" }}
-      //- v-chip.px-1(
-      //-   x-small,
-      //-   v-if='!viewedItems[variant._id]',
-      //-   dark,
-      //-   @mouseover='setViewedItem(variant._id)',
-      //-   color='primary'
-      //- ) {{ $t("new") }}
+      v-chip.px-1(
+        x-small,
+        v-if='!viewedItems[variant._id]',
+        dark,
+        @click='setViewedProxy',
+        color='primary'
+      ) {{ $t("new") }}
     p.mb-0 {{ variant.text.replace(/\n/gi, "\\n") }}
     EditVariant(
       v-if='editTextEnabled',
@@ -90,8 +90,6 @@ const SnackbarStore = namespace('SnackbarStore')
 const DataStore = namespace('DataStore')
 const AppStore = namespace('AppStore')
 
-// TODO: viewed items
-
 @Component({
   props: {
     variant: Object,
@@ -108,7 +106,7 @@ export default class Variant extends Vue {
   @DataStore.State downvoted!: { [index: string]: boolean }
   @DataStore.State viewedItems!: ViewedItems
 
-  // @DataStore.Mutation setViewedItem!: (id: string) => void
+  @DataStore.Mutation setViewedItem!: (id: string) => void
   @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
   @DataStore.Mutation deleteLocalizationVariant!: (options: {
     key: string
@@ -208,6 +206,11 @@ export default class Variant extends Vue {
     } finally {
       this.loading = false
     }
+  }
+
+  setViewedProxy() {
+    this.setViewedItem(this.$props.variant._id)
+    this.refreshLocalizations()
   }
 }
 </script>
