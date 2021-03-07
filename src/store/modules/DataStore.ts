@@ -208,19 +208,21 @@ export default class DataStore extends VuexModule {
     // Get localizations
     const localizations = await api.getLocalizations()
     // Get languages and tags
-    const languages = new Set<string>()
-    const tags = new Set<string>()
+    const languagesSet = new Set<string>()
+    const tagsSet = new Set<string>()
     for (const localization of localizations) {
       for (const l of localization.variants.map((v: any) => v.language)) {
-        languages.add(l)
+        languagesSet.add(l)
       }
       for (const tag of localization.tags) {
-        tags.add(tag)
+        tagsSet.add(tag)
       }
     }
+    const languages = [...languagesSet]
+    const tags = [...tagsSet]
     // Get colors
-    const colors = {} as ColorsMap
     const names = new Set([...tags, ...languages])
+    const colors = {} as ColorsMap
     for (const name of names) {
       colors[name] = randomColor({ luminosity: 'dark', seed: name })
     }
@@ -261,12 +263,50 @@ export default class DataStore extends VuexModule {
   }
 
   @Mutation
-  removeLocalizationTag(key: string, tag: string) {
+  removeLocalizationTag(options: { key: string; tag: string }) {
     const localization = this.localizations.find(
-      (localization) => localization.key === key
+      (localization) => localization.key === options.key
     )
     if (localization) {
-      localization.tags = localization.tags.filter((t: string) => t !== tag)
+      localization.tags = localization.tags.filter(
+        (t: string) => t !== options.tag
+      )
     }
+  }
+
+  @Mutation
+  addLocalizationTag(options: { key: string; tag: string }) {
+    const localization = this.localizations.find(
+      (localization) => localization.key === options.key
+    )
+    if (localization && !localization.tags.includes(options.tag)) {
+      localization.tags.push(options.tag)
+    }
+  }
+
+  @Mutation
+  refreshLocalizations() {
+    // localizations
+    this.localizations = this.localizations
+    // languages and tags
+    const languagesSet = new Set<string>()
+    const tagsSet = new Set<string>()
+    for (const localization of this.localizations) {
+      for (const l of localization.variants.map((v: any) => v.language)) {
+        languagesSet.add(l)
+      }
+      for (const tag of localization.tags) {
+        tagsSet.add(tag)
+      }
+    }
+    this.languages = [...languagesSet]
+    this.tags = [...tagsSet]
+    // colors
+    const names = new Set([...this.tags, ...this.languages])
+    const colors = {} as ColorsMap
+    for (const name of names) {
+      colors[name] = randomColor({ luminosity: 'dark', seed: name })
+    }
+    this.colors = colors
   }
 }

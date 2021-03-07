@@ -1,15 +1,15 @@
 <template lang="pug">
 v-card.mb-2
   v-card-title
-    //- v-btn.mr-1(
-    //-   v-if='isAdmin',
-    //-   color='red',
-    //-   small,
-    //-   icon,
-    //-   @click='deleteLocalization(localization.key)',
-    //-   :loading='loading'
-    //- )
-    //-   v-icon(small) delete
+    v-btn.mr-1(
+      v-if='isAdmin',
+      color='red',
+      small,
+      icon,
+      @click='deleteLocalization(localization.key)',
+      :loading='loading'
+    )
+      v-icon(small) delete
     //- v-btn.mr-1(
     //-   v-if='isAdmin',
     //-   small,
@@ -43,14 +43,14 @@ v-card.mb-2
       :color='colors[tag]'
     )
       span {{ tag }}
-      //- .ml-2(
-      //-   small,
-      //-   v-if='isAdmin',
-      //-   @click='deleteLocalizationTag(localization.key, tag)',
-      //-   :disabled='loading'
-      //- )
-      //-   v-icon(small, v-if='!loading') close
-      //-   span(v-else) 🤔
+      .ml-2(
+        small,
+        v-if='isAdmin',
+        @click='deleteTag(localization.key, tag)',
+        :disabled='loading'
+      )
+        v-icon(small, v-if='!loading') close
+        span(v-else) 🤔
     //- v-chip.mx-1.px-1(
     //-   v-if='isNew',
     //-   dark,
@@ -58,27 +58,27 @@ v-card.mb-2
     //-   @mouseover='setViewedProxy',
     //-   color='primary'
     //- ) {{ $t("new") }}
-    //- v-chip.mx-1.px-1(
-    //-   dark,
-    //-   small,
-    //-   v-if='isAdmin',
-    //-   :color='addTagEnabled ? "green darken-2" : ""',
-    //-   @click='addTagEnabled = !addTagEnabled'
-    //- )
-    //-   v-icon(small, v-if='!loading') {{ addTagEnabled ? "close" : "add" }}
-    //- v-text-field.mx-1.mb-0.mt-4.px-0.py-0(
-    //-   :label='$t("tag.new")',
-    //-   v-if='addTagEnabled',
-    //-   clearable,
-    //-   rows='1',
-    //-   auto-grow,
-    //-   no-resize,
-    //-   compact,
-    //-   v-model='addTagText',
-    //-   :append-outer-icon='!!addTagText ? "send" : undefined',
-    //-   @click:append-outer='saveNewTag',
-    //-   :disabled='loading'
-    //- )
+    v-chip.ma-1.px-1(
+      dark,
+      small,
+      v-if='isAdmin && !loading',
+      :color='addTagEnabled ? "green darken-2" : ""',
+      @click='toggleTagEnabled'
+    )
+      v-icon(small) {{ addTagEnabled ? "close" : "add" }}
+    v-text-field.mx-1.mb-0.mt-4.px-0.py-0(
+      :label='$t("tag.new")',
+      v-if='addTagEnabled && isAdmin',
+      clearable,
+      rows='1',
+      auto-grow,
+      no-resize,
+      compact,
+      v-model='addTagText',
+      :append-outer-icon='!!addTagText ? "send" : undefined',
+      @click:append-outer='addTag',
+      :disabled='loading'
+    )
   v-card-text
     //- div(v-if='editKeyEnabled')
     //-   v-textarea.mb-1.mt-0.pt-0(
@@ -131,14 +131,14 @@ v-card.mb-2
 import Vue from 'vue'
 import Component from 'vue-class-component'
 // import { i18n } from '@/plugins/i18n'
-// import * as api from '@/utils/api'
+import * as api from '@/utils/api'
 import Variant from '@/components/Variant.vue'
 import { namespace } from 'vuex-class'
 import { ColorsMap } from '@/models/ColorsMap'
 // import { ViewedItems } from '@/models/ViewedItems'
 
-// const SnackbarStore = namespace('SnackbarStore')
-// const AppStore = namespace('AppStore')
+const SnackbarStore = namespace('SnackbarStore')
+const AppStore = namespace('AppStore')
 const DataStore = namespace('DataStore')
 
 @Component({
@@ -151,27 +151,35 @@ const DataStore = namespace('DataStore')
 })
 export default class LocalizationCard extends Vue {
   // @AppStore.State username!: string
-  // @AppStore.State isAdmin!: boolean
+  @AppStore.State isAdmin!: boolean
   @DataStore.State colors!: ColorsMap
   // @DataStore.State viewedItems!: ViewedItems
 
-  // @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
+  @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
   // @DataStore.Mutation setViewedItem!: (id: string) => void
-  // @DataStore.Mutation removeLocalization!: (key: string) => void
-  // @DataStore.Mutation removeLocalizationTag!: (key: string, tag: string) => void
+  @DataStore.Mutation removeLocalization!: (key: string) => void
+  @DataStore.Mutation removeLocalizationTag!: (options: {
+    key: string
+    tag: string
+  }) => void
+  @DataStore.Mutation addLocalizationTag!: (options: {
+    key: string
+    tag: string
+  }) => void
+  @DataStore.Mutation refreshLocalizations!: () => void
 
   // text = ''
   // language = ''
-  // addTagText = ''
+  addTagText = ''
 
   // addVariantEnabled = false
   // editKeyEnabled = false
-  // addTagEnabled = false
+  addTagEnabled = false
 
   // textRules = [(v: any) => !!(v || '').trim() || i18n.t('errors.textLength')]
   // languageRules = [(v: any) => !!(v || '').trim() || i18n.t('errors.language')]
 
-  // loading = false
+  loading = false
 
   // selected = {} as any
 
@@ -181,12 +189,12 @@ export default class LocalizationCard extends Vue {
   //   this.isNew = !this.viewedItems[this.$props.localization._id]
   // }
 
-  // async deleteLocalization(key: string) {
-  //   this.performRequest(async () => {
-  //     await api.deleteLocalization(key)
-  //     this.removeLocalization(key)
-  //   })
-  // }
+  async deleteLocalization(key: string) {
+    this.performRequest(async () => {
+      await api.deleteLocalization(key)
+      this.removeLocalization(key)
+    })
+  }
 
   // async save(key: string) {
   //   this.performRequest(async () => {
@@ -197,25 +205,28 @@ export default class LocalizationCard extends Vue {
   //   })
   // }
 
-  // async saveNewTag() {
-  //   this.performRequest(async () => {
-  //     if (this.$props.localization.tags.indexOf(this.addTagText) < 0) {
-  //       await api.addLocalizationTag(
-  //         this.$props.localization.key,
-  //         this.addTagText
-  //       )
-  //       this.$props.localization.tags.push(this.addTagText)
-  //     }
-  //     this.addTagText = ''
-  //   })
-  // }
+  async addTag() {
+    this.performRequest(async () => {
+      const tag = this.addTagText
+      const key = this.$props.localization.key
+      if (!this.$props.localization.tags.includes(tag)) {
+        await api.addLocalizationTag(key, tag)
+        this.addLocalizationTag({ key, tag })
+        this.refreshLocalizations()
+      }
+      this.resetAddTag()
+    })
+  }
 
-  // async deleteLocalizationTag(key: string, tag: string) {
-  //   this.performRequest(async () => {
-  //     await api.deleteLocalizationTag(key, tag)
-  //     this.removeLocalizationTag(key, tag)
-  //   })
-  // }
+  async deleteTag(key: string, tag: string) {
+    this.performRequest(async () => {
+      if (this.$props.localization.tags.includes(tag)) {
+        await api.deleteLocalizationTag(key, tag)
+        this.removeLocalizationTag({ key, tag })
+        this.refreshLocalizations()
+      }
+    })
+  }
 
   // async deleteVariants(key: string) {
   //   this.performRequest(async () => {
@@ -241,20 +252,33 @@ export default class LocalizationCard extends Vue {
   //   })
   // }
 
-  // async performRequest(requestFunction: () => Promise<unknown>) {
-  //   this.loading = true
-  //   try {
-  //     await requestFunction()
-  //   } catch (err) {
-  //     this.setSnackbarError(err.response.data)
-  //   } finally {
-  //     this.loading = false
-  //   }
-  // }
+  async performRequest(requestFunction: () => Promise<unknown>) {
+    this.loading = true
+    try {
+      await requestFunction()
+    } catch (err) {
+      console.error(err)
+      this.setSnackbarError(err.response?.data || JSON.stringify(err))
+    } finally {
+      this.loading = false
+    }
+  }
 
   // setViewedProxy() {
   //   this.setViewedItem(this.$props.localization._id)
   //   this.isNew = false
   // }
+
+  toggleTagEnabled() {
+    this.addTagEnabled = !this.addTagEnabled
+    if (!this.addTagEnabled) {
+      this.resetAddTag()
+    }
+  }
+
+  resetAddTag() {
+    this.addTagText = ''
+    this.addTagEnabled = false
+  }
 }
 </script>
