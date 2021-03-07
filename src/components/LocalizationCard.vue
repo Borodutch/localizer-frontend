@@ -14,26 +14,18 @@ v-card.mb-2
     //-   v-if='isAdmin',
     //-   small,
     //-   icon,
-    //-   @click='editKeyEnabled = !editKeyEnabled',
+    //-   @click='selectOrDeleteVariantsEnabled = !selectOrDeleteVariantsEnabled',
     //-   :loading='loading',
-    //-   :class='editKeyEnabled ? "green darken-2" : ""'
+    //-   :class='selectOrDeleteVariantsEnabled ? "green darken-2" : ""'
     //- )
     //-   v-icon(small) edit
-    //- v-btn.mr-1(
-    //-   v-if='!addVariantEnabled',
-    //-   small,
-    //-   icon,
-    //-   @click='addVariantEnabled = true'
-    //- )
-    //-   v-icon(small) add
-    //- v-btn.mr-1(
-    //-   v-else,
-    //-   small,
-    //-   icon,
-    //-   @click='addVariantEnabled = false',
-    //-   color='red'
-    //- )
-    //-   v-icon(small) clear
+    v-btn.mr-1(
+      small,
+      icon,
+      @click='toggleAddVariantEnabled',
+      :color='addVariantEnabled ? "red" : undefined'
+    )
+      v-icon(small) {{ addVariantEnabled ? "clear" : "add" }}
     span.mx-1 {{ localization.key }}
     v-chip.mx-1(
       dark,
@@ -63,7 +55,7 @@ v-card.mb-2
       small,
       v-if='isAdmin && !loading',
       :color='addTagEnabled ? "green darken-2" : ""',
-      @click='toggleTagEnabled'
+      @click='toggleAddTagEnabled'
     )
       v-icon(small) {{ addTagEnabled ? "close" : "add" }}
     v-text-field.mx-1.mb-0.mt-4.px-0.py-0(
@@ -80,31 +72,31 @@ v-card.mb-2
       :disabled='loading'
     )
   v-card-text
-    //- div(v-if='editKeyEnabled')
-    //-   v-textarea.mb-1.mt-0.pt-0(
-    //-     :label='$t("add.text")',
-    //-     clearable,
-    //-     rows='1',
-    //-     :rules='textRules',
-    //-     auto-grow,
-    //-     no-resize,
-    //-     compact,
-    //-     v-model='text'
-    //-   )
-    //-   .d-flex
-    //-     v-select.mb-1.mt-0.pt-0(
-    //-       :label='$t("add.language")',
-    //-       :items='languages',
-    //-       :rules='languageRules',
-    //-       v-model='language'
-    //-     )
-    //-     v-btn.ml-2(
-    //-       color='primary',
-    //-       :disabled='!text || !language',
-    //-       @click='save(localization.key)',
-    //-       :loading='loading'
-    //-     ) {{ $t("add.save") }}
-    //- div(v-if='editKeyEnabled')
+    div(v-if='addVariantEnabled')
+      v-textarea.mb-1.mt-0.pt-0(
+        :label='$t("add.text")',
+        clearable,
+        rows='1',
+        :rules='textRules',
+        auto-grow,
+        no-resize,
+        compact,
+        v-model='addVariantText'
+      )
+      .d-flex
+        v-select.mb-1.mt-0.pt-0(
+          :label='$t("add.language")',
+          :items='languages',
+          :rules='languageRules',
+          v-model='addVariantLanguage'
+        )
+        v-btn.ml-2(
+          color='primary',
+          :disabled='!addVariantText || !addVariantLanguage',
+          @click='addVariant()',
+          :loading='loading'
+        ) {{ $t("add.save") }}
+    //- div(v-if='selectOrDeleteVariantsEnabled')
     //-   v-chip.px-1(
     //-     dark,
     //-     x-small,
@@ -124,17 +116,18 @@ v-card.mb-2
     div(v-for='variant in localization.variants')
       .d-flex.direction-row
         //- v-checkbox(v-if='editKeyEnabled', v-model='selected[variant._id]')
-        Variant(:variant='variant', :localization='localization')
+        VariantView(:variant='variant', :localization='localization')
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-// import { i18n } from '@/plugins/i18n'
+import { i18n } from '@/plugins/i18n'
 import * as api from '@/utils/api'
-import Variant from '@/components/Variant.vue'
+import VariantView from '@/components/Variant.vue'
 import { namespace } from 'vuex-class'
 import { ColorsMap } from '@/models/ColorsMap'
+import { Variant } from '@/models/Variant'
 // import { ViewedItems } from '@/models/ViewedItems'
 
 const SnackbarStore = namespace('SnackbarStore')
@@ -146,13 +139,14 @@ const DataStore = namespace('DataStore')
     localization: Object,
   },
   components: {
-    Variant,
+    VariantView,
   },
 })
 export default class LocalizationCard extends Vue {
-  // @AppStore.State username!: string
+  @AppStore.State username!: string
   @AppStore.State isAdmin!: boolean
   @DataStore.State colors!: ColorsMap
+  @DataStore.State languages!: string[]
   // @DataStore.State viewedItems!: ViewedItems
 
   @SnackbarStore.Mutation setSnackbarError!: (error: string) => void
@@ -166,18 +160,22 @@ export default class LocalizationCard extends Vue {
     key: string
     tag: string
   }) => void
+  @DataStore.Mutation addLocalizationVariant!: (options: {
+    key: string
+    variant: Variant
+  }) => void
   @DataStore.Mutation refreshLocalizations!: () => void
 
-  // text = ''
-  // language = ''
+  addVariantText = ''
+  addVariantLanguage = ''
   addTagText = ''
 
-  // addVariantEnabled = false
-  // editKeyEnabled = false
+  addVariantEnabled = false
+  selectOrDeleteVariantsEnabled = false
   addTagEnabled = false
 
-  // textRules = [(v: any) => !!(v || '').trim() || i18n.t('errors.textLength')]
-  // languageRules = [(v: any) => !!(v || '').trim() || i18n.t('errors.language')]
+  textRules = [(v: any) => !!(v || '').trim() || i18n.t('errors.textLength')]
+  languageRules = [(v: any) => !!(v || '').trim() || i18n.t('errors.language')]
 
   loading = false
 
@@ -196,19 +194,24 @@ export default class LocalizationCard extends Vue {
     })
   }
 
-  // async save(key: string) {
-  //   this.performRequest(async () => {
-  //     await api.postVariant(key, this.text, this.language, this.username)
-  //     this.$props.loadData()
-  //     this.text = ''
-  //     // this.editKeyEnabled = false
-  //   })
-  // }
+  async addVariant() {
+    const key = this.$props.localization.key
+    this.performRequest(async () => {
+      const variant = await api.postVariant(
+        key,
+        this.addVariantText,
+        this.addVariantLanguage,
+        this.username
+      )
+      this.addLocalizationVariant({ key, variant })
+      this.resetAddVariant()
+    })
+  }
 
   async addTag() {
+    const tag = this.addTagText
+    const key = this.$props.localization.key
     this.performRequest(async () => {
-      const tag = this.addTagText
-      const key = this.$props.localization.key
       if (!this.$props.localization.tags.includes(tag)) {
         await api.addLocalizationTag(key, tag)
         this.addLocalizationTag({ key, tag })
@@ -269,7 +272,7 @@ export default class LocalizationCard extends Vue {
   //   this.isNew = false
   // }
 
-  toggleTagEnabled() {
+  toggleAddTagEnabled() {
     this.addTagEnabled = !this.addTagEnabled
     if (!this.addTagEnabled) {
       this.resetAddTag()
@@ -279,6 +282,18 @@ export default class LocalizationCard extends Vue {
   resetAddTag() {
     this.addTagText = ''
     this.addTagEnabled = false
+  }
+
+  toggleAddVariantEnabled() {
+    this.addVariantEnabled = !this.addVariantEnabled
+    if (!this.addVariantEnabled) {
+      this.resetAddVariant()
+    }
+  }
+
+  resetAddVariant() {
+    this.addVariantText = ''
+    this.addVariantEnabled = false
   }
 }
 </script>

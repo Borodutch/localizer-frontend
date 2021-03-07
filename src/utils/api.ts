@@ -1,3 +1,4 @@
+import { Variant } from '@/models/Variant'
 import { Localization } from '@/models/Localization'
 import axios from 'axios'
 import store from '@/store'
@@ -45,7 +46,7 @@ export async function postVariant(
       language,
       username,
     })
-  ).data
+  ).data as Variant
 }
 
 export async function selectVariant(key: string, id: string) {

@@ -1,3 +1,4 @@
+import { Variant } from '@/models/Variant'
 import { ColorsMap } from '@/models/ColorsMap'
 import { ViewedItems } from '@/models/ViewedItems'
 import { Contributor } from '@/models/Contributor'
@@ -281,6 +282,16 @@ export default class DataStore extends VuexModule {
     )
     if (localization && !localization.tags.includes(options.tag)) {
       localization.tags.push(options.tag)
+    }
+  }
+
+  @Mutation
+  addLocalizationVariant(options: { key: string; variant: Variant }) {
+    const localization = this.localizations.find(
+      (localization) => localization.key === options.key
+    )
+    if (localization) {
+      localization.variants.push(options.variant)
     }
   }
 

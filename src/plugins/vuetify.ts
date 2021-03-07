@@ -23,6 +23,8 @@ import Vuetify, {
   VCard,
   VContainer,
   VDivider,
+  VTextarea,
+  VSelect,
 } from 'vuetify/lib'
 import 'vuetify/dist/vuetify.min.css'
 
@@ -51,6 +53,8 @@ Vue.use(Vuetify, {
     VCard,
     VContainer,
     VDivider,
+    VTextarea,
+    VSelect,
   },
 })
 
