@@ -259,4 +259,14 @@ export default class DataStore extends VuexModule {
       (localization) => localization.key !== key
     )
   }
+
+  @Mutation
+  removeLocalizationTag(key: string, tag: string) {
+    const localization = this.localizations.find(
+      (localization) => localization.key === key
+    )
+    if (localization) {
+      localization.tags = localization.tags.filter((t: string) => t !== tag)
+    }
+  }
 }

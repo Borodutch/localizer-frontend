@@ -22,6 +22,7 @@ import Vuetify, {
   VCardTitle,
   VCard,
   VContainer,
+  VDivider,
 } from 'vuetify/lib'
 import 'vuetify/dist/vuetify.min.css'
 
@@ -49,6 +50,7 @@ Vue.use(Vuetify, {
     VCardTitle,
     VCard,
     VContainer,
+    VDivider,
   },
 })
 
