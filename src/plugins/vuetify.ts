@@ -25,6 +25,7 @@ import Vuetify, {
   VDivider,
   VTextarea,
   VSelect,
+  VCheckbox,
 } from 'vuetify/lib'
 import 'vuetify/dist/vuetify.min.css'
 
@@ -55,6 +56,7 @@ Vue.use(Vuetify, {
     VDivider,
     VTextarea,
     VSelect,
+    VCheckbox,
   },
 })
 

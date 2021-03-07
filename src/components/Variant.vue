@@ -23,7 +23,7 @@ div(style='width: 100%')
       v-chip.px-1.mr-2(
         dark,
         x-small,
-        v-if='isAdmin',
+        v-if='isAdmin && !selectOrDeleteVariantsEnabled',
         @click='editTextEnabled = !editTextEnabled',
         :class='editTextEnabled ? "green darken-2" : ""',
         :loading='loading'

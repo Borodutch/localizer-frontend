@@ -10,15 +10,15 @@ v-card.mb-2
       :loading='loading'
     )
       v-icon(small) delete
-    //- v-btn.mr-1(
-    //-   v-if='isAdmin',
-    //-   small,
-    //-   icon,
-    //-   @click='selectOrDeleteVariantsEnabled = !selectOrDeleteVariantsEnabled',
-    //-   :loading='loading',
-    //-   :class='selectOrDeleteVariantsEnabled ? "green darken-2" : ""'
-    //- )
-    //-   v-icon(small) edit
+    v-btn.mr-1(
+      v-if='isAdmin',
+      small,
+      icon,
+      @click='selectOrDeleteVariantsEnabled = !selectOrDeleteVariantsEnabled',
+      :loading='loading',
+      :class='selectOrDeleteVariantsEnabled ? "green darken-2" : ""'
+    )
+      v-icon(small) edit
     v-btn.mr-1(
       small,
       icon,
@@ -96,26 +96,29 @@ v-card.mb-2
           @click='addVariant()',
           :loading='loading'
         ) {{ $t("add.save") }}
-    //- div(v-if='selectOrDeleteVariantsEnabled')
-    //-   v-chip.px-1(
-    //-     dark,
-    //-     x-small,
-    //-     color='red',
-    //-     @click='deleteVariants(localization.key)',
-    //-     :loading='loading'
-    //-   )
-    //-     v-icon(x-small, color='white') delete
-    //-   v-chip.px-1(
-    //-     dark,
-    //-     x-small,
-    //-     color='green',
-    //-     @click='selectVariants(localization.key)',
-    //-     :loading='loading'
-    //-   )
-    //-     v-icon(x-small, color='white') done
+    div(v-if='selectOrDeleteVariantsEnabled')
+      v-chip.px-1(
+        dark,
+        x-small,
+        color='red',
+        @click='deleteVariants',
+        :loading='loading'
+      )
+        v-icon(x-small, color='white') delete
+      v-chip.px-1(
+        dark,
+        x-small,
+        color='green',
+        @click='selectVariants',
+        :loading='loading'
+      )
+        v-icon(x-small, color='white') done
     div(v-for='variant in localization.variants')
       .d-flex.direction-row
-        //- v-checkbox(v-if='editKeyEnabled', v-model='selected[variant._id]')
+        v-checkbox(
+          v-if='selectOrDeleteVariantsEnabled',
+          v-model='selectedVariants[variant._id]'
+        )
         VariantView(
           :variant='variant',
           :localization='localization',
@@ -138,7 +141,6 @@ const SnackbarStore = namespace('SnackbarStore')
 const AppStore = namespace('AppStore')
 const DataStore = namespace('DataStore')
 
-// TODO: selection and deletion
 // TODO: viewed items
 
 @Component({
@@ -171,6 +173,14 @@ export default class LocalizationCard extends Vue {
     key: string
     variant: Variant
   }) => void
+  @DataStore.Mutation deleteLocalizationVariants!: (options: {
+    key: string
+    variantIds: string[]
+  }) => void
+  @DataStore.Mutation selectLocalizationVariants!: (options: {
+    key: string
+    variantIds: string[]
+  }) => void
   @DataStore.Mutation refreshLocalizations!: () => void
 
   addVariantText = ''
@@ -186,7 +196,7 @@ export default class LocalizationCard extends Vue {
 
   loading = false
 
-  // selected = {} as any
+  selectedVariants = {} as any
 
   // isNew = false
 
@@ -238,29 +248,31 @@ export default class LocalizationCard extends Vue {
     })
   }
 
-  // async deleteVariants(key: string) {
-  //   this.performRequest(async () => {
-  //     await api.deleteVariants(
-  //       key,
-  //       Object.keys(this.selected).filter((k) => !!this.selected[k])
-  //     )
-  //     this.selected = {}
-  //     // this.editKeyEnabled = false
-  //     this.$props.loadData()
-  //   })
-  // }
+  async deleteVariants() {
+    const ids = Object.keys(this.selectedVariants).filter(
+      (k) => !!this.selectedVariants[k]
+    )
+    const key = this.$props.localization.key
+    this.performRequest(async () => {
+      await api.deleteVariants(key, ids)
+      this.deleteLocalizationVariants({ key, variantIds: ids })
+      this.selectedVariants = {}
+      this.selectOrDeleteVariantsEnabled = false
+    })
+  }
 
-  // selectVariants(key: string) {
-  //   this.performRequest(async () => {
-  //     await api.selectVariants(
-  //       key,
-  //       Object.keys(this.selected).filter((k) => !!this.selected[k])
-  //     )
-  //     this.selected = {}
-  //     // this.editKeyEnabled = false
-  //     this.$props.loadData()
-  //   })
-  // }
+  selectVariants() {
+    const ids = Object.keys(this.selectedVariants).filter(
+      (k) => !!this.selectedVariants[k]
+    )
+    const key = this.$props.localization.key
+    this.performRequest(async () => {
+      await api.selectVariants(key, ids)
+      this.selectLocalizationVariants({ key, variantIds: ids })
+      this.selectedVariants = {}
+      this.selectOrDeleteVariantsEnabled = false
+    })
+  }
 
   async performRequest(requestFunction: () => Promise<unknown>) {
     this.loading = true
