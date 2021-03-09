@@ -28,11 +28,15 @@
   },
   "devDependencies": {
     "@prettier/plugin-pug": "^1.13.4",
+    "@tailwindcss/postcss7-compat": "^2.0.3",
     "@vue/cli-plugin-typescript": "^4.5.11",
     "@vue/cli-service": "^4.5.11",
+    "autoprefixer": "^9",
+    "postcss": "^7",
     "prettier": "prettier/prettier#cd2b8a32b5ef77eb0047e7517b1ea22d605a094a",
     "sass": "^1.32.8",
     "sass-loader": "^10.1.1",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "typescript": "^4.1.5",
     "vue-template-compiler": "^2.6.12"
   },

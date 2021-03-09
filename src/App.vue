@@ -1,11 +1,10 @@
 <template lang="pug">
-v-app
-  v-container
-    CookieMessage
-    Navbar
-    Snackbar
-    v-main
-      router-view
+div
+  CookieMessage
+  Navbar
+  Snackbar
+  v-main
+    router-view
 </template>
 
 <script lang="ts">
@@ -24,7 +23,7 @@ export default class App extends Vue {
   @AppStore.State dark!: boolean
 
   created() {
-    ;(this as any).$vuetify.theme.dark = this.dark
+    // ; (this as any).$vuetify.theme.dark = this.dark
     document.title = i18n.t('title') as string
   }
 }
