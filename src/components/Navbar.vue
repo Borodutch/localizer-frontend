@@ -4,7 +4,9 @@ nav.navigation(:class='scrolled ? "navigation--shadow" : ""')
     // Title
     .navigation__main-logo
       img.logo(src='/img/logo.svg', @click='goHome')
-    .navigation__side-menu
+    .navigation__side-menu(
+      :class='scrolled ? "navigation__side-menu--scroll" : ""'
+    )
       // Language picker
       div
         v-list
@@ -117,7 +119,11 @@ export default class Navbar extends Vue {
   }
 
   &__side-menu {
-    @apply bg-gray-100 rounded-xl py-3 px-4 inline-flex bg-opacity-60;
+    @apply bg-gray-100 rounded-xl py-3 px-4 inline-flex bg-opacity-60 transition;
+  }
+
+  &__side-menu--scroll {
+    @apply bg-transparent;
   }
 }
 .logo {
