@@ -119,7 +119,7 @@ export default class Navbar extends Vue {
   }
 
   &__side-menu {
-    @apply bg-gray-100 rounded-xl py-3 px-4 inline-flex bg-opacity-60 transition;
+    @apply bg-back-gray rounded-xl py-3 px-4 inline-flex transition;
   }
 
   &__side-menu--scroll {
