@@ -4,7 +4,7 @@ import router from '@/plugins/router'
 import store from '@/store'
 import { i18n } from '@/plugins/i18n'
 import vuetify from '@/plugins/vuetify'
-import './index.css'
+import '@/index.css'
 
 Vue.config.productionTip = true
 

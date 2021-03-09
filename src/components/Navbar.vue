@@ -1,33 +1,31 @@
 <template lang="pug">
-nav
-  v-app-bar(app, flat, :color='dark ? "#0D0D0D" : "white"')
+nav.navigation(:class='scrolled ? "navigation--shadow" : ""')
+  .navigation__inner
     // Title
-    img.logo(src='/img/logo.svg', @click='goHome')
-    v-spacer
-    // Language picker
-    v-menu(offset-y)
-      template(v-slot:activator='{ on }')
-        v-btn.navbar-button(text, v-on='on')
-          .mt-1 {{ currentLocale.icon }}
-      v-list
-        v-list-item.text-center(
-          v-for='locale in locales',
-          @click='changeLanguage(locale.code)',
-          :key='locale.code'
-        )
-          v-list-item-title.mt-1 {{ locale.icon }}
-    // Dark theme
-    v-btn.navbar-button(text, @click='toggleDark')
-      img(src='/img/moon.svg')
-    // Admin
-    v-btn(text, :color='isAdmin ? "primary" : "grey"', @click='toggleAdmin')
-      v-icon(small) vpn_key
-    // Code
-    v-btn(text, icon, color='grey', @click='$router.replace("/code")')
-      v-icon(small) code
-    // Refresh
-    v-btn(text, icon, color='grey', @click='refresh')
-      v-icon(small) autorenew
+    .navigation__main-logo
+      img.logo(src='/img/logo.svg', @click='goHome')
+    .navigation__side-menu
+      // Language picker
+      div
+        v-list
+          v-list-item.text-center(
+            v-for='locale in locales',
+            @click='changeLanguage(locale.code)',
+            :key='locale.code'
+          )
+            v-list-item-title.mt-1 {{ locale.icon }}
+      // Dark theme
+      .navbar-button(text, @click='toggleDark')
+        img(src='/img/moon.svg')
+      // Admin
+      div(text, :color='isAdmin ? "primary" : "grey"', @click='toggleAdmin')
+        v-icon(small) vpn_key
+      // Code
+      div(text, icon, color='grey', @click='$router.replace("/code")')
+        v-icon(small) code
+      // Refresh
+      div(text, icon, color='grey', @click='refresh')
+        v-icon(small) autorenew
 </template>
 
 <script lang="ts">
@@ -49,6 +47,20 @@ export default class Navbar extends Vue {
   @AppStore.Mutation toggleAdmin!: () => void
   @DataStore.Mutation setLoading!: (loading: boolean) => void
   @DataStore.Action loadData!: () => void
+
+  scrolled = false;
+
+  created() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  destroyed() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll() {
+    this.scrolled = window.scrollY > 0;
+  }
 
   get locales() {
     return [
@@ -73,7 +85,7 @@ export default class Navbar extends Vue {
 
   toggleDark() {
     this.setDark(!this.dark)
-    ;(this.$vuetify.theme as any).dark = this.dark
+      ; (this.$vuetify.theme as any).dark = this.dark
   }
 
   goHome() {
@@ -95,8 +107,23 @@ export default class Navbar extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.navigation {
+  @apply py-5 sticky top-0 bg-white shadow-none transition;
+
+  &--shadow {
+    @apply shadow-md;
+  }
+
+  &__inner {
+    @apply max-w-screen-xl mx-auto flex items-center justify-between;
+  }
+
+  &__side-menu {
+    @apply bg-gray-100 rounded-xl py-3 px-4 inline-flex;
+  }
+}
 .logo {
-  cursor: pointer;
+  @apply cursor-pointer;
 }
 </style>

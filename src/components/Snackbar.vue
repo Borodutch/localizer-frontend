@@ -1,5 +1,5 @@
 <template lang="pug">
-div
+.snackbar.hidden
   v-snackbar(
     app,
     v-model='safeActive',

@@ -1,10 +1,9 @@
 <template lang="pug">
-div
+.page
   CookieMessage
   Navbar
   Snackbar
-  v-main
-    router-view
+  router-view
 </template>
 
 <script lang="ts">
@@ -28,9 +27,3 @@ export default class App extends Vue {
   }
 }
 </script>
-
-<style>
-.container {
-  max-width: 1000px !important;
-}
-</style>

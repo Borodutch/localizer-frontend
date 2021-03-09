@@ -1,6 +1,6 @@
 <template lang="pug">
-.v-container.pa-4
-  .body-1 {{ $t("description") }}
+main.wrapper
+  .greeting-text {{ $t("description") }}
   UsernameInput
   PasswordInput(v-if='isAdmin')
   SearchInput
@@ -30,3 +30,12 @@ export default class Home extends Vue {
   @AppStore.State isAdmin!: boolean
 }
 </script>
+
+<style lang="scss" scoped>
+.wrapper {
+  @apply max-w-screen-xl mx-auto;
+}
+.greeting-text {
+  @apply font-medium;
+}
+</style>
