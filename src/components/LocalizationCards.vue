@@ -1,7 +1,8 @@
 <template lang="pug">
 div
   LoadingIndicator
-  Filters
+  .page-block
+    Filters
   Pagination
   LocalizationCard(
     v-for='localization in filteredAndPaginatedData',

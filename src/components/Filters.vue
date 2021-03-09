@@ -1,40 +1,38 @@
 <template lang="pug">
-.mb-2.d-flex.flex-wrap.justify-center.white--text
-  v-chip.mx-1.my-1(
-    dark,
+.chips.flex.flex-wrap
+  span.chip(
     v-for='tag in tags',
     :key='tag',
     :color='selectedTags.includes(tag) ? colors[tag] : undefined',
     @click='toggleTag(tag)'
   ) {{ tag }}
-  v-chip.mx-1.my-1(
-    dark,
+  span.chip(
     v-for='language in languages',
     :key='language',
     :color='selectedLanguages.includes(language) ? colors[language] : undefined',
     @click='toggleLanguage(language)'
   ) {{ language }}
-  v-chip.mx-1.my-1(
-    dark,
-    v-for='nonlanguage in languages',
-    :key='`no-${nonlanguage}`',
-    :color='selectedNonlanguages.includes(nonlanguage) ? colors[nonlanguage] : undefined',
-    @click='toggleNonlanguage(nonlanguage)'
-  ) {{ $t("no") }} {{ nonlanguage }}
-  v-chip.mx-1.my-1(
-    dark,
-    :color='newFilterEnabled ? "primary" : undefined',
-    @click='toggleNewFilterEnabled'
-  ) {{ $t("new") }}
-  v-menu(offset-y)
-    template(v-slot:activator='{ on }')
-      v-btn.ml-2.mt-1(v-on='on', text, icon)
-        v-icon keyboard_arrow_down
-    v-list
-      v-list-item(@click='markAllLocalizationsViewed')
-        v-list-item-title Make all viewed
-      v-list-item(@click='markAllLocalizationsNew')
-        v-list-item-title Make all new
+  //- v-chip.mx-1.my-1(
+  //-   dark,
+  //-   v-for='nonlanguage in languages',
+  //-   :key='`no-${nonlanguage}`',
+  //-   :color='selectedNonlanguages.includes(nonlanguage) ? colors[nonlanguage] : undefined',
+  //-   @click='toggleNonlanguage(nonlanguage)'
+  //- ) {{ $t("no") }} {{ nonlanguage }}
+  //- v-chip.mx-1.my-1(
+  //-   dark,
+  //-   :color='newFilterEnabled ? "primary" : undefined',
+  //-   @click='toggleNewFilterEnabled'
+  //- ) {{ $t("new") }}
+  //- v-menu(offset-y)
+  //-   template(v-slot:activator='{ on }')
+  //-     v-btn.ml-2.mt-1(v-on='on', text, icon)
+  //-       v-icon keyboard_arrow_down
+  //-   v-list
+  //-     v-list-item(@click='markAllLocalizationsViewed')
+  //-       v-list-item-title Make all viewed
+  //-     v-list-item(@click='markAllLocalizationsNew')
+  //-       v-list-item-title Make all new
 </template>
 
 <script lang="ts">
@@ -65,3 +63,12 @@ export default class Filters extends Vue {
   @DataStore.Mutation toggleNewFilterEnabled!: () => void
 }
 </script>
+
+<style lang="scss" scoped>
+.chip {
+  @apply px-4 py-2 bg-primary-red text-white font-medium rounded-xl mr-3 mt-3;
+}
+.chip {
+  font-size: 18px;
+}
+</style>

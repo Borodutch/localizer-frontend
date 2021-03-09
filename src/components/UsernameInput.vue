@@ -1,5 +1,6 @@
 <template lang="pug">
-v-text-field(:label='$t("username")', v-model='usernameProxy')
+//- v-text-field(:label='$t("username")', v-model='usernameProxy')
+<input type="text" class="w-full" placeholder="username"/>
 </template>
 
 <script lang="ts">

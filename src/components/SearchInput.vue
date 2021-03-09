@@ -1,5 +1,6 @@
 <template lang="pug">
-v-text-field(:label='$t("search")', v-model='queryProxy', append-icon='search')
+//- v-text-field(:label='$t("search")', v-model='queryProxy', append-icon='search')
+<input type="text" class="w-full" placeholder="search" />
 </template>
 
 <script lang="ts">

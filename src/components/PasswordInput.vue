@@ -1,11 +1,12 @@
 <template lang="pug">
-v-text-field(
-  :append-icon='show ? "mdi-eye" : "mdi-eye-off"',
-  :label='$t("admin.password")',
-  v-model='passwordProxy',
-  :type='show ? "text" : "password"',
-  @click:append='show = !show'
-)
+//- v-text-field(
+//-   :append-icon='show ? "mdi-eye" : "mdi-eye-off"',
+//-   :label='$t("admin.password")',
+//-   v-model='passwordProxy',
+//-   :type='show ? "text" : "password"',
+//-   @click:append='show = !show'
+//- )
+<input type="password" />
 </template>
 
 <script lang="ts">

@@ -2,9 +2,10 @@
 main.wrapper
   .wrapper__inner
     .greeting-text {{ $t("description") }}
-    UsernameInput
-    PasswordInput(v-if='isAdmin')
-    SearchInput
+    .page-block
+      UsernameInput
+      PasswordInput(v-if='isAdmin')
+      SearchInput
     LocalizationCards
 </template>
 
@@ -32,7 +33,7 @@ export default class Home extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .wrapper {
   @apply px-5;
 
@@ -41,6 +42,12 @@ export default class Home extends Vue {
   }
 }
 .greeting-text {
-  @apply font-medium;
+  @apply font-medium py-10;
+}
+.greeting-text {
+  font-size: 22px;
+}
+.page-block {
+  @apply pb-5;
 }
 </style>
