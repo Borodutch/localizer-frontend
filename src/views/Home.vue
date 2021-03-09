@@ -1,10 +1,11 @@
 <template lang="pug">
 main.wrapper
-  .greeting-text {{ $t("description") }}
-  UsernameInput
-  PasswordInput(v-if='isAdmin')
-  SearchInput
-  LocalizationCards
+  .wrapper__inner
+    .greeting-text {{ $t("description") }}
+    UsernameInput
+    PasswordInput(v-if='isAdmin')
+    SearchInput
+    LocalizationCards
 </template>
 
 <script lang="ts">
@@ -33,7 +34,11 @@ export default class Home extends Vue {
 
 <style lang="scss" scoped>
 .wrapper {
-  @apply max-w-screen-xl mx-auto;
+  @apply px-5;
+
+  &__inner {
+    @apply max-w-screen-xl mx-auto;
+  }
 }
 .greeting-text {
   @apply font-medium;

@@ -18,14 +18,11 @@ nav.navigation(:class='scrolled ? "navigation--shadow" : ""')
       .navbar-button(text, @click='toggleDark')
         img(src='/img/moon.svg')
       // Admin
-      div(text, :color='isAdmin ? "primary" : "grey"', @click='toggleAdmin')
-        v-icon(small) vpn_key
+      div(text, :color='isAdmin ? "primary" : "grey"', @click='toggleAdmin') admin
       // Code
-      div(text, icon, color='grey', @click='$router.replace("/code")')
-        v-icon(small) code
+      div(text, icon, color='grey', @click='$router.replace("/code")') code
       // Refresh
-      div(text, icon, color='grey', @click='refresh')
-        v-icon(small) autorenew
+      div(text, icon, color='grey', @click='refresh') refresh
 </template>
 
 <script lang="ts">
@@ -109,10 +106,10 @@ export default class Navbar extends Vue {
 
 <style lang="scss" scoped>
 .navigation {
-  @apply py-5 sticky top-0 bg-white shadow-none transition;
+  @apply p-5 sticky top-0 shadow-none transition-shadow;
 
   &--shadow {
-    @apply shadow-md;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.04);
   }
 
   &__inner {
@@ -120,10 +117,14 @@ export default class Navbar extends Vue {
   }
 
   &__side-menu {
-    @apply bg-gray-100 rounded-xl py-3 px-4 inline-flex;
+    @apply bg-gray-100 rounded-xl py-3 px-4 inline-flex bg-opacity-60;
   }
 }
 .logo {
   @apply cursor-pointer;
+}
+.navigation {
+  backdrop-filter: blur(5px) saturate(200%);
+  background: rgba(255, 255, 255, 0.8);
 }
 </style>
