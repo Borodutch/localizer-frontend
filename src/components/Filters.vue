@@ -1,24 +1,26 @@
 <template lang="pug">
-.chips.flex.flex-wrap
-  span.chip(
+.chips
+  .chip(
     v-for='tag in tags',
     :key='tag',
-    :color='selectedTags.includes(tag) ? colors[tag] : undefined',
+    :style='selectedTags.includes(tag) ? "background-color: " + colors[tag] : ""',
+    :class='selectedTags.includes(tag) ? "chip--selected" : ""',
     @click='toggleTag(tag)'
   ) {{ tag }}
-  span.chip(
+  .chip(
     v-for='language in languages',
     :key='language',
-    :color='selectedLanguages.includes(language) ? colors[language] : undefined',
+    :style='selectedLanguages.includes(language) ? "background-color: " + colors[language] : ""',
+    :class='selectedLanguages.includes(language) ? "chip--selected" : ""',
     @click='toggleLanguage(language)'
   ) {{ language }}
-  //- v-chip.mx-1.my-1(
-  //-   dark,
-  //-   v-for='nonlanguage in languages',
-  //-   :key='`no-${nonlanguage}`',
-  //-   :color='selectedNonlanguages.includes(nonlanguage) ? colors[nonlanguage] : undefined',
-  //-   @click='toggleNonlanguage(nonlanguage)'
-  //- ) {{ $t("no") }} {{ nonlanguage }}
+  .chip(
+    v-for='nonlanguage in languages',
+    :key='`no-${nonlanguage}`',
+    :style='selectedNonlanguages.includes(nonlanguage) ? "background-color: " + colors[nonlanguage] : ""',
+    :class='selectedNonlanguages.includes(nonlanguage) ? "chip--selected" : ""',
+    @click='toggleNonlanguage(nonlanguage)'
+  ) {{ $t("no") }} {{ nonlanguage }}
   //- v-chip.mx-1.my-1(
   //-   dark,
   //-   :color='newFilterEnabled ? "primary" : undefined',
@@ -66,9 +68,16 @@ export default class Filters extends Vue {
 
 <style lang="scss" scoped>
 .chip {
-  @apply px-4 py-2 bg-primary-red text-white font-medium rounded-xl mr-3 mt-3;
+  @apply transition border border-text-light px-4 py-2 text-gray-700 font-medium rounded-full mr-3 mt-3 cursor-pointer;
+
+  &--selected {
+    @apply border-transparent text-white;
+  }
 }
 .chip {
   font-size: 18px;
+}
+.chips {
+  @apply flex flex-wrap;
 }
 </style>

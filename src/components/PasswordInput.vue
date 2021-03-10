@@ -6,7 +6,7 @@
 //-   :type='show ? "text" : "password"',
 //-   @click:append='show = !show'
 //- )
-<input type="password" />
+<input class="password-text" type="password" :placeholder='$t("admin.password")'/>
 </template>
 
 <script lang="ts">
@@ -32,3 +32,16 @@ export default class PasswordInput extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.password-text {
+  @apply font-medium transition block p-4 pl-12 w-full rounded-lg border-back-silver focus:border-primary-blue focus:ring-0 placeholder-text-light;
+}
+.password-text {
+  background-image: url('../assets/icons/key.svg');
+  background-repeat: no-repeat;
+  background-position: 14px center;
+  background-size: 24px;
+  font-size: 20px;
+}
+</style>

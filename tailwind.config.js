@@ -5,6 +5,7 @@ module.exports = {
     fontFamily: {
       sans: ['Inter', 'sans'],
     },
+
     extend: {
       colors: {
         'primary-blue': '#377DFF',
@@ -22,12 +23,13 @@ module.exports = {
         'back-gray': '#F5F6FA',
         'back-silver': '#EDEEF6',
       },
+      boxShadow: {
+        card: '0 20px 50px 0 rgba(0, 0, 0, 0.05)',
+      },
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
+  plugins: [require('@tailwindcss/forms')],
 }

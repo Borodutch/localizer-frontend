@@ -4,27 +4,38 @@ nav.navigation(:class='scrolled ? "navigation--shadow" : ""')
     // Title
     .navigation__main-logo
       img.logo(src='/img/logo.svg', @click='goHome')
+    div
+      v-list
+        v-list-item.text-center(
+          v-for='locale in locales',
+          @click='changeLanguage(locale.code)',
+          :key='locale.code'
+        )
+          v-list-item-title.mt-1 {{ locale.icon }}
     .navigation__side-menu(
       :class='scrolled ? "navigation__side-menu--scroll" : ""'
     )
-      // Language picker
-      div
-        v-list
-          v-list-item.text-center(
-            v-for='locale in locales',
-            @click='changeLanguage(locale.code)',
-            :key='locale.code'
-          )
-            v-list-item-title.mt-1 {{ locale.icon }}
       // Dark theme
-      .navbar-button(text, @click='toggleDark')
-        img(src='/img/moon.svg')
+      .navigation__button(text, @click='toggleDark')
+        img(src='@/assets/icons/moon.svg')
       // Admin
-      div(text, :color='isAdmin ? "primary" : "grey"', @click='toggleAdmin') admin
+      .navigation__button(
+        text,
+        :color='isAdmin ? "primary" : "grey"',
+        @click='toggleAdmin'
+      )
+        img(src='@/assets/icons/key.svg')
       // Code
-      div(text, icon, color='grey', @click='$router.replace("/code")') code
+      .navigation__button(
+        text,
+        icon,
+        color='grey',
+        @click='$router.replace("/code")'
+      )
+        img(src='@/assets/icons/arrows.svg')
       // Refresh
-      div(text, icon, color='grey', @click='refresh') refresh
+      .navigation__button(text, icon, color='grey', @click='refresh')
+        img(src='@/assets/icons/layers.svg')
 </template>
 
 <script lang="ts">
@@ -111,7 +122,7 @@ export default class Navbar extends Vue {
   @apply p-5 sticky top-0 shadow-none transition-shadow;
 
   &--shadow {
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.04);
+    @apply shadow-card;
   }
 
   &__inner {
@@ -119,11 +130,15 @@ export default class Navbar extends Vue {
   }
 
   &__side-menu {
-    @apply bg-back-gray rounded-xl py-3 px-4 inline-flex transition;
+    @apply bg-back-gray rounded-xl py-3 px-4 inline-flex transition space-x-5;
   }
 
   &__side-menu--scroll {
     @apply bg-transparent;
+  }
+
+  &__button {
+    @apply cursor-pointer;
   }
 }
 .logo {

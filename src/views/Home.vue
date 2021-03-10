@@ -2,11 +2,13 @@
 main.wrapper
   .wrapper__inner
     .greeting-text {{ $t("description") }}
-    .page-block
-      UsernameInput
-      PasswordInput(v-if='isAdmin')
+    .content-block.space-y-3
+      .grid.gap-3(:class='isAdmin ? "grid-cols-2" : "grid-cols-1"')
+        UsernameInput
+        PasswordInput(v-if='isAdmin')
       SearchInput
-    LocalizationCards
+    .page-block
+      LocalizationCards
 </template>
 
 <script lang="ts">
@@ -42,12 +44,15 @@ export default class Home extends Vue {
   }
 }
 .greeting-text {
-  @apply font-medium py-10;
+  @apply font-medium pb-10 pt-8;
 }
 .greeting-text {
   font-size: 22px;
 }
 .page-block {
   @apply pb-5;
+}
+.content-block {
+  @apply pb-3;
 }
 </style>

@@ -1,5 +1,5 @@
 <template lang="pug">
-.mt-4(v-if='contributors.length')
+div(v-if='contributors.length')
   .headline.mb-2 {{ $t("top") }}
   v-chip.mx-1.my-1(
     dark,
