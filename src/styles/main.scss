@@ -1,0 +1,48 @@
+// 
+// Card
+//
+
+.card {
+  @apply mb-5 border border-back-silver rounded-lg shadow-card bg-white;
+
+  &__title {
+    @apply p-5 font-medium text-lg;
+  }
+
+  &__header {
+    @apply flex items-center space-x-3;
+  }
+
+  &__icon {
+    @apply cursor-pointer transition transform hover:scale-125;
+  }
+
+  &__body {
+    @apply border-t-2 border-back-silver p-5;
+  }
+
+}
+
+//
+// Chips
+//
+
+.chips {
+  
+  @apply flex flex-wrap;
+
+}
+
+.chip {
+  
+  @apply text-sm transition border bg-white border-text-light px-4 py-2 text-gray-700 font-medium rounded-full mr-2 mt-2 cursor-pointer;
+
+  &--selected {
+    @apply border-transparent text-white;
+  }
+
+  &--title {
+    @apply cursor-default px-3 py-1 mt-0;
+  }
+
+}

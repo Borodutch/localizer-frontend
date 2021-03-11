@@ -1,68 +1,63 @@
 <template lang="pug">
-v-card.mb-2
-  v-card-title
-    v-btn.mr-1(
-      v-if='isAdmin',
-      color='red',
-      small,
-      icon,
-      @click='deleteLocalization(localization.key)',
-      :loading='loading'
-    )
-      v-icon(small) delete
-    v-btn.mr-1(
-      v-if='isAdmin',
-      small,
-      icon,
-      @click='selectOrDeleteVariantsEnabled = !selectOrDeleteVariantsEnabled',
-      :loading='loading',
-      :class='selectOrDeleteVariantsEnabled ? "green darken-2" : ""'
-    )
-      v-icon(small) edit
-    v-btn.mr-1(
-      small,
-      icon,
-      @click='toggleAddVariantEnabled',
-      :color='addVariantEnabled ? "red" : undefined'
-    )
-      v-icon(small) {{ addVariantEnabled ? "clear" : "add" }}
-    span.mx-1 {{ localization.key }}
-    v-chip.mx-1(
-      dark,
-      small,
-      v-for='tag in localization.tags',
-      :key='tag',
-      :color='colors[tag]'
-    )
-      span {{ tag }}
-      .ml-2(
-        small,
+.card
+  .card__title
+    .card__header
+      span.mr-1(
         v-if='isAdmin',
-        @click='deleteTag(localization.key, tag)',
-        :disabled='loading'
-      )
-        v-icon(small, v-if='!loading') close
-        span(v-else) 🤔
-    v-chip.mx-1.px-1(
-      v-if='!viewedItems[localization._id]',
-      dark,
-      small,
-      @click='setViewedProxy',
-      color='primary'
-    ) {{ $t("new") }}
-    v-chip.ma-1.px-1(
-      dark,
-      small,
-      v-if='isAdmin && !loading',
-      :color='addTagEnabled ? "green darken-2" : ""',
-      @click='toggleAddTagEnabled'
-    )
-      v-icon(small) {{ addTagEnabled ? "close" : "add" }}
-    v-text-field.mx-1.mb-0.mt-4.px-0.py-0(
+        color='red',
+        small,
+        icon,
+        @click='deleteLocalization(localization.key)',
+        :loading='loading'
+      ) delete
+      span.mr-1(
+        v-if='isAdmin',
+        small,
+        icon,
+        @click='selectOrDeleteVariantsEnabled = !selectOrDeleteVariantsEnabled',
+        :loading='loading',
+        :class='selectOrDeleteVariantsEnabled ? "green darken-2" : ""'
+      ) edit
+      .card__icon.mr-1(@click='toggleAddVariantEnabled') 
+        img(src='../assets/icons/add.svg') 
+          //- {{ addVariantEnabled ? "clear" : "+" }}
+      span.mx-1 {{ localization.key }}
+      .chips.card__chips
+        .chip.chip--title.chip--selected(
+          dark,
+          small,
+          v-for='tag in localization.tags',
+          :key='tag',
+          :style='"background-color: " + colors[tag]'
+        ) {{ tag }}
+          .ml-2(
+            small,
+            v-if='isAdmin',
+            @click='deleteTag(localization.key, tag)',
+            :disabled='loading'
+          )
+            v-icon(small, v-if='!loading') close
+            span(v-else) 🤔
+        .chip.chip--title(
+          v-if='!viewedItems[localization._id]',
+          dark,
+          small,
+          @click='setViewedProxy',
+          color='primary'
+        ) {{ $t("new") }}
+        .chip.chip--title(
+          dark,
+          small,
+          v-if='isAdmin && !loading',
+          :color='addTagEnabled ? "green darken-2" : ""',
+          @click='toggleAddTagEnabled'
+        ) {{ addTagEnabled ? "close" : "add" }}
+    .input.mx-1.mb-0.mt-4.px-0.py-0(
       :label='$t("tag.new")',
       v-if='addTagEnabled && isAdmin',
       clearable,
       rows='1',
+      type='text',
       auto-grow,
       no-resize,
       compact,
@@ -71,7 +66,6 @@ v-card.mb-2
       @click:append-outer='addTag',
       :disabled='loading'
     )
-  v-card-text
     div(v-if='addVariantEnabled')
       v-textarea.mb-1.mt-0.pt-0(
         :label='$t("add.text")',
@@ -90,14 +84,14 @@ v-card.mb-2
           :rules='languageRules',
           v-model='addVariantLanguage'
         )
-        v-btn.ml-2(
+        .ml-2(
           color='primary',
           :disabled='!addVariantText || !addVariantLanguage',
           @click='addVariant()',
           :loading='loading'
         ) {{ $t("add.save") }}
     div(v-if='selectOrDeleteVariantsEnabled')
-      v-chip.px-1(
+      .chip.chip--title.px-1(
         dark,
         x-small,
         color='red',
@@ -105,7 +99,7 @@ v-card.mb-2
         :loading='loading'
       )
         v-icon(x-small, color='white') delete
-      v-chip.px-1(
+      .chip.chip--title.px-1(
         dark,
         x-small,
         color='green',
@@ -113,17 +107,17 @@ v-card.mb-2
         :loading='loading'
       )
         v-icon(x-small, color='white') done
-    div(v-for='variant in localization.variants')
-      .d-flex.direction-row
-        v-checkbox(
-          v-if='selectOrDeleteVariantsEnabled',
-          v-model='selectedVariants[variant._id]'
-        )
-        VariantView(
-          :variant='variant',
-          :localization='localization',
-          :selectOrDeleteVariantsEnabled='selectOrDeleteVariantsEnabled'
-        )
+  .card__body(v-for='variant in localization.variants')
+    .d-flex.direction-row
+      v-checkbox(
+        v-if='selectOrDeleteVariantsEnabled',
+        v-model='selectedVariants[variant._id]'
+      )
+      VariantView(
+        :variant='variant',
+        :localization='localization',
+        :selectOrDeleteVariantsEnabled='selectOrDeleteVariantsEnabled'
+      )
 </template>
 
 <script lang="ts">

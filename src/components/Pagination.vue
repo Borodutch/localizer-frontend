@@ -1,9 +1,18 @@
 <template lang="pug">
-v-pagination.mb-2(
-  v-model='pageProxy',
-  v-if='numberOfPages > 1',
-  :length='numberOfPages'
-)
+//- v-pagination.mb-2(
+//-   v-model='pageProxy',
+//-   v-if='numberOfPages > 1',
+//-   :length='numberOfPages'
+//- )
+.flex.space-x-2.my-5.justify-center.font-medium.text-text-silver
+  .px-3.py-2.rounded-lg.border.bg-white.flex.items-center
+    img(src='../assets/icons/left.svg', width=10)
+  .px-3.py-2.rounded-lg.border.bg-white(
+    v-for='page in numberOfPages',
+    :class='page === pageProxy ? "bg-primary-blue border-transparent text-white" : ""'
+  ) {{ page }}
+  .px-3.py-2.rounded-lg.border.bg-white.flex.items-center
+    img(src='../assets/icons/right.svg', width=10)
 </template>
 
 <script lang="ts">

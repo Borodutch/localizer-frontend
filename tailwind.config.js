@@ -25,6 +25,7 @@ module.exports = {
       },
       boxShadow: {
         card: '0 20px 50px 0 rgba(0, 0, 0, 0.05)',
+        blue: '0 20px 50px 0 rgba(0, 0, 255, 0.05)',
       },
     },
   },

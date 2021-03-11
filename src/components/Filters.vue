@@ -65,19 +65,3 @@ export default class Filters extends Vue {
   @DataStore.Mutation toggleNewFilterEnabled!: () => void
 }
 </script>
-
-<style lang="scss" scoped>
-.chip {
-  @apply transition border border-text-light px-4 py-2 text-gray-700 font-medium rounded-full mr-3 mt-3 cursor-pointer;
-
-  &--selected {
-    @apply border-transparent text-white;
-  }
-}
-.chip {
-  font-size: 18px;
-}
-.chips {
-  @apply flex flex-wrap;
-}
-</style>

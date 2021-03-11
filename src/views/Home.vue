@@ -44,7 +44,7 @@ export default class Home extends Vue {
   }
 }
 .greeting-text {
-  @apply font-medium pb-10 pt-8;
+  @apply font-medium pb-10 pt-8 text-text-dark;
 }
 .greeting-text {
   font-size: 22px;

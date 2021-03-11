@@ -4,14 +4,6 @@ nav.navigation(:class='scrolled ? "navigation--shadow" : ""')
     // Title
     .navigation__main-logo
       img.logo(src='/img/logo.svg', @click='goHome')
-    div
-      v-list
-        v-list-item.text-center(
-          v-for='locale in locales',
-          @click='changeLanguage(locale.code)',
-          :key='locale.code'
-        )
-          v-list-item-title.mt-1 {{ locale.icon }}
     .navigation__side-menu(
       :class='scrolled ? "navigation__side-menu--scroll" : ""'
     )
@@ -36,6 +28,13 @@ nav.navigation(:class='scrolled ? "navigation--shadow" : ""')
       // Refresh
       .navigation__button(text, icon, color='grey', @click='refresh')
         img(src='@/assets/icons/layers.svg')
+      v-list
+        v-list-item.text-center(
+          v-for='locale in locales',
+          @click='changeLanguage(locale.code)',
+          :key='locale.code'
+        )
+          v-list-item-title.mt-1.text-text-silver.font-medium {{ locale.code }}
 </template>
 
 <script lang="ts">
@@ -75,7 +74,7 @@ export default class Navbar extends Vue {
   get locales() {
     return [
       { icon: '🇺🇸', code: 'en' },
-      { icon: '🇷🇺', code: 'ru' },
+      // { icon: '🇷🇺', code: 'ru' },
     ]
   }
 
@@ -119,7 +118,7 @@ export default class Navbar extends Vue {
 
 <style lang="scss" scoped>
 .navigation {
-  @apply p-5 sticky top-0 shadow-none transition-shadow;
+  @apply p-5 sticky top-0 shadow-none transition-shadow z-50;
 
   &--shadow {
     @apply shadow-card;
