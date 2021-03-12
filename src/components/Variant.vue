@@ -1,8 +1,8 @@
 <template lang="pug">
 div(style='width: 100%')
-  .my-1
-    .mr-2
-      v-chip.px-1(
+  div
+    .card__actions
+      .card__icon(
         dark,
         x-small,
         color='red',
@@ -11,7 +11,7 @@ div(style='width: 100%')
         :loading='loading'
       )
         v-icon(x-small, color='white') delete
-      v-chip.px-1(
+      .card__icon(
         dark,
         x-small,
         color='green',
@@ -19,8 +19,8 @@ div(style='width: 100%')
         @click='selectVariant',
         :loading='loading'
       )
-        v-icon(x-small, color='white') done
-      v-chip.px-1.mr-2(
+        img(src='../assets/icons/done.svg', width=28) 
+      .card__icon.mr-2(
         dark,
         x-small,
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
@@ -29,38 +29,46 @@ div(style='width: 100%')
         :loading='loading'
       )
         v-icon(x-small, color='white') edit
-      v-chip.px-1(dark, x-small, :color='colors[variant.language]') {{ variant.language }}
-      v-chip.px-1(dark, x-small, v-if='variant.username') {{ variant.username.substr(0, 25) }}
-      v-chip.px-1(dark, x-small, v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
-      v-chip.green.px-1(dark, x-small, v-if='variant.selected')
-        v-icon(small, color='white') done
-      v-chip.px-2.ml-2(
+      .chip.chip--title.chip--selected.text-white(
+        dark,
+        x-small,
+        :style='"background-color:" + colors[variant.language]'
+      ) {{ variant.language }}
+      .chip.chip--title.chip--flat(dark, x-small, v-if='variant.username') {{ variant.username.substr(0, 25) }}
+      .chip.chip--title.chip--flat(dark, x-small, v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
+      .card__icon.green(dark, x-small, v-if='variant.selected')
+        img(src='../assets/icons/done.svg', width=28)
+      .card__icon(
         x-small,
         :disabled='loading',
         @click='downvote',
         :class='this.downvoted[variant._id] ? "red darken-2" : ""'
-      ) {{ loading ? "🤔" : "👎" }}{{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
-      v-chip.px-2(
+      ) 
+        //- {{ loading ? "🤔" : "👎" }}{{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
+        img(src='../assets/icons/down.svg', width=28) 
+      .card__icon(
         dark,
         x-small,
         :disabled='loading',
         @click='upvote',
         :class='this.upvoted[variant._id] ? "green darken-2" : ""'
-      ) {{ loading ? "🤔" : "👍" }}{{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
-      v-chip.mx-2(
+      ) 
+        //- {{ loading ? "🤔" : "👍" }}{{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
+        img(src='../assets/icons/up.svg', width=28) 
+      .card__icon.mx-2.font-medium.text-text-silver(
         dark,
         x-small,
         @click='commentsOpen = !commentsOpen',
         :class='commentsOpen ? "green darken-2" : hasNewComments(variant) ? "primary" : ""'
       ) {{ $t("comment.comments") }}{{ variant.comments.length ? ` ${variant.comments.length}` : "" }}{{ hasNewComments(variant) ? `, ${$t("new")}` : "" }}
-      v-chip.px-1(
+      .chip.chip--title(
         x-small,
         v-if='!viewedItems[variant._id]',
         dark,
         @click='setViewedProxy',
         color='primary'
       ) {{ $t("new") }}
-    p.mb-0 {{ variant.text.replace(/\n/gi, "\\n") }}
+    .card__content {{ variant.text.replace(/\n/gi, "\\n") }}
     EditVariant(
       v-if='editTextEnabled',
       :variant='variant',

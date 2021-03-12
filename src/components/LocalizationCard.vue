@@ -2,14 +2,15 @@
 .card
   .card__title
     .card__header
-      span.mr-1(
+      .card__icon.mr-1(
         v-if='isAdmin',
         color='red',
         small,
         icon,
         @click='deleteLocalization(localization.key)',
         :loading='loading'
-      ) delete
+      ) 
+        img(src='../assets/icons/close.svg') 
       span.mr-1(
         v-if='isAdmin',
         small,
@@ -30,13 +31,13 @@
           :key='tag',
           :style='"background-color: " + colors[tag]'
         ) {{ tag }}
-          .ml-2(
+          span.ml-2(
             small,
             v-if='isAdmin',
             @click='deleteTag(localization.key, tag)',
             :disabled='loading'
           )
-            v-icon(small, v-if='!loading') close
+            img.inline(v-if='!loading', src='../assets/icons/x.svg', width=15) 
             span(v-else) 🤔
         .chip.chip--title(
           v-if='!viewedItems[localization._id]',
@@ -45,13 +46,15 @@
           @click='setViewedProxy',
           color='primary'
         ) {{ $t("new") }}
-        .chip.chip--title(
+        .card__icon(
           dark,
           small,
           v-if='isAdmin && !loading',
           :color='addTagEnabled ? "green darken-2" : ""',
           @click='toggleAddTagEnabled'
-        ) {{ addTagEnabled ? "close" : "add" }}
+        ) 
+          //- {{ addTagEnabled ? "close" : "add" }}
+          img(src='../assets/icons/add.svg') 
     .input.mx-1.mb-0.mt-4.px-0.py-0(
       :label='$t("tag.new")',
       v-if='addTagEnabled && isAdmin',

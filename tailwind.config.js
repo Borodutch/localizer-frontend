@@ -24,8 +24,8 @@ module.exports = {
         'back-silver': '#EDEEF6',
       },
       boxShadow: {
-        card: '0 20px 50px 0 rgba(0, 0, 0, 0.05)',
-        blue: '0 20px 50px 0 rgba(0, 0, 255, 0.05)',
+        card: '0 20px 30px 0 rgba(0, 0, 0, 0.05)',
+        blue: '0 20px 30px 0 rgba(0, 0, 255, 0.05)',
       },
     },
   },

@@ -21,6 +21,14 @@
     @apply border-t-2 border-back-silver p-5;
   }
 
+  &__content {
+    @apply pt-5 font-medium text-text-silver;
+  }
+
+  &__actions {
+    @apply flex items-center space-x-2;
+  }
+
 }
 
 //
@@ -29,20 +37,24 @@
 
 .chips {
   
-  @apply flex flex-wrap;
+  @apply flex flex-wrap items-center;
 
 }
 
 .chip {
   
-  @apply text-sm transition border bg-white border-text-light px-4 py-2 text-gray-700 font-medium rounded-full mr-2 mt-2 cursor-pointer;
+  @apply text-sm transition border bg-white border-gray-200 hover:border-text-light px-4 py-2 text-gray-700 font-medium rounded-lg mr-2 mt-2 cursor-pointer;
 
   &--selected {
-    @apply border-transparent text-white;
+    @apply border-transparent text-white hover:border-transparent;
   }
 
   &--title {
     @apply cursor-default px-3 py-1 mt-0;
+  }
+
+  &--flat {
+    @apply bg-gray-200
   }
 
 }
