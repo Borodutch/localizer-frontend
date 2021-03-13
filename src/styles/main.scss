@@ -26,7 +26,23 @@
   }
 
   &__actions {
-    @apply flex items-center space-x-2;
+    @apply flex items-center space-x-4;
+  }
+
+  &__link {
+    @apply transition font-medium text-text-silver cursor-pointer hover:text-primary-blue;
+  }
+
+  &__link--active {
+    @apply text-primary-blue;
+  }
+
+  &__ratings {
+    @apply flex items-center space-x-1;
+  }
+
+  &__comments {
+    @apply mt-5;
   }
 
 }
@@ -57,4 +73,25 @@
     @apply bg-gray-200
   }
 
+}
+
+// 
+// Button
+// 
+.button {
+  @apply bg-additional-blue text-primary-blue font-medium rounded-2xl px-4 flex items-center;
+}
+
+// 
+// Input
+// 
+
+.input-group {
+  @apply flex items-stretch space-x-5;
+}
+.text {
+  @apply font-medium transition block p-4 w-full rounded-2xl border-back-silver focus:border-primary-blue focus:ring-0 placeholder-text-light;
+}
+.select {
+  @apply font-medium transition block p-4 rounded-2xl border-back-silver focus:border-primary-blue focus:ring-0 placeholder-text-light;
 }

@@ -1,5 +1,5 @@
 <template lang="pug">
-.ml-4.mt-2
+.card__comments
   .my-0(v-for='comment in variant.comments')
     div
       v-chip.px-1(
@@ -22,19 +22,16 @@
         color='primary'
       ) {{ $t("new") }}
     p.ma-0 {{ comment.text }}
-    v-divider
-  v-textarea.mb-1.mt-0(
-    :label='$t("comment.new")',
-    clearable,
-    rows='1',
-    auto-grow,
-    no-resize,
-    compact,
-    v-model='commentText',
-    :append-outer-icon='!!commentText ? "send" : undefined',
-    @click:append-outer='save',
-    :disabled='loading'
-  )
+  .input-group 
+    input.text(
+      type='text',
+      :placeholder='$t("comment.new")',
+      v-model='commentText',
+      :append-outer-icon='!!commentText ? "send" : undefined',
+      @click:append-outer='save',
+      :disabled='loading'
+    )
+    a.button(href='#') Send
 </template>
 
 <script lang="ts">

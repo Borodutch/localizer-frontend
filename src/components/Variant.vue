@@ -3,70 +3,51 @@ div(style='width: 100%')
   div
     .card__actions
       .card__icon(
-        dark,
-        x-small,
-        color='red',
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
-        @click='deleteVariant',
-        :loading='loading'
+        @click='deleteVariant'
       )
-        v-icon(x-small, color='white') delete
+        v-icon(color='white') delete
       .card__icon(
-        dark,
-        x-small,
-        color='green',
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
-        @click='selectVariant',
-        :loading='loading'
+        @click='selectVariant'
       )
         img(src='../assets/icons/done.svg', width=28) 
       .card__icon.mr-2(
-        dark,
-        x-small,
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
         @click='editTextEnabled = !editTextEnabled',
-        :class='editTextEnabled ? "green darken-2" : ""',
-        :loading='loading'
+        :class='editTextEnabled ? "green darken-2" : ""'
       )
-        v-icon(x-small, color='white') edit
-      .chip.chip--title.chip--selected.text-white(
-        dark,
-        x-small,
-        :style='"background-color:" + colors[variant.language]'
-      ) {{ variant.language }}
-      .chip.chip--title.chip--flat(dark, x-small, v-if='variant.username') {{ variant.username.substr(0, 25) }}
-      .chip.chip--title.chip--flat(dark, x-small, v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
-      .card__icon.green(dark, x-small, v-if='variant.selected')
-        img(src='../assets/icons/done.svg', width=28)
-      .card__icon(
-        x-small,
-        :disabled='loading',
-        @click='downvote',
-        :class='this.downvoted[variant._id] ? "red darken-2" : ""'
-      ) 
-        //- {{ loading ? "🤔" : "👎" }}{{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
-        img(src='../assets/icons/down.svg', width=28) 
-      .card__icon(
-        dark,
-        x-small,
-        :disabled='loading',
-        @click='upvote',
-        :class='this.upvoted[variant._id] ? "green darken-2" : ""'
-      ) 
-        //- {{ loading ? "🤔" : "👍" }}{{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
-        img(src='../assets/icons/up.svg', width=28) 
-      .card__icon.mx-2.font-medium.text-text-silver(
-        dark,
-        x-small,
+        v-icon(color='white') edit
+      .chips
+        .chip.chip--title.chip--selected.text-white(
+          :style='"background-color:" + colors[variant.language]'
+        ) {{ variant.language }}
+        .chip.chip--title.chip--flat(v-if='variant.username') {{ variant.username.substr(0, 25) }}
+        .chip.chip--title.chip--flat(v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
+        .card__icon.green(v-if='variant.selected')
+          img(src='../assets/icons/done.svg', width=28)
+      .card__ratings
+        .card__icon(
+          :disabled='loading',
+          @click='downvote',
+          :class='this.downvoted[variant._id] ? "red darken-2" : ""'
+        ) 
+          //- {{ loading ? "🤔" : "👎" }}{{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
+          img(src='../assets/icons/down.svg', width=28) 
+        .card__icon(
+          :disabled='loading',
+          @click='upvote',
+          :class='this.upvoted[variant._id] ? "green darken-2" : ""'
+        ) 
+          //- {{ loading ? "🤔" : "👍" }}{{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
+          img(src='../assets/icons/up.svg', width=28) 
+      .card__link(
         @click='commentsOpen = !commentsOpen',
-        :class='commentsOpen ? "green darken-2" : hasNewComments(variant) ? "primary" : ""'
+        :class='commentsOpen ? "card__link--active" : ""'
       ) {{ $t("comment.comments") }}{{ variant.comments.length ? ` ${variant.comments.length}` : "" }}{{ hasNewComments(variant) ? `, ${$t("new")}` : "" }}
       .chip.chip--title(
-        x-small,
         v-if='!viewedItems[variant._id]',
-        dark,
-        @click='setViewedProxy',
-        color='primary'
+        @click='setViewedProxy'
       ) {{ $t("new") }}
     .card__content {{ variant.text.replace(/\n/gi, "\\n") }}
     EditVariant(

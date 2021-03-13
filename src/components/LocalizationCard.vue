@@ -69,30 +69,24 @@
       @click:append-outer='addTag',
       :disabled='loading'
     )
-    div(v-if='addVariantEnabled')
-      v-textarea.mb-1.mt-0.pt-0(
-        :label='$t("add.text")',
-        clearable,
-        rows='1',
+    .input-group.pt-5(v-if='addVariantEnabled')
+      input.text(
+        type='text',
+        :placeholder='$t("add.text")',
         :rules='textRules',
-        auto-grow,
-        no-resize,
-        compact,
         v-model='addVariantText'
       )
-      .d-flex
-        v-select.mb-1.mt-0.pt-0(
-          :label='$t("add.language")',
-          :items='languages',
-          :rules='languageRules',
-          v-model='addVariantLanguage'
-        )
-        .ml-2(
-          color='primary',
-          :disabled='!addVariantText || !addVariantLanguage',
-          @click='addVariant()',
-          :loading='loading'
-        ) {{ $t("add.save") }}
+      select.select(:rules='languageRules', v-model='addVariantLanguage')
+        option(disabled) {{ $t("add.language") }}
+        option(
+          v-for='lang in languages',
+          :selected='addVariantLanguage === lang'
+        ) {{ lang }}
+      .button(
+        :disabled='!addVariantText || !addVariantLanguage',
+        @click='addVariant()',
+        :loading='loading'
+      ) {{ $t("add.save") }}
     div(v-if='selectOrDeleteVariantsEnabled')
       .chip.chip--title.px-1(
         dark,
