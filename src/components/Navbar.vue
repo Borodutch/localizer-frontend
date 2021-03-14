@@ -94,7 +94,11 @@ export default class Navbar extends Vue {
 
   toggleDark() {
     this.setDark(!this.dark)
-      ; (this.$vuetify.theme as any).dark = this.dark
+    if (this.dark) {
+      document.body.classList.add('dark')
+    } else {
+      document.body.classList.remove('dark')
+    }
   }
 
   goHome() {

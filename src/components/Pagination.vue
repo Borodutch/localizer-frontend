@@ -7,9 +7,10 @@
 .flex.space-x-2.my-5.justify-center.font-medium.text-text-silver
   .px-3.py-2.rounded-lg.border.bg-white.flex.items-center
     img(src='../assets/icons/left.svg', width=10)
-  .px-3.py-2.rounded-lg.border.bg-white(
+  .px-3.py-2.rounded-lg.border.bg-white.cursor-pointer.transition(
     v-for='page in numberOfPages',
-    :class='page === pageProxy ? "bg-primary-blue border-transparent text-white" : ""'
+    :class='page === pageProxy ? "bg-primary-blue border-transparent text-white" : ""',
+    @click='pageProxy = page'
   ) {{ page }}
   .px-3.py-2.rounded-lg.border.bg-white.flex.items-center
     img(src='../assets/icons/right.svg', width=10)

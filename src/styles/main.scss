@@ -1,3 +1,13 @@
+body {
+  @apply transition bg-back-white;
+}
+body.dark {
+  background-color: #0D0D0D;
+}
+
+.dark .navigation {
+  background-color: #0D0D0D;
+}
 // 
 // Card
 //
@@ -18,7 +28,7 @@
   }
 
   &__body {
-    @apply border-t-2 border-back-silver p-5;
+    @apply border-t-2 border-back-silver p-5 pl-10;
   }
 
   &__content {
@@ -26,7 +36,7 @@
   }
 
   &__actions {
-    @apply flex items-center space-x-4;
+    @apply flex items-center space-x-3;
   }
 
   &__link {
@@ -79,7 +89,7 @@
 // Button
 // 
 .button {
-  @apply bg-additional-blue text-primary-blue font-medium rounded-2xl px-4 flex items-center;
+  @apply transition bg-additional-blue text-primary-blue font-medium rounded-2xl px-4 flex items-center;
 }
 
 // 

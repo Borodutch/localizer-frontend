@@ -6,18 +6,18 @@ div(style='width: 100%')
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
         @click='deleteVariant'
       )
-        v-icon(color='white') delete
+        img(src='../assets/icons/close.svg') 
       .card__icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
         @click='selectVariant'
       )
-        img(src='../assets/icons/done.svg', width=28) 
+        img(src='../assets/icons/done.svg', width=26) 
       .card__icon.mr-2(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
         @click='editTextEnabled = !editTextEnabled',
         :class='editTextEnabled ? "green darken-2" : ""'
       )
-        v-icon(color='white') edit
+        img(src='../assets/icons/edit.svg') 
       .chips
         .chip.chip--title.chip--selected.text-white(
           :style='"background-color:" + colors[variant.language]'
@@ -25,7 +25,7 @@ div(style='width: 100%')
         .chip.chip--title.chip--flat(v-if='variant.username') {{ variant.username.substr(0, 25) }}
         .chip.chip--title.chip--flat(v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
         .card__icon.green(v-if='variant.selected')
-          img(src='../assets/icons/done.svg', width=28)
+          img(src='../assets/icons/done.svg', width=26)
       .card__ratings
         .card__icon(
           :disabled='loading',
@@ -33,14 +33,14 @@ div(style='width: 100%')
           :class='this.downvoted[variant._id] ? "red darken-2" : ""'
         ) 
           //- {{ loading ? "🤔" : "👎" }}{{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
-          img(src='../assets/icons/down.svg', width=28) 
+          img(src='../assets/icons/down.svg', width=26) 
         .card__icon(
           :disabled='loading',
           @click='upvote',
           :class='this.upvoted[variant._id] ? "green darken-2" : ""'
         ) 
           //- {{ loading ? "🤔" : "👍" }}{{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
-          img(src='../assets/icons/up.svg', width=28) 
+          img(src='../assets/icons/up.svg', width=26) 
       .card__link(
         @click='commentsOpen = !commentsOpen',
         :class='commentsOpen ? "card__link--active" : ""'

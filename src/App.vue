@@ -22,7 +22,7 @@ export default class App extends Vue {
   @AppStore.State dark!: boolean
 
   created() {
-    // ; (this as any).$vuetify.theme.dark = this.dark
+    if (this.dark) document.body.classList.add('dark')
     document.title = i18n.t('title') as string
   }
 }

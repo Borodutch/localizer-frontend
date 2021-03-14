@@ -2,7 +2,7 @@
 .card
   .card__title
     .card__header
-      .card__icon.mr-1(
+      .card__icon(
         v-if='isAdmin',
         color='red',
         small,
@@ -11,15 +11,16 @@
         :loading='loading'
       ) 
         img(src='../assets/icons/close.svg') 
-      span.mr-1(
+      .card__icon(
         v-if='isAdmin',
         small,
         icon,
         @click='selectOrDeleteVariantsEnabled = !selectOrDeleteVariantsEnabled',
         :loading='loading',
         :class='selectOrDeleteVariantsEnabled ? "green darken-2" : ""'
-      ) edit
-      .card__icon.mr-1(@click='toggleAddVariantEnabled') 
+      )
+        img(src='../assets/icons/edit.svg') 
+      .card__icon(@click='toggleAddVariantEnabled') 
         img(src='../assets/icons/add.svg') 
           //- {{ addVariantEnabled ? "clear" : "+" }}
       span.mx-1 {{ localization.key }}
