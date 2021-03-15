@@ -34,25 +34,3 @@ export default class Home extends Vue {
   @AppStore.State isAdmin!: boolean
 }
 </script>
-
-<style lang="scss">
-.wrapper {
-  @apply px-5;
-
-  &__inner {
-    @apply max-w-screen-xl mx-auto;
-  }
-}
-.greeting-text {
-  @apply font-medium pb-10 pt-8 text-text-dark;
-}
-.greeting-text {
-  font-size: 22px;
-}
-.page-block {
-  @apply pb-5;
-}
-.content-block {
-  @apply pb-3;
-}
-</style>

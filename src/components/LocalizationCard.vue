@@ -1,116 +1,98 @@
 <template lang="pug">
 .card
-  .card__title
-    .card__header
+  .card__head
+    .card__icons
       .card__icon(
         v-if='isAdmin',
-        color='red',
-        small,
-        icon,
-        @click='deleteLocalization(localization.key)',
-        :loading='loading'
+        @click='deleteLocalization(localization.key)'
       ) 
         img(src='../assets/icons/close.svg') 
       .card__icon(
         v-if='isAdmin',
-        small,
-        icon,
         @click='selectOrDeleteVariantsEnabled = !selectOrDeleteVariantsEnabled',
-        :loading='loading',
         :class='selectOrDeleteVariantsEnabled ? "green darken-2" : ""'
       )
         img(src='../assets/icons/edit.svg') 
       .card__icon(@click='toggleAddVariantEnabled') 
         img(src='../assets/icons/add.svg') 
-          //- {{ addVariantEnabled ? "clear" : "+" }}
-      span.mx-1 {{ localization.key }}
-      .chips.card__chips
-        .chip.chip--title.chip--selected(
-          dark,
+        //- {{ addVariantEnabled ? "clear" : "+" }}
+    h2.card__title {{ localization.key }}
+    .chips.card__chips
+      .chip.chip--title.chip--selected(
+        dark,
+        small,
+        v-for='tag in localization.tags',
+        :key='tag',
+        :style='"background-color: " + colors[tag]'
+      ) {{ tag }}
+        span.ml-2.cursor-pointer(
           small,
-          v-for='tag in localization.tags',
-          :key='tag',
-          :style='"background-color: " + colors[tag]'
-        ) {{ tag }}
-          span.ml-2(
-            small,
-            v-if='isAdmin',
-            @click='deleteTag(localization.key, tag)',
-            :disabled='loading'
-          )
-            img.inline(v-if='!loading', src='../assets/icons/x.svg', width=15) 
-            span(v-else) 🤔
-        .chip.chip--title(
-          v-if='!viewedItems[localization._id]',
-          dark,
-          small,
-          @click='setViewedProxy',
-          color='primary'
-        ) {{ $t("new") }}
-        .card__icon(
-          dark,
-          small,
-          v-if='isAdmin && !loading',
-          :color='addTagEnabled ? "green darken-2" : ""',
-          @click='toggleAddTagEnabled'
-        ) 
-          //- {{ addTagEnabled ? "close" : "add" }}
-          img(src='../assets/icons/add.svg') 
-    .input.mx-1.mb-0.mt-4.px-0.py-0(
-      :label='$t("tag.new")',
-      v-if='addTagEnabled && isAdmin',
-      clearable,
-      rows='1',
-      type='text',
-      auto-grow,
-      no-resize,
-      compact,
-      v-model='addTagText',
-      :append-outer-icon='!!addTagText ? "send" : undefined',
-      @click:append-outer='addTag',
-      :disabled='loading'
-    )
-    .input-group.pt-5(v-if='addVariantEnabled')
-      input.text(
+          v-if='isAdmin',
+          @click='deleteTag(localization.key, tag)',
+          :disabled='loading'
+        )
+          img.inline(
+            :class='loading ? "opacity-50" : ""',
+            src='../assets/icons/x.svg',
+            width=15
+          ) 
+      .chip.chip--new(
+        v-if='!viewedItems[localization._id]',
+        dark,
+        small,
+        @click='setViewedProxy',
+        color='primary'
+      ) {{ $t("new") }}
+      .card__icon(
+        dark,
+        small,
+        v-if='isAdmin && !loading',
+        :color='addTagEnabled ? "green darken-2" : ""',
+        @click='toggleAddTagEnabled'
+      ) 
+        //- {{ addTagEnabled ? "close" : "add" }}
+        img(src='../assets/icons/add.svg')
+  .card__controls
+    .input-group(v-if='addTagEnabled && isAdmin')
+      input.input(
         type='text',
-        :placeholder='$t("add.text")',
-        :rules='textRules',
-        v-model='addVariantText'
+        :placeholder='$t("tag.new")',
+        v-model='addTagText',
+        :append-outer-icon='!!addTagText ? "send" : undefined',
+        @click:append-outer='addTag'
       )
-      select.select(:rules='languageRules', v-model='addVariantLanguage')
-        option(disabled) {{ $t("add.language") }}
-        option(
-          v-for='lang in languages',
-          :selected='addVariantLanguage === lang'
-        ) {{ lang }}
       .button(
         :disabled='!addVariantText || !addVariantLanguage',
         @click='addVariant()',
         :loading='loading'
       ) {{ $t("add.save") }}
-    div(v-if='selectOrDeleteVariantsEnabled')
-      .chip.chip--title.px-1(
-        dark,
-        x-small,
-        color='red',
-        @click='deleteVariants',
-        :loading='loading'
+    .input-group(v-if='addVariantEnabled')
+      input.input(
+        type='text',
+        :placeholder='$t("add.text")',
+        :rules='textRules',
+        v-model='addVariantText'
       )
+      select.select(v-model='addVariantLanguage')
+        option(disabled) {{ $t("add.language") }}
+        option(v-for='lang in languages', :value='lang') {{ lang }}
+      .button(
+        :disabled='!addVariantText || !addVariantLanguage',
+        @click='addVariant()',
+        :loading='loading'
+      ) {{ $t("add.save") }}
+  div(v-if='selectOrDeleteVariantsEnabled')
+    .chips.p-5.pt-0
+      .chip(@click='deleteVariants', :loading='loading')
         v-icon(x-small, color='white') delete
-      .chip.chip--title.px-1(
-        dark,
-        x-small,
-        color='green',
-        @click='selectVariants',
-        :loading='loading'
-      )
+      .chip(@click='selectVariants', :loading='loading')
         v-icon(x-small, color='white') done
   .card__body(v-for='variant in localization.variants')
     .d-flex.direction-row
-      v-checkbox(
+      span(
         v-if='selectOrDeleteVariantsEnabled',
         v-model='selectedVariants[variant._id]'
-      )
+      ) check
       VariantView(
         :variant='variant',
         :localization='localization',

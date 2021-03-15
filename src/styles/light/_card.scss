@@ -1,0 +1,52 @@
+.card {
+  @apply transition mb-5 border border-back-silver rounded-lg shadow-card bg-white;
+
+  &__title {
+    @apply font-medium text-lg;
+  }
+
+  &__head {
+    @apply p-5 flex items-center space-x-3;
+  }
+
+  &__controls {
+    @apply pt-0 flex flex-col;
+  }
+
+  &__icons {
+    @apply flex items-center space-x-1;
+  }
+
+  &__icon {
+    @apply cursor-pointer transition transform hover:scale-125;
+  }
+
+  &__body {
+    @apply border-t-2 border-back-silver p-5 pl-10;
+  }
+
+  &__content {
+    @apply pt-5 font-medium text-text-silver;
+  }
+
+  &__actions {
+    @apply flex items-center space-x-3;
+  }
+
+  &__link {
+    @apply transition font-medium text-text-silver cursor-pointer hover:text-primary-blue;
+  }
+
+  &__link--active {
+    @apply text-primary-blue;
+  }
+
+  &__ratings {
+    @apply flex items-center space-x-1;
+  }
+
+  &__comments {
+    @apply mt-5;
+  }
+
+}

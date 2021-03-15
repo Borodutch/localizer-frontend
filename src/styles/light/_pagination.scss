@@ -1,0 +1,15 @@
+.pagination {
+  @apply flex space-x-2 my-5 justify-center font-medium text-text-silver;
+
+  &__action {
+    @apply px-3 py-2 rounded-lg border bg-white flex items-center;
+  }
+
+  &__page {
+    @apply px-3 py-2 rounded-lg border bg-white cursor-pointer transition;
+
+    &--active {
+      @apply bg-primary-blue border-transparent text-white;
+    }
+  }
+}

@@ -22,6 +22,9 @@ export default class SnackbarStore extends VuexModule {
     this.message = error
     this.active = true
     this.color = 'error'
+    setTimeout(() => {
+      this.active = false
+    }, 2500)
   }
 
   @Mutation

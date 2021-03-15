@@ -1,7 +1,7 @@
 <template lang="pug">
 div(style='width: 100%')
-  div
-    .card__actions
+  .card__actions
+    .card__icons
       .card__icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
         @click='deleteVariant'
@@ -12,56 +12,55 @@ div(style='width: 100%')
         @click='selectVariant'
       )
         img(src='../assets/icons/done.svg', width=26) 
-      .card__icon.mr-2(
+      .card__icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
         @click='editTextEnabled = !editTextEnabled',
         :class='editTextEnabled ? "green darken-2" : ""'
       )
         img(src='../assets/icons/edit.svg') 
-      .chips
-        .chip.chip--title.chip--selected.text-white(
-          :style='"background-color:" + colors[variant.language]'
-        ) {{ variant.language }}
-        .chip.chip--title.chip--flat(v-if='variant.username') {{ variant.username.substr(0, 25) }}
-        .chip.chip--title.chip--flat(v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
-        .card__icon.green(v-if='variant.selected')
-          img(src='../assets/icons/done.svg', width=26)
-      .card__ratings
-        .card__icon(
-          :disabled='loading',
-          @click='downvote',
-          :class='this.downvoted[variant._id] ? "red darken-2" : ""'
-        ) 
-          //- {{ loading ? "🤔" : "👎" }}{{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
-          img(src='../assets/icons/down.svg', width=26) 
-        .card__icon(
-          :disabled='loading',
-          @click='upvote',
-          :class='this.upvoted[variant._id] ? "green darken-2" : ""'
-        ) 
-          //- {{ loading ? "🤔" : "👍" }}{{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
-          img(src='../assets/icons/up.svg', width=26) 
-      .card__link(
-        @click='commentsOpen = !commentsOpen',
-        :class='commentsOpen ? "card__link--active" : ""'
-      ) {{ $t("comment.comments") }}{{ variant.comments.length ? ` ${variant.comments.length}` : "" }}{{ hasNewComments(variant) ? `, ${$t("new")}` : "" }}
-      .chip.chip--title(
-        v-if='!viewedItems[variant._id]',
-        @click='setViewedProxy'
-      ) {{ $t("new") }}
-    .card__content {{ variant.text.replace(/\n/gi, "\\n") }}
-    EditVariant(
-      v-if='editTextEnabled',
-      :variant='variant',
-      :localizationKey='localization.key',
-      :closeEditText='() => { editTextEnabled = false; }'
-    )
-    Comments(
-      v-if='commentsOpen',
-      :variant='variant',
-      :localizationKey='localization.key'
-    )
-  v-divider
+    .chips
+      .chip.chip--title.chip--selected.text-white(
+        :style='"background-color:" + colors[variant.language]'
+      ) {{ variant.language }}
+      .chip.chip--title.chip--flat(v-if='variant.username') {{ variant.username.substr(0, 25) }}
+      .chip.chip--title.chip--flat(v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
+      .card__icon.green(v-if='variant.selected')
+        img(src='../assets/icons/done.svg', width=26)
+    .card__ratings
+      .card__icon(
+        :disabled='loading',
+        @click='downvote',
+        :class='this.downvoted[variant._id] ? "red darken-2" : ""'
+      ) 
+        //- {{ loading ? "🤔" : "👎" }}{{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
+        img(src='../assets/icons/down.svg', width=26) 
+      .card__icon(
+        :disabled='loading',
+        @click='upvote',
+        :class='this.upvoted[variant._id] ? "green darken-2" : ""'
+      ) 
+        //- {{ loading ? "🤔" : "👍" }}{{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
+        img(src='../assets/icons/up.svg', width=26) 
+    .card__link(
+      @click='commentsOpen = !commentsOpen',
+      :class='commentsOpen ? "card__link--active" : ""'
+    ) {{ $t("comment.comments") }}{{ variant.comments.length ? ` ${variant.comments.length}` : "" }}{{ hasNewComments(variant) ? `, ${$t("new")}` : "" }}
+    .chip.chip--title(
+      v-if='!viewedItems[variant._id]',
+      @click='setViewedProxy'
+    ) {{ $t("new") }}
+  .card__content {{ variant.text.replace(/\n/gi, "\\n") }}
+  EditVariant(
+    v-if='editTextEnabled',
+    :variant='variant',
+    :localizationKey='localization.key',
+    :closeEditText='() => { editTextEnabled = false; }'
+  )
+  Comments(
+    v-if='commentsOpen',
+    :variant='variant',
+    :localizationKey='localization.key'
+  )
 </template>
 
 <script lang="ts">

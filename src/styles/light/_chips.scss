@@ -1,0 +1,27 @@
+.chips {
+  
+  @apply flex flex-wrap items-center;
+
+}
+
+.chip {
+  
+  @apply text-sm transition border bg-white border-gray-200 hover:border-text-light px-4 py-2 text-gray-700 font-medium rounded-lg mr-2 mt-2 cursor-pointer;
+
+  &--selected {
+    @apply border-transparent text-white hover:border-transparent;
+  }
+
+  &--title {
+    @apply cursor-default px-3 py-1 mt-0;
+  }
+
+  &--flat {
+    @apply bg-gray-200
+  }
+
+  &--new {
+    @apply px-3 py-1 mt-0 border-additional-blue hover:border-primary-blue text-primary-blue;
+  }
+
+}

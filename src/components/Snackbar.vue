@@ -1,16 +1,13 @@
 <template lang="pug">
-.snackbar.hidden
-  v-snackbar(
-    app,
-    v-model='safeActive',
-    :timeout='4000',
-    top,
-    :color='color',
-    flat
+transition(name='fade')
+  .fixed.top-2.left-0.right-0.z-50.text-center.font-medium.text-red-600(
+    v-if='safeActive'
   )
-    .d-flex.flex-ro2.justify-space-between.align-center
-      span {{ text }}
-      v-btn.ml-4(color='white', text, @click='hideSnackbar') {{ $t("close") }}
+    .p-5.bg-red-200.rounded-xl.inline-block
+      .d-flex.flex-ro2.justify-space-between.align-center
+        span {{ text + " " + color }}
+        span.ml-4(@click='hideSnackbar')
+          img.inline.cursor-pointer(src='../assets/icons/close.svg')
 </template>
 
 <script lang="ts">
@@ -46,3 +43,13 @@ export default class Snackbar extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>

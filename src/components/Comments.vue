@@ -22,8 +22,8 @@
         color='primary'
       ) {{ $t("new") }}
     p.ma-0 {{ comment.text }}
-  .input-group 
-    input.text(
+  .input-group.input-group--clear
+    input.input(
       type='text',
       :placeholder='$t("comment.new")',
       v-model='commentText',
@@ -31,7 +31,7 @@
       @click:append-outer='save',
       :disabled='loading'
     )
-    a.button(href='#') Send
+    .button(href='#') Send
 </template>
 
 <script lang="ts">

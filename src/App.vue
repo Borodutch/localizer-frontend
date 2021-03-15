@@ -1,5 +1,5 @@
 <template lang="pug">
-.page
+.page.relative
   CookieMessage
   Navbar
   Snackbar

@@ -1,0 +1,30 @@
+@import 'card';
+@import 'chips';
+@import 'button';
+@import 'input';
+@import 'navigation';
+@import 'pagination';
+@import 'contributors';
+
+body {
+  @apply bg-white;
+}
+.wrapper {
+  @apply px-5;
+
+  &__inner {
+    @apply max-w-screen-xl mx-auto;
+  }
+}
+.greeting-text {
+  @apply font-medium pb-10 pt-8 text-text-dark;
+}
+.greeting-text {
+  font-size: 22px;
+}
+.page-block {
+  @apply pb-5;
+}
+.content-block {
+  @apply pb-3;
+}

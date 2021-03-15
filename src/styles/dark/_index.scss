@@ -1,0 +1,60 @@
+body.dark {
+  background-color: #0D0D0D;
+  @apply text-back-gray;
+}
+
+.dark {
+
+  & .greeting-text {
+    @apply text-back-gray;
+  }
+
+  & .input {
+    background-color: #0D0D0D;
+    @apply border-text-dark;
+  }
+
+  & .navigation {
+    @apply bg-opacity-60 bg-back-dark;
+  }
+
+  & .navigation__side-menu {
+    @apply bg-back-light-dark bg-opacity-80;
+  }
+
+  & .chip {
+    @apply bg-back-light-dark border-text-dark text-back-gray;
+  }
+
+  & .chip--selected {
+    @apply border-transparent;
+  }
+
+  & .card {
+    @apply bg-black border-text-dark shadow-none;
+  }
+
+  & .card__body {
+    @apply border-text-dark;
+  }
+
+  & .pagination__action, & .pagination__page {
+    @apply border-text-dark bg-back-light-dark;
+  }
+
+  & .pagination__page--active {
+    @apply border-primary-blue;
+  }
+
+  & .contributors {
+    @apply bg-text-dark shadow-none;
+  }
+
+  & .contributors__title {
+    @apply text-white;
+  }
+
+  & .button {
+    @apply bg-text-dark text-white;
+  }
+}

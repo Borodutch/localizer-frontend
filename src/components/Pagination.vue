@@ -4,15 +4,15 @@
 //-   v-if='numberOfPages > 1',
 //-   :length='numberOfPages'
 //- )
-.flex.space-x-2.my-5.justify-center.font-medium.text-text-silver
-  .px-3.py-2.rounded-lg.border.bg-white.flex.items-center
+.pagination
+  .pagination__action
     img(src='../assets/icons/left.svg', width=10)
-  .px-3.py-2.rounded-lg.border.bg-white.cursor-pointer.transition(
+  .pagination__page(
     v-for='page in numberOfPages',
-    :class='page === pageProxy ? "bg-primary-blue border-transparent text-white" : ""',
+    :class='page === pageProxy ? "pagination__page--active" : ""',
     @click='pageProxy = page'
   ) {{ page }}
-  .px-3.py-2.rounded-lg.border.bg-white.flex.items-center
+  .pagination__action
     img(src='../assets/icons/right.svg', width=10)
 </template>
 

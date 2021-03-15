@@ -1,0 +1,57 @@
+.input-group {
+  
+  @apply flex items-stretch space-x-5 p-5 pt-0;
+
+  &--clear {
+    @apply p-0;
+  }
+
+}
+
+.input {
+  
+  @apply font-medium text-xl transition block p-4 w-full rounded-2xl border-back-silver focus:border-primary-blue focus:ring-0 placeholder-text-light;
+
+}
+
+.user-text {
+
+  background-image: url('../assets/icons/smile.svg');
+  background-repeat: no-repeat;
+  background-position: 14px center;
+  background-size: 20px;
+  @apply pl-12;
+
+}
+
+.password-text {
+
+  background-image: url('../assets/icons/key.svg');
+  background-repeat: no-repeat;
+  background-position: 14px center;
+  background-size: 24px;
+  font-size: 20px;
+
+  @apply pl-12;
+
+}
+
+.search-text {
+
+  background-image: url('../assets/icons/search.svg');
+  background-repeat: no-repeat;
+  background-position: 13px center;
+  background-size: 25px;
+  font-size: 20px;
+
+  @apply pl-12;
+
+}
+
+.select {
+
+  min-width: 150px;
+
+  @apply text-xl text-text-silver transition block p-4 rounded-2xl border-back-silver focus:border-primary-blue focus:ring-0 placeholder-text-light;
+
+}
