@@ -1,18 +1,13 @@
 <template lang="pug">
-//- v-pagination.mb-2(
-//-   v-model='pageProxy',
-//-   v-if='numberOfPages > 1',
-//-   :length='numberOfPages'
-//- )
-.pagination
-  .pagination__action
+.pagination(v-if='numberOfPages')
+  .pagination__action(@click='previousPage')
     img(src='../assets/icons/left.svg', width=10)
   .pagination__page(
     v-for='page in numberOfPages',
     :class='page === pageProxy ? "pagination__page--active" : ""',
     @click='pageProxy = page'
   ) {{ page }}
-  .pagination__action
+  .pagination__action(@click='nextPage')
     img(src='../assets/icons/right.svg', width=10)
 </template>
 
@@ -33,8 +28,17 @@ export default class Pagination extends Vue {
   get pageProxy() {
     return this.page
   }
+
   set pageProxy(page: number) {
     this.setPage(page)
+  }
+
+  nextPage() {
+    this.setPage(Math.min(this.page + 1, this.numberOfPages))
+  }
+
+  previousPage() {
+    this.setPage(this.page === 1 ? 1 : this.page - 1)
   }
 }
 </script>

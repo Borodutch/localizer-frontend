@@ -1,5 +1,9 @@
 <template lang="pug">
-input.input.password-text(type='password', :placeholder='$t("admin.password")')
+input.input.password-text(
+  v-model='passwordProxy',
+  type='password',
+  :placeholder='$t("admin.password")'
+)
 </template>
 
 <script lang="ts">

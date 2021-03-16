@@ -28,13 +28,11 @@ nav.navigation(:class='scrolled ? "navigation--shadow" : ""')
       // Refresh
       .navigation__button(text, icon, color='grey', @click='refresh')
         img(src='@/assets/icons/layers.svg')
-      v-list
-        v-list-item.text-center(
-          v-for='locale in locales',
-          @click='changeLanguage(locale.code)',
-          :key='locale.code'
-        )
-          v-list-item-title.mt-1.text-text-silver.font-medium {{ locale.code }}
+      .text-text-silver.font-medium.cursor-pointer(
+        v-for='locale in locales',
+        @click='changeLanguage(locale.code)',
+        :key='locale.code'
+      ) {{ locale.code }}
 </template>
 
 <script lang="ts">
@@ -74,7 +72,7 @@ export default class Navbar extends Vue {
   get locales() {
     return [
       { icon: '🇺🇸', code: 'en' },
-      // { icon: '🇷🇺', code: 'ru' },
+      { icon: '🇷🇺', code: 'ru' },
     ]
   }
 

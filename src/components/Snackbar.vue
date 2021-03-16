@@ -1,6 +1,6 @@
 <template lang="pug">
 transition(name='fade')
-  .fixed.top-2.left-0.right-0.z-50.text-center.font-medium.text-red-600(
+  .fixed.top-28.left-0.right-0.z-50.text-center.font-medium.text-red-600(
     v-if='safeActive'
   )
     .p-5.bg-red-200.rounded-xl.inline-block

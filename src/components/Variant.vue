@@ -8,7 +8,7 @@ div(style='width: 100%')
       )
         img(src='../assets/icons/close.svg') 
       .card__icon(
-        v-if='isAdmin && !selectOrDeleteVariantsEnabled',
+        v-if='isAdmin && !selectOrDeleteVariantsEnabled && !variant.selected',
         @click='selectVariant'
       )
         img(src='../assets/icons/done.svg', width=26) 
@@ -24,7 +24,7 @@ div(style='width: 100%')
       ) {{ variant.language }}
       .chip.chip--title.chip--flat(v-if='variant.username') {{ variant.username.substr(0, 25) }}
       .chip.chip--title.chip--flat(v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
-      .card__icon.green(v-if='variant.selected')
+      .card__icon.card__icon--inactive(v-if='variant.selected')
         img(src='../assets/icons/done.svg', width=26)
     .card__ratings
       .card__icon(
@@ -35,7 +35,6 @@ div(style='width: 100%')
         //- {{ loading ? "🤔" : "👎" }}{{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
         img(src='../assets/icons/down.svg', width=26) 
       .card__icon(
-        :disabled='loading',
         @click='upvote',
         :class='this.upvoted[variant._id] ? "green darken-2" : ""'
       ) 
@@ -45,10 +44,7 @@ div(style='width: 100%')
       @click='commentsOpen = !commentsOpen',
       :class='commentsOpen ? "card__link--active" : ""'
     ) {{ $t("comment.comments") }}{{ variant.comments.length ? ` ${variant.comments.length}` : "" }}{{ hasNewComments(variant) ? `, ${$t("new")}` : "" }}
-    .chip.chip--title(
-      v-if='!viewedItems[variant._id]',
-      @click='setViewedProxy'
-    ) {{ $t("new") }}
+    .chip.chip--new(v-if='!viewedItems[variant._id]', @click='setViewedProxy') {{ $t("new") }}
   .card__content {{ variant.text.replace(/\n/gi, "\\n") }}
   EditVariant(
     v-if='editTextEnabled',

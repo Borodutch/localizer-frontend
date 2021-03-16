@@ -26,12 +26,10 @@
     input.input(
       type='text',
       :placeholder='$t("comment.new")',
-      v-model='commentText',
-      :append-outer-icon='!!commentText ? "send" : undefined',
-      @click:append-outer='save',
-      :disabled='loading'
+      v-model='commentText'
     )
-    .button(href='#') Send
+    .button(v-if='commentText', @click='save') {{ $t("add.save") }}
+    .button.button--inactive(v-else) {{ $t("add.save") }}
 </template>
 
 <script lang="ts">

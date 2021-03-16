@@ -21,20 +21,12 @@
     :class='selectedNonlanguages.includes(nonlanguage) ? "chip--selected" : ""',
     @click='toggleNonlanguage(nonlanguage)'
   ) {{ $t("no") }} {{ nonlanguage }}
-  //- v-chip.mx-1.my-1(
-  //-   dark,
-  //-   :color='newFilterEnabled ? "primary" : undefined',
-  //-   @click='toggleNewFilterEnabled'
-  //- ) {{ $t("new") }}
-  //- v-menu(offset-y)
-  //-   template(v-slot:activator='{ on }')
-  //-     v-btn.ml-2.mt-1(v-on='on', text, icon)
-  //-       v-icon keyboard_arrow_down
-  //-   v-list
-  //-     v-list-item(@click='markAllLocalizationsViewed')
-  //-       v-list-item-title Make all viewed
-  //-     v-list-item(@click='markAllLocalizationsNew')
-  //-       v-list-item-title Make all new
+  .chip(
+    :style='"background-color:" + (newFilterEnabled ? "blue" : "red")',
+    @click='toggleNewFilterEnabled'
+  ) {{ $t("new") }}
+  .chip(@click='markAllLocalizationsViewed') Make all viewed
+  .chip(@click='markAllLocalizationsNew') Make all new
 </template>
 
 <script lang="ts">
