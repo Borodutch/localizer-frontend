@@ -2,11 +2,15 @@
   @apply transition mb-5 border border-back-silver rounded-lg shadow-card bg-white;
 
   &__title {
-    @apply font-medium text-lg;
+    @apply font-medium text-lg place-items-start md:place-self-center;
   }
 
   &__head {
-    @apply p-5 flex items-center space-x-3;
+    @apply p-5 grid grid-cols-1 gap-2 md:grid-cols-3 items-center;
+  }
+
+  &__chips {
+    @apply place-self-start md:place-self-end;
   }
 
   &__controls {
@@ -15,6 +19,10 @@
 
   &__icons {
     @apply flex items-center space-x-1;
+  }
+
+  &__top-icons {
+    @apply place-self-start;
   }
 
   &__icon {
@@ -26,7 +34,7 @@
   }
 
   &__body {
-    @apply border-t-2 border-back-silver p-5 pl-10;
+    @apply border-t-2 border-back-silver p-5;
   }
 
   &__content {
@@ -34,7 +42,11 @@
   }
 
   &__actions {
-    @apply flex items-center space-x-3;
+    @apply flex flex-wrap items-center space-x-3;
+
+    & > * {
+      @apply pt-2 md:pt-0;
+    }
   }
 
   &__link {

@@ -1,7 +1,7 @@
 <template lang="pug">
 div(style='width: 100%')
   .card__actions
-    .card__icons
+    .card__icons(v-if='isAdmin')
       .card__icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
         @click='deleteVariant'
@@ -24,6 +24,10 @@ div(style='width: 100%')
       ) {{ variant.language }}
       .chip.chip--title.chip--flat(v-if='variant.username') {{ variant.username.substr(0, 25) }}
       .chip.chip--title.chip--flat(v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
+      .chip.chip--new(
+        v-if='!viewedItems[variant._id]',
+        @click='setViewedProxy'
+      ) {{ $t("new") }}
       .card__icon.card__icon--inactive(v-if='variant.selected')
         img(src='../assets/icons/done.svg', width=26)
     .card__ratings
@@ -44,7 +48,6 @@ div(style='width: 100%')
       @click='commentsOpen = !commentsOpen',
       :class='commentsOpen ? "card__link--active" : ""'
     ) {{ $t("comment.comments") }}{{ variant.comments.length ? ` ${variant.comments.length}` : "" }}{{ hasNewComments(variant) ? `, ${$t("new")}` : "" }}
-    .chip.chip--new(v-if='!viewedItems[variant._id]', @click='setViewedProxy') {{ $t("new") }}
   .card__content {{ variant.text.replace(/\n/gi, "\\n") }}
   EditVariant(
     v-if='editTextEnabled',

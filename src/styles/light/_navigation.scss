@@ -6,7 +6,7 @@
   }
 
   &__inner {
-    @apply max-w-screen-xl mx-auto flex items-center justify-between;
+    @apply max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-center space-y-3 md:space-y-0 md:justify-between;
   }
 
   &__side-menu {
@@ -14,7 +14,7 @@
   }
 
   &__side-menu--scroll {
-    @apply bg-transparent;
+    @apply bg-back-gray bg-opacity-60 md:bg-transparent;
   }
 
   &__button {

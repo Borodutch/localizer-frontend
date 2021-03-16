@@ -22,11 +22,11 @@
     @click='toggleNonlanguage(nonlanguage)'
   ) {{ $t("no") }} {{ nonlanguage }}
   .chip(
-    :style='"background-color:" + (newFilterEnabled ? "blue" : "red")',
+    :class='newFilterEnabled ? "" : "chip--flat-new"',
     @click='toggleNewFilterEnabled'
   ) {{ $t("new") }}
-  .chip(@click='markAllLocalizationsViewed') Make all viewed
-  .chip(@click='markAllLocalizationsNew') Make all new
+  .chip.chip--dashed(@click='markAllLocalizationsViewed') Make all viewed
+  .chip.chip--dashed(@click='markAllLocalizationsNew') Make all new
 </template>
 
 <script lang="ts">

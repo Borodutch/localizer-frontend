@@ -16,12 +16,20 @@
     @apply cursor-default px-3 py-1 mt-0;
   }
 
+  &--dashed {
+    @apply border-dashed;
+  }
+
   &--flat {
     @apply bg-gray-200
   }
 
   &--new {
     @apply px-3 py-1 mt-0 border-additional-blue hover:border-primary-blue text-primary-blue;
+  }
+
+  &--flat-new {
+    @apply border-additional-blue hover:border-primary-blue text-primary-blue;
   }
 
 }

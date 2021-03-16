@@ -1,7 +1,7 @@
 <template lang="pug">
 .card
   .card__head
-    .card__icons
+    .card__icons.card__top-icons
       .card__icon(
         v-if='isAdmin',
         @click='deleteLocalization(localization.key)'
@@ -17,41 +17,42 @@
         img(src='../assets/icons/add.svg') 
         //- {{ addVariantEnabled ? "clear" : "+" }}
     h2.card__title {{ localization.key }}
-    .chips.card__chips
-      .chip.chip--title.chip--selected(
-        dark,
-        small,
-        v-for='tag in localization.tags',
-        :key='tag',
-        :style='"background-color: " + colors[tag]'
-      ) {{ tag }}
-        span.ml-2.cursor-pointer(
+    .card__chips
+      .chips
+        .chip.chip--title.chip--selected(
+          dark,
           small,
-          v-if='isAdmin',
-          @click='deleteTag(localization.key, tag)',
-          :disabled='loading'
-        )
-          img.inline(
-            :class='loading ? "opacity-50" : ""',
-            src='../assets/icons/x.svg',
-            width=15
-          ) 
-      .chip.chip--new(
-        v-if='!viewedItems[localization._id]',
-        dark,
-        small,
-        @click='setViewedProxy',
-        color='primary'
-      ) {{ $t("new") }}
-      .card__icon(
-        dark,
-        small,
-        v-if='isAdmin && !loading',
-        :color='addTagEnabled ? "green darken-2" : ""',
-        @click='toggleAddTagEnabled'
-      ) 
-        //- {{ addTagEnabled ? "close" : "add" }}
-        img(src='../assets/icons/add.svg')
+          v-for='tag in localization.tags',
+          :key='tag',
+          :style='"background-color: " + colors[tag]'
+        ) {{ tag }}
+          span.ml-2.cursor-pointer(
+            small,
+            v-if='isAdmin',
+            @click='deleteTag(localization.key, tag)',
+            :disabled='loading'
+          )
+            img.inline(
+              :class='loading ? "opacity-50" : ""',
+              src='../assets/icons/x.svg',
+              width=15
+            ) 
+        .chip.chip--new(
+          v-if='!viewedItems[localization._id]',
+          dark,
+          small,
+          @click='setViewedProxy',
+          color='primary'
+        ) {{ $t("new") }}
+        .card__icon(
+          dark,
+          small,
+          v-if='isAdmin && !loading',
+          :color='addTagEnabled ? "green darken-2" : ""',
+          @click='toggleAddTagEnabled'
+        ) 
+          //- {{ addTagEnabled ? "close" : "add" }}
+          img(src='../assets/icons/add.svg')
   .card__controls
     .input-group(v-if='addTagEnabled && isAdmin')
       input.input(

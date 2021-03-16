@@ -10,7 +10,7 @@
 
 .input {
   
-  @apply font-medium text-xl transition block p-4 w-full rounded-2xl border-back-silver focus:border-primary-blue focus:ring-0 placeholder-text-light;
+  @apply font-medium text-lg md:text-xl transition block p-3 md:p-4 w-full rounded-2xl border-back-silver focus:border-primary-blue focus:ring-0 placeholder-text-light;
 
 }
 
@@ -30,7 +30,6 @@
   background-repeat: no-repeat;
   background-position: 14px center;
   background-size: 24px;
-  font-size: 20px;
 
   @apply pl-12;
 
@@ -42,7 +41,6 @@
   background-repeat: no-repeat;
   background-position: 13px center;
   background-size: 25px;
-  font-size: 20px;
 
   @apply pl-12;
 

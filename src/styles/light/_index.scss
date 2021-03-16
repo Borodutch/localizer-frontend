@@ -16,12 +16,11 @@ body {
     @apply max-w-screen-xl mx-auto;
   }
 }
+
 .greeting-text {
-  @apply font-medium pb-10 pt-8 text-text-dark;
+  @apply font-medium pb-6 pt-4 md:pb-10 md:pt-8 text-text-dark text-xl md:text-2xl;
 }
-.greeting-text {
-  font-size: 22px;
-}
+
 .page-block {
   @apply pb-5;
 }
