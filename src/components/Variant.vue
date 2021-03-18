@@ -1,21 +1,23 @@
 <template lang="pug">
-.card__variant(style='width: 100%')
+.card__variant
   .card__actions
     .card__icons(v-if='isAdmin')
       .card__icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
+        :class='loading ? "loading" : ""',
         @click='deleteVariant'
       )
         img(src='../assets/icons/close.svg') 
       .card__icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled && !variant.selected',
+        :class='loading ? "loading" : ""',
         @click='selectVariant'
       )
         img(src='../assets/icons/done.svg', width=26) 
       .card__icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
         @click='editTextEnabled = !editTextEnabled',
-        :class='editTextEnabled ? "green darken-2" : ""'
+        :class='(editTextEnabled ? "card__icon--clicked" : "") + (loading ? "loading" : "")'
       )
         img(src='../assets/icons/edit.svg') 
     .chips.chips--margin
@@ -33,16 +35,18 @@
     .card__ratings
       .card__icon(
         @click='downvote',
-        :class='this.downvoted[variant._id] ? "red darken-2" : ""'
+        :class='(this.downvoted[variant._id] ? "card__icon--clicked" : "") + (loading ? " loading" : "")'
       ) 
-        //- {{ loading ? "🤔" : "👎" }}{{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
-        img(src='../assets/icons/down.svg', width=26) 
+        //- {{ loading ? "🤔" : "👎" }}
+        img(src='../assets/icons/down.svg', width=26)
+        span.card__icon-text(v-if='!!variant.downvotes') {{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
       .card__icon(
         @click='upvote',
-        :class='this.upvoted[variant._id] ? "green darken-2" : ""'
+        :class='(this.upvoted[variant._id] ? "card__icon--clicked" : "") + (loading ? " loading" : "")'
       ) 
-        //- {{ loading ? "🤔" : "👍" }}{{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
+        //- {{ loading ? "🤔" : "👍" }}
         img(src='../assets/icons/up.svg', width=26) 
+        span.card__icon-text(v-if='!!variant.upvotes') {{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
     .card__link(
       @click='commentsOpen = !commentsOpen',
       :class='commentsOpen ? "card__link--active" : ""'
@@ -81,6 +85,7 @@ const AppStore = namespace('AppStore')
     variant: Object,
     localization: Object,
     selectOrDeleteVariantsEnabled: Boolean,
+    selected: Boolean,
   },
   components: {
     Comments,

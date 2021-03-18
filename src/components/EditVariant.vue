@@ -1,15 +1,8 @@
 <template lang="pug">
-.ml-4.mt-2
-  v-textarea.mb-1.mt-0(
-    rows='1',
-    auto-grow,
-    no-resize,
-    compact,
-    v-model='text',
-    :append-outer-icon='!!text ? "send" : undefined',
-    @click:append-outer='save',
-    :disabled='loading'
-  )
+.mt-5.flex.flex-col
+  textarea.input.mb-1.mt-0(v-model='text', rows=5)
+  .button.button--huge(v-if='!!text', @click='save') Send
+  .button.button--inactive.button--huge(v-else) Send
 </template>
 
 <script lang="ts">

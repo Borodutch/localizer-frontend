@@ -9,6 +9,10 @@
 .chip {
   @apply text-sm transition border bg-white border-gray-200 hover:border-text-light px-4 py-2 text-gray-700 font-medium rounded-lg mr-2 mt-2 cursor-pointer;
 
+  &--inactive {
+    @apply cursor-default border-transparent hover:border-transparent;
+  }
+  
   &--selected {
     @apply border-transparent text-white hover:border-transparent;
   }
@@ -32,4 +36,5 @@
   &--flat-new {
     @apply border-additional-blue hover:border-primary-blue text-primary-blue;
   }
+
 }

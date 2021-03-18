@@ -4,16 +4,20 @@
     .card__icons.card__top-icons
       .card__icon(
         v-if='isAdmin',
-        @click='deleteLocalization(localization.key)'
+        @click='deleteLocalization(localization.key)',
+        :class='loading ? "loading" : ""'
       ) 
         img(src='../assets/icons/close.svg') 
       .card__icon(
         v-if='isAdmin',
         @click='selectOrDeleteVariantsEnabled = !selectOrDeleteVariantsEnabled',
-        :class='selectOrDeleteVariantsEnabled ? "green darken-2" : ""'
+        :class='(selectOrDeleteVariantsEnabled ? "card__icon--clicked" : "") + (loading ? "loading" : "")'
       )
         img(src='../assets/icons/edit.svg') 
-      .card__icon(@click='toggleAddVariantEnabled') 
+      .card__icon(
+        @click='toggleAddVariantEnabled',
+        :class='(addVariantEnabled ? "card__icon--clicked" : "") + (loading ? "loading" : "")'
+      ) 
         img(src='../assets/icons/add.svg') 
     h2.card__title {{ localization.key }}
     .card__chips
@@ -28,7 +32,7 @@
             @click='deleteTag(localization.key, tag)'
           )
             img.inline(
-              :class='loading ? "opacity-50" : ""',
+              :class='loading ? "loading" : ""',
               src='../assets/icons/x.svg',
               width=15
             ) 
@@ -36,7 +40,11 @@
           v-if='!viewedItems[localization._id]',
           @click='setViewedProxy'
         ) {{ $t("new") }}
-        .card__icon(v-if='isAdmin && !loading', @click='toggleAddTagEnabled') 
+        .card__icon(
+          v-if='isAdmin && !loading',
+          @click='toggleAddTagEnabled',
+          :class='addTagEnabled ? "card__icon--clicked" : ""'
+        ) 
           img(src='../assets/icons/add.svg')
   .card__controls
     .input-group(v-if='addTagEnabled && isAdmin')
@@ -63,19 +71,23 @@
       .button.button--inactive(v-else) {{ $t("add.save") }}
   div(v-if='selectOrDeleteVariantsEnabled')
     .chips.p-5.pt-0
-      .chip(@click='deleteVariants', :loading='loading')
-        v-icon(x-small, color='white') delete
-      .chip(@click='selectVariants', :loading='loading')
-        v-icon(x-small, color='white') done
-  .card__body(v-for='variant in localization.variants')
-    .d-flex.direction-row
-      span(
-        v-if='selectOrDeleteVariantsEnabled',
-        v-model='selectedVariants[variant._id]'
-      ) check
+      .chip(@click='deleteVariants', :loading='loading') Delete
+      .chip(@click='selectVariants', :loading='loading') Mark as done
+  .card__body(
+    v-for='variant in localization.variants',
+    :class='selectedVariants[variant._id] ? "shadow-inner opacity-70" : ""'
+  )
+    .flex.flex-row.space-x-3.items-center
+      div
+        .button.button--huge(
+          v-if='selectOrDeleteVariantsEnabled',
+          v-model='selectedVariants[variant._id]',
+          @click='addToSelected(variant._id)'
+        ) {{ selectedVariants[variant._id] ? "Unselect" : "Select" }}
       VariantView(
         :variant='variant',
         :localization='localization',
+        :selected='selectedVariants[variant._id]',
         :selectOrDeleteVariantsEnabled='selectOrDeleteVariantsEnabled'
       )
 </template>
@@ -155,6 +167,14 @@ export default class LocalizationCard extends Vue {
       await api.deleteLocalization(key)
       this.removeLocalization(key)
     })
+  }
+
+  addToSelected(id: string) {
+    if (this.selectedVariants[id]) {
+      this.selectedVariants[id] = undefined
+    } else {
+      this.selectedVariants = { ...this.selectedVariants, [id]: true }
+    }
   }
 
   async addVariant() {

@@ -15,6 +15,7 @@
     "pug": "^3.0.0",
     "pug-plain-loader": "^1.1.0",
     "randomcolor": "^0.6.2",
+    "tailwindcss-filters": "2.x",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",
     "vue-cookie-law": "^1.13.3",

@@ -3,7 +3,11 @@
   .comment(v-for='comment in variant.comments')
     .comment__head
       .chips.chips--margin
-        .card__icon(v-if='isAdmin', @click='deleteVariantComment(comment)')
+        .card__icon(
+          v-if='isAdmin',
+          @click='deleteVariantComment(comment)',
+          :class='loading ? "loading" : ""'
+        )
           img(src='../assets/icons/close.svg') 
         .chip.chip--title.chip--flat(v-if='comment.username') {{ comment.username }}
         .chip.chip--title.chip--flat(v-if='comment.createdAt') {{ dateDisplay(comment.createdAt) }}
@@ -18,7 +22,11 @@
       :placeholder='$t("comment.new")',
       v-model='commentText'
     )
-    .button(v-if='commentText && username', @click='save') {{ $t("add.save") }}
+    .button(
+      v-if='commentText && username',
+      :class='loading ? "loading" : ""',
+      @click='save'
+    ) {{ $t("add.save") }}
     .button.button--inactive(v-else) {{ $t("add.save") }}
 </template>
 

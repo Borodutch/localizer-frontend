@@ -1,6 +1,10 @@
 .card {
   @apply transition mb-5 border border-back-silver rounded-lg shadow-card bg-white;
 
+  &__variant {
+    @apply w-full;
+  }
+
   &__title {
     @apply font-medium text-lg place-items-start md:place-self-center;
   }
@@ -26,7 +30,15 @@
   }
 
   &__icon {
-    @apply cursor-pointer transition transform hover:scale-125;
+    @apply cursor-pointer transition transform hover:scale-125 flex items-center font-medium text-text-silver;
+
+    &-text {
+      @apply ml-1 mr-2;
+    }
+
+    &--clicked {
+      @apply transform scale-110 -translate-y-1;
+    }
 
     &--inactive {
       @apply cursor-default hover:scale-100;
@@ -34,7 +46,7 @@
   }
 
   &__body {
-    @apply border-t-2 border-back-silver p-5;
+    @apply transition border-t-2 border-back-silver p-5;
   }
 
   &__content {

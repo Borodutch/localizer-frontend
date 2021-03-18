@@ -1,5 +1,5 @@
 .input-group {  
-  @apply flex items-stretch space-x-5 p-5 pt-0;
+  @apply flex flex-col md:flex-row items-stretch space-x-0 md:space-x-5 p-5 pt-0;
 
   &--clear {
     @apply p-0;

@@ -2,7 +2,10 @@
 .contributors(v-if='contributors.length')
   .contributors__title {{ $t("top") }}
   .chips
-    .chip(dark, v-for='contributor in contributors', :key='contributor.name') {{ contributor.name }}
+    .chip.chip--inactive(
+      v-for='contributor in contributors',
+      :key='contributor.name'
+    ) {{ contributor.name }}
       sup.font-bold.ml-1.text-text-silver {{ contributor.number }}
 </template>
 

@@ -9,7 +9,7 @@ body.dark {
     @apply text-back-gray;
   }
 
-  & .input {
+  & .input, & .select {
     background-color: #0D0D0D;
     @apply border-text-dark;
   }
@@ -27,6 +27,14 @@ body.dark {
   }
 
   & .chip--selected {
+    @apply border-transparent;
+  }
+
+  & .chip--flat {
+    @apply border-transparent;
+  }
+
+  & .chip--inactive {
     @apply border-transparent;
   }
 
@@ -55,6 +63,18 @@ body.dark {
   }
 
   & .button {
+    @apply bg-text-dark text-white;
+
+    &--inactive {
+      @apply hover:bg-text-dark hover:text-white;
+    }
+  }
+
+  & .comment {
+    @apply border-text-dark;
+  }
+
+  & .code {
     @apply bg-text-dark text-white;
   }
 }

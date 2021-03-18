@@ -5,7 +5,6 @@ module.exports = {
     fontFamily: {
       sans: ['Inter', 'sans'],
     },
-
     extend: {
       colors: {
         'primary-blue': '#377DFF',
