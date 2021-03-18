@@ -1,5 +1,5 @@
 <template lang="pug">
-div(style='width: 100%')
+.card__variant(style='width: 100%')
   .card__actions
     .card__icons(v-if='isAdmin')
       .card__icon(
@@ -32,7 +32,6 @@ div(style='width: 100%')
         img(src='../assets/icons/done.svg', width=26)
     .card__ratings
       .card__icon(
-        :disabled='loading',
         @click='downvote',
         :class='this.downvoted[variant._id] ? "red darken-2" : ""'
       ) 

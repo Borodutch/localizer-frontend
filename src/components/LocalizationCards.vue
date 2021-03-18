@@ -1,5 +1,5 @@
 <template lang="pug">
-div
+.localization-cards
   LoadingIndicator
   .page-block
     Filters

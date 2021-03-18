@@ -6,10 +6,12 @@
 @import 'pagination';
 @import 'contributors';
 @import 'comment';
+@import 'snackbar';
 
 body {
   @apply bg-white;
 }
+
 .wrapper {
   @apply px-5;
 
@@ -25,6 +27,7 @@ body {
 .page-block {
   @apply pb-5;
 }
+
 .content-block {
   @apply pb-3;
 }

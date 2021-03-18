@@ -1,5 +1,5 @@
 <template lang="pug">
-nav.navigation(:class='scrolled ? "navigation--shadow" : ""')
+header.navigation(:class='scrolled ? "navigation--shadow" : ""')
   .navigation__inner
     // Title
     .navigation__main-logo

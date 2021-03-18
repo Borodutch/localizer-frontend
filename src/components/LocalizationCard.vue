@@ -15,7 +15,6 @@
         img(src='../assets/icons/edit.svg') 
       .card__icon(@click='toggleAddVariantEnabled') 
         img(src='../assets/icons/add.svg') 
-        //- {{ addVariantEnabled ? "clear" : "+" }}
     h2.card__title {{ localization.key }}
     .card__chips
       .chips.chips--margin
@@ -37,12 +36,7 @@
           v-if='!viewedItems[localization._id]',
           @click='setViewedProxy'
         ) {{ $t("new") }}
-        .card__icon(
-          v-if='isAdmin && !loading',
-          :color='addTagEnabled ? "green darken-2" : ""',
-          @click='toggleAddTagEnabled'
-        ) 
-          //- {{ addTagEnabled ? "close" : "add" }}
+        .card__icon(v-if='isAdmin && !loading', @click='toggleAddTagEnabled') 
           img(src='../assets/icons/add.svg')
   .card__controls
     .input-group(v-if='addTagEnabled && isAdmin')
@@ -57,7 +51,6 @@
       input.input(
         type='text',
         :placeholder='$t("add.text")',
-        :rules='textRules',
         v-model='addVariantText'
       )
       select.select(v-model='addVariantLanguage')
