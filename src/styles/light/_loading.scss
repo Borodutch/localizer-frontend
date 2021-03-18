@@ -3,3 +3,9 @@
   opacity: 0.5;
   filter: grayscale(100%) blur(1px);
 }
+
+.loading-text {
+  @apply text-white text-center p-5 my-10 text-3xl font-bold rounded-2xl animate-bounce bg-clip-text text-transparent;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+}

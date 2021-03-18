@@ -1,9 +1,7 @@
 <template lang="pug">
 main.wrapper
   .wrapper__inner
-    .text-center.text-3xl.font-bold.text-text-dark.animate-bounce(
-      v-if='loading'
-    ) Loading...
+    .loading-text(v-if='loading') Loading...
     .code(v-if='data') 
       pre {{ data }}
 </template>

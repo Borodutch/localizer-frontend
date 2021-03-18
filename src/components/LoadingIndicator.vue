@@ -1,5 +1,5 @@
 <template lang="pug">
-.text-center.text-3xl.font-bold.text-text-dark.animate-bounce(v-if='loading') Loading...
+.loading-text(v-if='loading') Loading...
 </template>
 
 <script lang="ts">
