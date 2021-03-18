@@ -18,19 +18,15 @@
         //- {{ addVariantEnabled ? "clear" : "+" }}
     h2.card__title {{ localization.key }}
     .card__chips
-      .chips
+      .chips.chips--margin
         .chip.chip--title.chip--selected(
-          dark,
-          small,
           v-for='tag in localization.tags',
           :key='tag',
           :style='"background-color: " + colors[tag]'
         ) {{ tag }}
           span.ml-2.cursor-pointer(
-            small,
             v-if='isAdmin',
-            @click='deleteTag(localization.key, tag)',
-            :disabled='loading'
+            @click='deleteTag(localization.key, tag)'
           )
             img.inline(
               :class='loading ? "opacity-50" : ""',
@@ -39,14 +35,9 @@
             ) 
         .chip.chip--new(
           v-if='!viewedItems[localization._id]',
-          dark,
-          small,
-          @click='setViewedProxy',
-          color='primary'
+          @click='setViewedProxy'
         ) {{ $t("new") }}
         .card__icon(
-          dark,
-          small,
           v-if='isAdmin && !loading',
           :color='addTagEnabled ? "green darken-2" : ""',
           @click='toggleAddTagEnabled'
@@ -58,15 +49,10 @@
       input.input(
         type='text',
         :placeholder='$t("tag.new")',
-        v-model='addTagText',
-        :append-outer-icon='!!addTagText ? "send" : undefined',
-        @click:append-outer='addTag'
+        v-model='addTagText'
       )
-      .button(
-        :disabled='!addVariantText || !addVariantLanguage',
-        @click='addVariant()',
-        :loading='loading'
-      ) {{ $t("add.save") }}
+      .button(v-if='addTagText', @click='addTag') {{ $t("add.save") }}
+      .button.button--inactive(v-else) {{ $t("add.save") }}
     .input-group(v-if='addVariantEnabled')
       input.input(
         type='text',
@@ -78,10 +64,10 @@
         option(disabled) {{ $t("add.language") }}
         option(v-for='lang in languages', :value='lang') {{ lang }}
       .button(
-        :disabled='!addVariantText || !addVariantLanguage',
-        @click='addVariant()',
-        :loading='loading'
+        v-if='addVariantText && addVariantLanguage && username',
+        @click='addVariant()'
       ) {{ $t("add.save") }}
+      .button.button--inactive(v-else) {{ $t("add.save") }}
   div(v-if='selectOrDeleteVariantsEnabled')
     .chips.p-5.pt-0
       .chip(@click='deleteVariants', :loading='loading')

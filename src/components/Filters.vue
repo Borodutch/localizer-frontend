@@ -22,7 +22,7 @@
     @click='toggleNonlanguage(nonlanguage)'
   ) {{ $t("no") }} {{ nonlanguage }}
   .chip(
-    :class='newFilterEnabled ? "" : "chip--flat-new"',
+    :class='newFilterEnabled ? "chip--flat-new" : ""',
     @click='toggleNewFilterEnabled'
   ) {{ $t("new") }}
   .chip.chip--dashed(@click='markAllLocalizationsViewed') Make all viewed

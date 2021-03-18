@@ -25,7 +25,7 @@
   }
 
   &--flat {
-    @apply bg-gray-200 m-0;
+    @apply bg-gray-200 m-0 hover:border-transparent;
   }
 
   &--new {

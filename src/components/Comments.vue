@@ -7,7 +7,7 @@
           img(src='../assets/icons/close.svg') 
         .chip.chip--title.chip--flat(v-if='comment.username') {{ comment.username }}
         .chip.chip--title.chip--flat(v-if='comment.createdAt') {{ dateDisplay(comment.createdAt) }}
-        .chip.chip--title(
+        .chip.chip--new(
           v-if='!viewedItems[comment._id]',
           @click='setViewedProxy(comment._id)'
         ) {{ $t("new") }}
