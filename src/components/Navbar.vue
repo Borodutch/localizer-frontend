@@ -1,31 +1,27 @@
 <template lang="pug">
 header.navigation(:class='scrolled ? "navigation--shadow" : ""')
   .navigation__inner
-    // Title
     .navigation__main-logo
       img.logo(src='/img/logo.svg', @click='goHome')
     .navigation__side-menu(
       :class='scrolled ? "navigation__side-menu--scroll" : ""'
     )
-      // Dark theme
       .navigation__button(@click='toggleDark')
         img(src='@/assets/icons/moon.svg')
-      // Admin
       .navigation__button(
         :color='isAdmin ? "primary" : "grey"',
         @click='toggleAdmin'
       )
         img(src='@/assets/icons/key.svg')
-      // Code
       .navigation__button(color='grey', @click='$router.replace("/code")')
         img(src='@/assets/icons/arrows.svg')
-      // Refresh
       .navigation__button(@click='refresh')
         img(src='@/assets/icons/layers.svg')
       .text-text-silver.font-medium.cursor-pointer(
         v-for='locale in locales',
         @click='changeLanguage(locale.code)',
-        :key='locale.code'
+        :key='locale.code',
+        v-if='locale.code !== currentLocale.code'
       ) {{ locale.code }}
 </template>
 

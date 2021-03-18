@@ -1,7 +1,9 @@
 <template lang="pug">
-.v-container.pa-4
-  v-progress-linear.mb-4(v-if='loading', indeterminate)
-  code(v-if='data') {{ data }}
+main.wrapper
+  .wrapper__inner
+    .mb-4(v-if='loading') loading
+    .code(v-if='data') 
+      pre {{ data }}
 </template>
 
 <script lang="ts">
