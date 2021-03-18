@@ -18,7 +18,7 @@ div(style='width: 100%')
         :class='editTextEnabled ? "green darken-2" : ""'
       )
         img(src='../assets/icons/edit.svg') 
-    .chips
+    .chips.chips--margin
       .chip.chip--title.chip--selected.text-white(
         :style='"background-color:" + colors[variant.language]'
       ) {{ variant.language }}

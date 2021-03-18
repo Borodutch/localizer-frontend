@@ -1,34 +1,24 @@
 <template lang="pug">
 .card__comments
-  .my-0(v-for='comment in variant.comments')
-    div
-      v-chip.px-1(
-        dark,
-        x-small,
-        color='red',
-        v-if='isAdmin',
-        @click='deleteVariantComment(comment)',
-        :loading='loading',
-        :disabled='loading'
-      )
-        v-icon(x-small, color='white') delete
-      v-chip.px-1(dark, x-small, v-if='comment.username') {{ comment.username }}
-      v-chip.px-1(dark, x-small, v-if='comment.createdAt') {{ dateDisplay(comment.createdAt) }}
-      v-chip.px-1(
-        x-small,
-        v-if='!viewedItems[comment._id]',
-        dark,
-        @click='setViewedProxy(comment._id)',
-        color='primary'
-      ) {{ $t("new") }}
-    p.ma-0 {{ comment.text }}
+  .comment(v-for='comment in variant.comments')
+    .comment__head
+      .chips.chips--margin
+        .card__icon(v-if='isAdmin', @click='deleteVariantComment(comment)')
+          img(src='../assets/icons/close.svg') 
+        .chip.chip--title.chip--flat(v-if='comment.username') {{ comment.username }}
+        .chip.chip--title.chip--flat(v-if='comment.createdAt') {{ dateDisplay(comment.createdAt) }}
+        .chip.chip--title(
+          v-if='!viewedItems[comment._id]',
+          @click='setViewedProxy(comment._id)'
+        ) {{ $t("new") }}
+    .comment__body {{ comment.text }}
   .input-group.input-group--clear
     input.input(
       type='text',
       :placeholder='$t("comment.new")',
       v-model='commentText'
     )
-    .button(v-if='commentText', @click='save') {{ $t("add.save") }}
+    .button(v-if='commentText && username', @click='save') {{ $t("add.save") }}
     .button.button--inactive(v-else) {{ $t("add.save") }}
 </template>
 

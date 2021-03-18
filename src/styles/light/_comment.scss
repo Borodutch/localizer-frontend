@@ -1,0 +1,11 @@
+.comment {
+  @apply ml-8 mb-5 pl-4 border-l-2 border-back-silver font-medium;
+
+  &__head {
+    @apply mb-3;
+  }
+
+  &__body {
+    @apply text-text-silver;
+  }
+}

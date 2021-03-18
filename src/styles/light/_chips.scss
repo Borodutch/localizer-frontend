@@ -2,6 +2,10 @@
   
   @apply flex flex-wrap items-center;
 
+  &--margin {
+    @apply space-x-2;
+  }
+
 }
 
 .chip {
@@ -13,7 +17,7 @@
   }
 
   &--title {
-    @apply cursor-default px-3 py-1 mt-0;
+    @apply cursor-default px-3 py-1 m-0;
   }
 
   &--dashed {
@@ -21,7 +25,7 @@
   }
 
   &--flat {
-    @apply bg-gray-200
+    @apply bg-gray-200 m-0;
   }
 
   &--new {
