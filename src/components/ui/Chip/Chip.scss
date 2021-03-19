@@ -1,12 +1,12 @@
 .chip {
-  @apply text-sm transition border bg-white border-gray-200 hover:border-text-light px-4 py-2 text-gray-700 font-medium rounded-lg mr-2 mt-2 cursor-pointer;
+  @apply select-none text-sm transition border bg-white border-gray-200 hover_border-text-light px-4 py-2 text-gray-700 font-medium rounded-lg mr-2 mt-2 cursor-pointer;
 
   &--inactive {
-    @apply cursor-default border-transparent hover:border-transparent;
+    @apply cursor-default border-transparent hover_border-transparent;
   }
   
   &--selected {
-    @apply border-transparent text-white hover:border-transparent;
+    @apply border-transparent text-white hover_border-transparent;
   }
 
   &--sm {
@@ -18,11 +18,11 @@
   }
 
   &--flat {
-    @apply bg-gray-200 m-0 hover:border-transparent;
+    @apply bg-gray-200 m-0 hover_border-transparent;
   }
 
   &--new {
-    @apply border-additional-blue hover:border-primary-blue text-primary-blue;
+    @apply border-additional-blue hover_border-primary-blue text-primary-blue;
   }
 
 }

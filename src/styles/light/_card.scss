@@ -6,15 +6,15 @@
   }
 
   &__title {
-    @apply font-medium text-lg place-items-start md:place-self-center;
+    @apply font-medium text-lg place-items-start break-all md_place-self-center;
   }
 
   &__head {
-    @apply p-5 grid grid-cols-1 gap-2 md:grid-cols-3 items-center;
+    @apply p-5 grid grid-cols-1 gap-2 md_grid-cols-3 items-center;
   }
 
   &__chips {
-    @apply place-self-start md:place-self-end;
+    @apply place-self-start md_place-self-end;
   }
 
   &__controls {
@@ -30,7 +30,7 @@
   }
 
   &__icon {
-    @apply cursor-pointer transition transform hover:scale-125 flex items-center font-medium text-text-silver;
+    @apply cursor-pointer transition transform hover_scale-125 flex items-center font-medium text-text-silver;
 
     &-text {
       @apply ml-1 mr-2;
@@ -41,7 +41,7 @@
     }
 
     &--inactive {
-      @apply cursor-default hover:scale-100;
+      @apply cursor-default hover_scale-100;
     }
   }
 
@@ -57,12 +57,12 @@
     @apply flex flex-wrap items-center space-x-3;
 
     & > * {
-      @apply pt-2 md:pt-0;
+      @apply pt-2 md_pt-0;
     }
   }
 
   &__link {
-    @apply transition font-medium text-text-silver cursor-pointer hover:text-primary-blue;
+    @apply transition font-medium text-text-silver cursor-pointer hover_text-primary-blue;
   }
 
   &__link--active {

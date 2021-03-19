@@ -2,9 +2,9 @@
 transition(name='fade')
   .snackbar(v-if='safeActive')
     .snackbar__inner(:class='`snackbar__inner--${color}`')
-      span {{ text }}
+      span.snackbar__text {{ text }}
       .snackbar__close(@click='hideSnackbar')
-        img(src='../assets/icons/x.svg')
+        img(src='../assets/icons/x.svg', alt='Close')
 </template>
 
 <script lang="ts">
@@ -40,3 +40,43 @@ export default class Snackbar extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.snackbar {
+  @apply fixed;
+  @apply top-28;
+  @apply left-0;
+  @apply right-0;
+  @apply z-50;
+  @apply text-center;
+  @apply font-medium;
+
+  &__inner {
+    @apply p-5;
+    @apply rounded-xl;
+    @apply inline-flex;
+    @apply flex-row;
+    @apply items-center;
+    @apply space-x-3;
+
+    .snackbar &--error {
+      @apply text-primary-red;
+      @apply bg-additional-red;
+    }
+
+    .snackbar &--success {
+      @apply text-primary-green;
+      @apply bg-additional-green;
+    }
+  }
+
+  &__close {
+    @apply transition;
+    @apply bg-black;
+    @apply bg-opacity-10;
+    @apply cursor-pointer;
+    @apply hover_bg-opacity-30;
+    @apply rounded-md;
+  }
+}
+</style>

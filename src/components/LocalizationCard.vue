@@ -78,9 +78,8 @@
     :class='selectedVariants[variant._id] ? "shadow-inner opacity-70" : ""'
   )
     .flex.flex-row.space-x-3.items-center
-      div
+      div(v-if='selectOrDeleteVariantsEnabled')
         .button.button--huge(
-          v-if='selectOrDeleteVariantsEnabled',
           v-model='selectedVariants[variant._id]',
           @click='addToSelected(variant._id)'
         ) {{ selectedVariants[variant._id] ? "Unselect" : "Select" }}

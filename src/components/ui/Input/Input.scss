@@ -1,5 +1,5 @@
 .input {
-  @apply font-medium text-lg md:text-xl transition block p-3 md:p-4 w-full rounded-2xl border-back-silver focus:border-primary-blue focus:ring-0 placeholder-text-light;
+  @apply font-medium text-lg md_text-xl transition block p-3 md_p-4 w-full rounded-2xl border-back-silver focus_border-primary-blue focus_ring-0 placeholder-text-light;
   
   &--user {
     @apply pl-12;

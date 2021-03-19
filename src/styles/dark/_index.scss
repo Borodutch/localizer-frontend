@@ -66,7 +66,7 @@ body.dark {
     @apply bg-text-dark text-white;
 
     &--inactive {
-      @apply hover:bg-text-dark hover:text-white;
+      @apply hover_bg-text-dark hover_text-white;
     }
   }
 
