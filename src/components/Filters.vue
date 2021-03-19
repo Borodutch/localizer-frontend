@@ -1,32 +1,29 @@
 <template lang="pug">
-.chips
-  .chip(
+.flex.flex-wrap.items-center
+  Chip(
     v-for='tag in tags',
     :key='tag',
-    :style='selectedTags.includes(tag) ? "background-color: " + colors[tag] : ""',
-    :class='selectedTags.includes(tag) ? "chip--selected" : ""',
+    :selected='selectedTags.includes(tag)',
+    :color='colors[tag]',
     @click='toggleTag(tag)'
   ) {{ tag }}
-  .chip(
+  Chip(
     v-for='language in languages',
     :key='language',
-    :style='selectedLanguages.includes(language) ? "background-color: " + colors[language] : ""',
-    :class='selectedLanguages.includes(language) ? "chip--selected" : ""',
+    :color='colors[language]',
+    :selected='selectedLanguages.includes(language)',
     @click='toggleLanguage(language)'
   ) {{ language }}
-  .chip(
+  Chip(
     v-for='nonlanguage in languages',
     :key='`no-${nonlanguage}`',
-    :style='selectedNonlanguages.includes(nonlanguage) ? "background-color: " + colors[nonlanguage] : ""',
-    :class='selectedNonlanguages.includes(nonlanguage) ? "chip--selected" : ""',
+    :color='colors[nonlanguage]',
+    :selected='selectedNonlanguages.includes(nonlanguage)',
     @click='toggleNonlanguage(nonlanguage)'
   ) {{ $t("no") }} {{ nonlanguage }}
-  .chip(
-    :class='newFilterEnabled ? "chip--flat-new" : ""',
-    @click='toggleNewFilterEnabled'
-  ) {{ $t("new") }}
-  .chip.chip--dashed(@click='markAllLocalizationsViewed') Make all viewed
-  .chip.chip--dashed(@click='markAllLocalizationsNew') Make all new
+  Chip(:isNew='newFilterEnabled', @click='toggleNewFilterEnabled') {{ $t("new") }}
+  Chip(dashed, @click='markAllLocalizationsViewed') Make all viewed
+  Chip(dashed, @click='markAllLocalizationsNew') Make all new
 </template>
 
 <script lang="ts">

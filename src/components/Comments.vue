@@ -8,7 +8,7 @@
           @click='deleteVariantComment(comment)',
           :class='loading ? "loading" : ""'
         )
-          img(src='../assets/icons/close.svg') 
+          img(src='../assets/icons/close.svg')
         .chip.chip--title.chip--flat(v-if='comment.username') {{ comment.username }}
         .chip.chip--title.chip--flat(v-if='comment.createdAt') {{ dateDisplay(comment.createdAt) }}
         .chip.chip--new(
