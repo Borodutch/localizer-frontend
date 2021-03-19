@@ -18,7 +18,7 @@
           @click='setViewedProxy(comment._id)'
         ) {{ $t("new") }}
     .comment__body {{ comment.text }}
-  .flex.space-x-3
+  .flex.space-x-2
     Input(:label='$t("comment.new")', v-model='commentText')
     Button(:inactive='!commentText', :loading='loading', @click='save') {{ $t("add.save") }}
 </template>
