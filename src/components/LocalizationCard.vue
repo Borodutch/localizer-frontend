@@ -65,7 +65,7 @@
         option(disabled) {{ $t("add.language") }}
         option(v-for='lang in languages', :value='lang') {{ lang }}
       .button(
-        v-if='addVariantText && addVariantLanguage && username',
+        v-if='addVariantText && addVariantLanguage',
         @click='addVariant()'
       ) {{ $t("add.save") }}
       .button.button--inactive(v-else) {{ $t("add.save") }}
