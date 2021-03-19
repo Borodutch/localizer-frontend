@@ -1,6 +1,6 @@
 <template lang="pug">
 .chip(
-  :class='{ "chip--selected": selected, "chip--new": isNew, "chip--sm": small, "chip--dashed": dashed }',
+  :class='{ "chip--selected": selected, "chip--new": isNew, "chip--sm": small, "chip--dashed": dashed, "chip--flat": flat, "chip--inactive": inactive }',
   :style='selected && color ? `background-color: ${color}` : ""',
   @click='$emit("click")'
 )

@@ -1,5 +1,5 @@
 <template lang="pug">
-.loading-text(v-if='loading') Loading...
+LoadingBar(v-if='loading')
 </template>
 
 <script lang="ts">

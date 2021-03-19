@@ -2,16 +2,18 @@
 .card__comments
   .comment(v-for='comment in variant.comments')
     .comment__head
-      .chips.chips--margin
-        .card__icon(
+      .flex.flex-wrap.items-center.space-x-2
+        Icon(
           v-if='isAdmin',
           @click='deleteVariantComment(comment)',
-          :class='loading ? "loading" : ""'
+          :loading='loading'
         )
-          img(src='../assets/icons/close.svg')
-        .chip.chip--title.chip--flat(v-if='comment.username') {{ comment.username }}
-        .chip.chip--title.chip--flat(v-if='comment.createdAt') {{ dateDisplay(comment.createdAt) }}
-        .chip.chip--new(
+          img(src='../assets/icons/close.svg', alt='Delete')
+        Chip(small, flat, inactive, v-if='comment.username') {{ comment.username }}
+        Chip(small, flat, inactive, v-if='comment.createdAt') {{ dateDisplay(comment.createdAt) }}
+        Chip(
+          small,
+          isNew,
           v-if='!viewedItems[comment._id]',
           @click='setViewedProxy(comment._id)'
         ) {{ $t("new") }}
@@ -22,12 +24,7 @@
       :placeholder='$t("comment.new")',
       v-model='commentText'
     )
-    .button(
-      v-if='commentText && username',
-      :class='loading ? "loading" : ""',
-      @click='save'
-    ) {{ $t("add.save") }}
-    .button.button--inactive(v-else) {{ $t("add.save") }}
+    Button(:inactive='!commentText', :loading='loading', @click='save') {{ $t("add.save") }}
 </template>
 
 <script lang="ts">

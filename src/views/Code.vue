@@ -1,7 +1,7 @@
 <template lang="pug">
 main.wrapper
   .wrapper__inner
-    .loading-text(v-if='loading') Loading...
+    LoadingBar(v-if='loading')
     .code(v-if='data') 
       pre {{ data }}
 </template>

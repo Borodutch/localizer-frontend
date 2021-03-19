@@ -1,0 +1,15 @@
+.icon {
+  @apply cursor-pointer transition transform hover:scale-125 flex items-center font-medium text-text-silver;
+
+  &__text {
+    @apply ml-1 mr-2;
+  }
+
+  &--clicked {
+    @apply transform scale-110 -translate-y-1;
+  }
+
+  &--inactive {
+    @apply cursor-default hover:scale-100;
+  }
+}
