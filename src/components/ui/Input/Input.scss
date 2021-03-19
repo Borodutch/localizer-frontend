@@ -1,0 +1,27 @@
+.input {
+  @apply font-medium text-lg md:text-xl transition block p-3 md:p-4 w-full rounded-2xl border-back-silver focus:border-primary-blue focus:ring-0 placeholder-text-light;
+  
+  &--user {
+    @apply pl-12;
+    background-image: url('../../../assets/icons/smile.svg');
+    background-repeat: no-repeat;
+    background-position: 14px center;
+    background-size: 20px;
+  }
+  
+  &--password {
+    @apply pl-12;
+    background-image: url('../../../assets/icons/key.svg');
+    background-repeat: no-repeat;
+    background-position: 14px center;
+    background-size: 24px;
+  }
+  
+  &--search {
+    @apply pl-12;
+    background-image: url('../../../assets/icons/search.svg');
+    background-repeat: no-repeat;
+    background-position: 13px center;
+    background-size: 25px;
+  }
+}

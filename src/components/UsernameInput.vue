@@ -1,9 +1,5 @@
 <template lang="pug">
-input.input.user-text(
-  type='text',
-  :placeholder='$t("username")',
-  v-model='usernameProxy'
-)
+Input(:label='$t("username")', v-model='usernameProxy', icon='user')
 </template>
 
 <script lang="ts">

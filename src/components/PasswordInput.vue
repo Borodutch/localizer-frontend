@@ -1,8 +1,9 @@
 <template lang="pug">
-input.input.password-text(
-  v-model='passwordProxy',
+Input(
   type='password',
-  :placeholder='$t("admin.password")'
+  :label='$t("admin.password")',
+  v-model='passwordProxy',
+  icon='password'
 )
 </template>
 

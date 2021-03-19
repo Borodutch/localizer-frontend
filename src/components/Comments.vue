@@ -19,11 +19,7 @@
         ) {{ $t("new") }}
     .comment__body {{ comment.text }}
   .input-group.input-group--clear
-    input.input(
-      type='text',
-      :placeholder='$t("comment.new")',
-      v-model='commentText'
-    )
+    Input(:label='$t("comment.new")', v-model='commentText')
     Button(:inactive='!commentText', :loading='loading', @click='save') {{ $t("add.save") }}
 </template>
 

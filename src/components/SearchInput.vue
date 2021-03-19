@@ -1,9 +1,5 @@
 <template lang="pug">
-input.input.search-text(
-  type='text',
-  :placeholder='$t("search")',
-  v-model='queryProxy'
-)
+Input(:label='$t("search")', v-model='queryProxy', icon='search')
 </template>
 
 <script lang="ts">
