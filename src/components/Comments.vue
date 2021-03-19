@@ -18,7 +18,7 @@
           @click='setViewedProxy(comment._id)'
         ) {{ $t("new") }}
     .comment__body {{ comment.text }}
-  .input-group.input-group--clear
+  .flex.space-x-3
     Input(:label='$t("comment.new")', v-model='commentText')
     Button(:inactive='!commentText', :loading='loading', @click='save') {{ $t("add.save") }}
 </template>
@@ -123,3 +123,22 @@ export default class Comments extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.comment {
+  @apply ml-8;
+  @apply mb-5;
+  @apply pl-4;
+  @apply border-l-2;
+  @apply border-back-silver;
+  @apply font-medium;
+
+  &__head {
+    @apply mb-3;
+  }
+
+  &__body {
+    @apply text-text-silver;
+  }
+}
+</style>
