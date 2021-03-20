@@ -9,6 +9,6 @@ import Component from 'vue-class-component'
 export default class Comment extends Vue { }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import 'Comment';
 </style>

@@ -19,6 +19,6 @@ import Component from 'vue-class-component'
 export default class Icon extends Vue { }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import 'Icon';
 </style>

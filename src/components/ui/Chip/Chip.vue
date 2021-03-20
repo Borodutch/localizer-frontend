@@ -26,6 +26,6 @@ import Component from 'vue-class-component'
 export default class Chip extends Vue { }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import 'Chip';
 </style>

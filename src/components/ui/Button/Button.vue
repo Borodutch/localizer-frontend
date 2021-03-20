@@ -20,6 +20,6 @@ import Component from 'vue-class-component'
 export default class Button extends Vue { }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import 'Button';
 </style>

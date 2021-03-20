@@ -124,7 +124,7 @@ export default class Comments extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .comment {
   @apply ml-8;
   @apply mb-5;

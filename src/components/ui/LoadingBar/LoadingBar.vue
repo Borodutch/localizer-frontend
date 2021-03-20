@@ -15,6 +15,6 @@ import Component from 'vue-class-component'
 export default class LoadingBar extends Vue { }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import 'LoadingBar';
 </style>

@@ -27,6 +27,6 @@ export default class Input extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import 'Input';
 </style>

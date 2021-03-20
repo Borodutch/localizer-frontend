@@ -41,7 +41,7 @@ export default class Snackbar extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .snackbar {
   @apply fixed;
   @apply top-28;

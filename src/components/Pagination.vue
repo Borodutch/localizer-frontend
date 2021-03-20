@@ -43,7 +43,7 @@ export default class Pagination extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .pagination {
   @apply flex space-x-2 flex-wrap my-5 justify-center font-medium text-text-silver;
 

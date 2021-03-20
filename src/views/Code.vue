@@ -39,7 +39,7 @@ export default class Code extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .code {
   @apply p-5 bg-back-gray rounded-2xl text-sm text-text-dark overflow-y-scroll mb-10;
 }

@@ -23,3 +23,13 @@ export default class TopContributors extends Vue {
   @DataStore.State contributors!: Contributor[]
 }
 </script>
+
+<style lang="scss">
+.contributors {
+  @apply my-10 p-5 bg-additional-blue rounded-lg text-center shadow-blue;
+
+  &__title {
+    @apply font-bold mb-2 text-primary-blue text-lg;
+  }
+}
+</style>
