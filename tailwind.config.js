@@ -26,7 +26,6 @@ module.exports = {
         'back-light-dark': '#171717',
       },
       boxShadow: {
-        card: '0 20px 30px 0 rgba(0, 0, 0, 0.05)',
         blue: '0 20px 30px 0 rgba(0, 0, 255, 0.05)',
       },
     },

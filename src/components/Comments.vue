@@ -1,5 +1,5 @@
 <template lang="pug">
-.card__comments
+.mt-5
   .comment(v-for='comment in variant.comments')
     .comment__head
       .flex.flex-wrap.items-center.space-x-2
@@ -18,7 +18,7 @@
           @click='setViewedProxy(comment._id)'
         ) {{ $t("new") }}
     .comment__body {{ comment.text }}
-  .flex.space-x-2
+  .flex.flex-col.md_flex-row.md_space-x-2.space-y-2.md_space-y-0
     Input(:label='$t("comment.new")', v-model='commentText')
     Button(:inactive='!commentText', :loading='loading', @click='save') {{ $t("add.save") }}
 </template>

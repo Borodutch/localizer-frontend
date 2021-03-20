@@ -1,8 +1,9 @@
 <template lang="pug">
 .contributors(v-if='contributors.length')
   .contributors__title {{ $t("top") }}
-  .chips
-    .chip.chip--inactive(
+  .flex.flex-wrap
+    Chip(
+      inactive,
       v-for='contributor in contributors',
       :key='contributor.name'
     ) {{ contributor.name }}

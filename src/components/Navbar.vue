@@ -1,21 +1,19 @@
 <template lang="pug">
-header.navigation(:class='scrolled ? "navigation--shadow" : ""')
-  .navigation__inner
-    .navigation__main-logo
-      img.logo(src='/img/logo.svg', @click='goHome')
-    .navigation__side-menu(
-      :class='scrolled ? "navigation__side-menu--scroll" : ""'
-    )
-      .navigation__button(@click='toggleDark')
-        img(src='@/assets/icons/moon.svg')
-      .navigation__button(
-        :color='isAdmin ? "primary" : "grey"',
-        @click='toggleAdmin'
-      )
-        img(src='@/assets/icons/key.svg')
-      .navigation__button(color='grey', @click='$router.replace("/code")')
-        img(src='@/assets/icons/arrows.svg')
-      .navigation__button(@click='refresh')
+header.header(:class='scrolled ? "header--shadow" : ""')
+  .header__inner
+    .header__logo
+      img.logo(src='/img/logo.svg', alt='Localizer', @click='goHome')
+    .header__menu(:class='scrolled ? "header__menu--scroll" : ""')
+      Icon(@click='toggleDark')
+        img(v-if='dark', src='@/assets/icons/sun.svg')
+        img(v-else, src='@/assets/icons/moon.svg')
+      Icon(@click='toggleAdmin')
+        img(v-if='isAdmin', src='@/assets/icons/key-active.svg')
+        img(v-else, src='@/assets/icons/key.svg')
+      Icon(@click='goCode')
+        img(v-if='isCode', src='@/assets/icons/arrows-active.svg')
+        img(v-else, src='@/assets/icons/arrows.svg')
+      Icon(@click='refresh')
         img(src='@/assets/icons/layers.svg')
       .text-text-silver.font-medium.cursor-pointer(
         v-for='locale in locales',
@@ -46,9 +44,13 @@ export default class Navbar extends Vue {
   @DataStore.Action loadData!: () => void
 
   scrolled = false;
+  isCode = false;
 
   created() {
     window.addEventListener('scroll', this.handleScroll);
+    if (this.$router.currentRoute.path === '/code') {
+      this.isCode = true;
+    }
   }
 
   destroyed() {
@@ -95,6 +97,16 @@ export default class Navbar extends Vue {
     }
   }
 
+  goCode() {
+    if (this.$router.currentRoute.path === '/code') {
+      this.$router.replace('/')
+      this.isCode = false;
+    } else {
+      this.$router.replace('/code')
+      this.isCode = true;
+    }
+  }
+
   async refresh() {
     this.setLoading(true)
     try {
@@ -107,3 +119,66 @@ export default class Navbar extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.header {
+  @apply p-5;
+  @apply md_sticky;
+  @apply top-0;
+  @apply shadow-none;
+  @apply transition-shadow;
+  @apply z-30;
+  backdrop-filter: blur(5px) saturate(200%);
+  background: rgba(255, 255, 255, 0.8);
+
+  &--shadow {
+    @apply shadow-none;
+    @apply md_shadow-sm;
+  }
+
+  &__inner {
+    @apply max-w-screen-xl;
+    @apply mx-auto;
+    @apply flex;
+    @apply flex-col;
+    @apply md_flex-row;
+    @apply items-center;
+    @apply justify-center;
+    @apply space-y-3;
+    @apply md_space-y-0;
+    @apply md_justify-between;
+  }
+
+  &__menu {
+    @apply bg-back-gray;
+    @apply rounded-lg;
+    @apply py-3;
+    @apply px-4;
+    @apply inline-flex;
+    @apply transition;
+    @apply space-x-5;
+  }
+
+  &__menu--scroll {
+    @apply bg-back-gray;
+    @apply bg-opacity-60;
+    @apply md_bg-transparent;
+  }
+}
+
+.dark {
+  & .header {
+    @apply bg-opacity-60;
+    @apply bg-back-dark;
+  }
+
+  & .header__menu {
+    @apply bg-back-light-dark;
+    @apply bg-opacity-80;
+  }
+}
+
+.logo {
+  @apply cursor-pointer;
+}
+</style>

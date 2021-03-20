@@ -1,5 +1,5 @@
 .icon {
-  @apply cursor-pointer transition transform hover_scale-125 flex items-center font-medium text-text-silver;
+  @apply cursor-pointer transition transform hover_scale-125 flex space-x-1 items-center font-medium text-text-silver;
 
   &__text {
     @apply ml-1 mr-2;

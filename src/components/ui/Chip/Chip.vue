@@ -1,6 +1,6 @@
 <template lang="pug">
 .chip(
-  :class='{ "chip--selected": selected, "chip--new": isNew, "chip--sm": small, "chip--dashed": dashed, "chip--flat": flat, "chip--inactive": inactive }',
+  :class='{ loading: loading, "chip--selected": selected, "chip--new": isNew, "chip--sm": small, "chip--dashed": dashed, "chip--flat": flat, "chip--inactive": inactive }',
   :style='selected && color ? `background-color: ${color}` : ""',
   @click='$emit("click")'
 )
@@ -18,6 +18,7 @@ import Component from 'vue-class-component'
     isNew: Boolean,
     selected: Boolean,
     inactive: Boolean,
+    loading: Boolean,
     dashed: Boolean,
     color: String
   }

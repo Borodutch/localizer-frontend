@@ -1,5 +1,8 @@
 <template lang="pug">
-.icon(@click='$emit("click")', :class='{ loading: loading }')
+.icon(
+  @click='$emit("click")',
+  :class='{ loading: loading, "icon--inactive": inactive }'
+)
   slot
 </template>
 
@@ -9,7 +12,8 @@ import Component from 'vue-class-component'
 
 @Component({
   props: {
-    loading: Boolean
+    loading: Boolean,
+    inactive: Boolean
   }
 })
 export default class Icon extends Vue { }

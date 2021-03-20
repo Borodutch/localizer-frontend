@@ -1,85 +1,72 @@
 <template lang="pug">
 .card
   .card__head
-    .card__icons.card__top-icons
-      .card__icon(
+    .card__icons
+      Icon(
         v-if='isAdmin',
         @click='deleteLocalization(localization.key)',
-        :class='loading ? "loading" : ""'
+        :loading='loading'
       ) 
-        img(src='../assets/icons/close.svg') 
-      .card__icon(
+        img(src='../assets/icons/close.svg', alt='Delete') 
+      Icon(
         v-if='isAdmin',
         @click='selectOrDeleteVariantsEnabled = !selectOrDeleteVariantsEnabled',
-        :class='(selectOrDeleteVariantsEnabled ? "card__icon--clicked" : "") + (loading ? "loading" : "")'
+        :loading='loading'
       )
-        img(src='../assets/icons/edit.svg') 
-      .card__icon(
-        @click='toggleAddVariantEnabled',
-        :class='(addVariantEnabled ? "card__icon--clicked" : "") + (loading ? "loading" : "")'
-      ) 
-        img(src='../assets/icons/add.svg') 
+        img(src='../assets/icons/edit.svg', alt='Edit') 
+      Icon(@click='toggleAddVariantEnabled', :loading='loading') 
+        img(src='../assets/icons/add.svg', alt='Add') 
     h2.card__title {{ localization.key }}
     .card__chips
-      .chips.chips--margin
-        .chip.chip--title.chip--selected(
+      .flex.items-center.space-x-2.flex-wrap
+        Chip(
           v-for='tag in localization.tags',
           :key='tag',
-          :style='"background-color: " + colors[tag]'
-        ) {{ tag }}
-          span.ml-2.cursor-pointer(
+          :color='colors[tag]',
+          small,
+          selected,
+          inactive
+        ) 
+          span {{ tag }}
+          Icon(
             v-if='isAdmin',
-            @click='deleteTag(localization.key, tag)'
+            @click='deleteTag(localization.key, tag)',
+            :loading='loading'
           )
-            img.inline(
-              :class='loading ? "loading" : ""',
-              src='../assets/icons/x.svg',
-              width=15
-            ) 
-        .chip.chip--new(
+            img(src='../assets/icons/x.svg', width=15) 
+        Chip(
+          isNew,
+          small,
           v-if='!viewedItems[localization._id]',
           @click='setViewedProxy'
         ) {{ $t("new") }}
-        .card__icon(
-          v-if='isAdmin && !loading',
-          @click='toggleAddTagEnabled',
-          :class='addTagEnabled ? "card__icon--clicked" : ""'
-        ) 
-          img(src='../assets/icons/add.svg')
+        Icon(v-if='isAdmin && !loading', @click='toggleAddTagEnabled') 
+          img(src='../assets/icons/add.svg', alt='Add')
   .card__controls
     .input-group(v-if='addTagEnabled && isAdmin')
-      input.input(
-        type='text',
-        :placeholder='$t("tag.new")',
-        v-model='addTagText'
-      )
-      .button(v-if='addTagText', @click='addTag') {{ $t("add.save") }}
-      .button.button--inactive(v-else) {{ $t("add.save") }}
+      Input(type='text', :label='$t("tag.new")', v-model='addTagText')
+      Button(:inactive='!addTagText', @click='addTag') {{ $t("add.save") }}
     .input-group(v-if='addVariantEnabled')
-      input.input(
-        type='text',
-        :placeholder='$t("add.text")',
-        v-model='addVariantText'
-      )
+      Input(type='text', :label='$t("add.text")', v-model='addVariantText')
       select.select(v-model='addVariantLanguage')
         option(disabled) {{ $t("add.language") }}
         option(v-for='lang in languages', :value='lang') {{ lang }}
-      .button(
-        v-if='addVariantText && addVariantLanguage',
+      Button(
+        :inactive='!(addVariantText && addVariantLanguage)',
         @click='addVariant()'
       ) {{ $t("add.save") }}
-      .button.button--inactive(v-else) {{ $t("add.save") }}
   div(v-if='selectOrDeleteVariantsEnabled')
-    .chips.p-5.pt-0
-      .chip(@click='deleteVariants', :loading='loading') Delete
-      .chip(@click='selectVariants', :loading='loading') Mark as done
+    .flex.items-center.pl-5.pb-5
+      Chip(@click='deleteVariants', :loading='loading') Delete
+      Chip(@click='selectVariants', :loading='loading') Mark as done
   .card__body(
     v-for='variant in localization.variants',
-    :class='selectedVariants[variant._id] ? "shadow-inner opacity-70" : ""'
+    :class='selectedVariants[variant._id] ? "card__body--selected" : ""'
   )
     .flex.flex-row.space-x-3.items-center
       div(v-if='selectOrDeleteVariantsEnabled')
-        .button.button--huge(
+        Button(
+          huge,
           v-model='selectedVariants[variant._id]',
           @click='addToSelected(variant._id)'
         ) {{ selectedVariants[variant._id] ? "Unselect" : "Select" }}
@@ -281,3 +268,83 @@ export default class LocalizationCard extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.card {
+  @apply transition mb-5 border border-back-silver rounded-lg shadow-sm bg-white;
+
+  &__variant {
+    @apply w-full;
+  }
+
+  &__title {
+    @apply font-medium text-text-dark text-lg break-all place-self-start;
+  }
+
+  &__head {
+    @apply p-5 flex justify-start space-x-0 md_space-x-5 flex-col md_flex-row items-center space-y-2 md_space-y-0;
+  }
+
+  &__chips {
+    @apply place-self-start;
+  }
+
+  &__controls {
+    @apply flex flex-col;
+  }
+
+  &__icons {
+    @apply flex items-center place-self-start space-x-1;
+  }
+
+  &__body {
+    @apply transition border-t-2 border-back-silver p-5;
+
+    &--selected {
+      @apply shadow-inner opacity-70;
+    }
+  }
+
+  &__content {
+    @apply pt-5 font-medium text-text-silver;
+  }
+
+  &__actions {
+    @apply flex flex-wrap items-center;
+
+    & > * {
+      @apply pt-2 pr-3 md_pt-0;
+    }
+  }
+
+  &__link {
+    @apply transition font-medium text-text-silver cursor-pointer hover_text-primary-blue;
+  }
+
+  &__link--active {
+    @apply text-primary-blue;
+  }
+
+  &__ratings {
+    @apply flex items-center space-x-2 mx-3 ml-0 md_ml-3;
+  }
+
+  &__comments {
+    @apply mt-5;
+  }
+}
+
+.dark {
+  & .card {
+    @apply bg-black border-text-dark shadow-none;
+  }
+
+  & .card__title {
+    @apply text-white;
+  }
+
+  & .card__body {
+    @apply border-text-dark;
+  }
+}
+</style>

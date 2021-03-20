@@ -2,5 +2,25 @@ body {
   @apply transition antialiased;
 }
 
+.input-group {
+  @apply pt-0 p-5 flex flex-col md_flex-row md_space-x-2 space-y-2 md_space-y-0
+}
+
+.loading {
+  @apply cursor-default;
+  opacity: 0.5;
+  filter: grayscale(100%) blur(1px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
 @import 'dark/index';
 @import 'light/index';

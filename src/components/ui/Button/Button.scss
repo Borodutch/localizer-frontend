@@ -1,5 +1,5 @@
 .button {
-  @apply select-none text-xl py-3 md_py-0 mt-2 md_mt-0 transition cursor-pointer bg-additional-blue hover_bg-primary-blue text-primary-blue hover_text-white font-medium rounded-2xl px-4 flex items-center justify-center;
+  @apply text-xl py-3 md_py-0 mt-2 md_mt-0 transition cursor-pointer bg-additional-blue hover_bg-primary-blue text-primary-blue hover_text-white font-medium rounded-2xl px-4 flex items-center justify-center;
 
   &--inactive {
     @apply bg-back-silver hover_bg-back-silver cursor-default text-text-silver hover_text-text-silver;
@@ -10,7 +10,7 @@
   }
 }
 
-.dark{
+.dark {
   & .button {
     @apply bg-text-dark text-white;
 

@@ -1,52 +1,54 @@
 <template lang="pug">
 .card__variant
   .card__actions
-    .card__icons(v-if='isAdmin')
-      .card__icon(
+    .card__icons(v-if='isAdmin && !selectOrDeleteVariantsEnabled')
+      Icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
-        :class='loading ? "loading" : ""',
+        :loading='loading',
         @click='deleteVariant'
       )
         img(src='../assets/icons/close.svg') 
-      .card__icon(
+      Icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled && !variant.selected',
-        :class='loading ? "loading" : ""',
+        :loading='loading',
         @click='selectVariant'
       )
         img(src='../assets/icons/done.svg', width=26) 
-      .card__icon(
+      Icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
         @click='editTextEnabled = !editTextEnabled',
-        :class='(editTextEnabled ? "card__icon--clicked" : "") + (loading ? "loading" : "")'
+        :loading='loading'
       )
         img(src='../assets/icons/edit.svg') 
-    .chips.chips--margin
-      .chip.chip--title.chip--selected.text-white(
-        :style='"background-color:" + colors[variant.language]'
-      ) {{ variant.language }}
-      .chip.chip--title.chip--flat(v-if='variant.username') {{ variant.username.substr(0, 25) }}
-      .chip.chip--title.chip--flat(v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
-      .chip.chip--new(
+    .flex.items-center.space-x-2
+      Chip(:color='colors[variant.language]', selected, small, inactive) {{ variant.language }}
+      Chip(v-if='variant.username', small, flat, inactive) {{ variant.username.substr(0, 25) }}
+      Chip(v-if='variant.createdAt', small, flat, inactive) {{ dateDisplay(variant.createdAt) }}
+      Chip(
+        isNew,
+        small,
         v-if='!viewedItems[variant._id]',
         @click='setViewedProxy'
       ) {{ $t("new") }}
-      .card__icon.card__icon--inactive(v-if='variant.selected')
+      Icon(inactive, v-if='variant.selected')
         img(src='../assets/icons/done.svg', width=26)
     .card__ratings
-      .card__icon(
-        @click='downvote',
-        :class='(this.downvoted[variant._id] ? "card__icon--clicked" : "") + (loading ? " loading" : "")'
-      ) 
-        //- {{ loading ? "🤔" : "👎" }}
-        img(src='../assets/icons/down.svg', width=26)
+      Icon(@click='downvote', :loading='loading') 
+        img(
+          v-if='this.downvoted[variant._id]',
+          src='../assets/icons/down-active.svg',
+          width=26
+        ) 
+        img(v-else, src='../assets/icons/down.svg', width=26) 
         span.card__icon-text(v-if='!!variant.downvotes') {{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
-      .card__icon(
-        @click='upvote',
-        :class='(this.upvoted[variant._id] ? "card__icon--clicked" : "") + (loading ? " loading" : "")'
-      ) 
-        //- {{ loading ? "🤔" : "👍" }}
-        img(src='../assets/icons/up.svg', width=26) 
-        span.card__icon-text(v-if='!!variant.upvotes') {{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
+      Icon(@click='upvote', :loading='loading') 
+        img(
+          v-if='this.upvoted[variant._id]',
+          src='../assets/icons/up-active.svg',
+          width=26
+        ) 
+        img(v-else, src='../assets/icons/up.svg', width=26) 
+        span(v-if='!!variant.upvotes') {{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
     .card__link(
       @click='commentsOpen = !commentsOpen',
       :class='commentsOpen ? "card__link--active" : ""'

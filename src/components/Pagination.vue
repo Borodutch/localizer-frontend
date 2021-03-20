@@ -42,3 +42,32 @@ export default class Pagination extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.pagination {
+  @apply flex space-x-2 flex-wrap my-5 justify-center font-medium text-text-silver;
+
+  &__action {
+    @apply px-3 py-2 rounded-lg border mt-2 hover_border-primary-blue bg-white flex items-center cursor-pointer;
+  }
+
+  &__page {
+    @apply px-3 py-2 rounded-lg border mt-2 hover_border-primary-blue bg-white cursor-pointer transition;
+
+    &--active {
+      @apply bg-primary-blue border-transparent text-white;
+    }
+  }
+}
+
+.dark {
+  & .pagination__action,
+  & .pagination__page {
+    @apply border-text-dark bg-back-light-dark;
+  }
+
+  & .pagination__page--active {
+    @apply border-primary-blue;
+  }
+}
+</style>

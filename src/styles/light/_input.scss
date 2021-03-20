@@ -1,40 +1,4 @@
-.input-group {  
-  @apply flex flex-col md_flex-row items-stretch space-y-2 md_space-y-0 space-x-0 md_space-x-5 p-5 pt-0;
-
-  &--clear {
-    @apply p-0;
-  }
-}
-
-.input {
-  @apply font-medium text-lg md_text-xl transition block p-3 md_p-4 w-full rounded-2xl border-back-silver focus_border-primary-blue focus_ring-0 placeholder-text-light;
-}
-
-.user-text {
-  background-image: url('../assets/icons/smile.svg');
-  background-repeat: no-repeat;
-  background-position: 14px center;
-  background-size: 20px;
-  @apply pl-12;
-}
-
-.password-text {
-  background-image: url('../assets/icons/key.svg');
-  background-repeat: no-repeat;
-  background-position: 14px center;
-  background-size: 24px;
-  @apply pl-12;
-}
-
-.search-text {
-  background-image: url('../assets/icons/search.svg');
-  background-repeat: no-repeat;
-  background-position: 13px center;
-  background-size: 25px;
-  @apply pl-12;
-}
-
 .select {
   min-width: 150px;
-  @apply text-xl text-text-silver transition block p-4 rounded-2xl border-back-silver focus_border-primary-blue focus_ring-0 placeholder-text-light;
+  @apply text-xl cursor-pointer text-text-silver font-sans font-medium transition block p-3 md_p-4 rounded-2xl border-back-silver focus_border-primary-blue focus_ring-0 placeholder-text-light;
 }

@@ -1,5 +1,5 @@
 .chip {
-  @apply select-none text-sm transition border bg-white border-gray-200 hover_border-text-light px-4 py-2 text-gray-700 font-medium rounded-lg mr-2 mt-2 cursor-pointer;
+  @apply select-none flex items-center space-x-2 text-sm transition border bg-white border-gray-200 hover_border-text-light px-4 py-2 text-gray-700 font-medium rounded-lg mr-2 mt-2 cursor-pointer;
 
   &--inactive {
     @apply cursor-default border-transparent hover_border-transparent;
@@ -29,18 +29,18 @@
 
 .dark {
   & .chip {
-    @apply bg-back-light-dark border-text-dark text-back-gray;
+    @apply bg-back-light-dark border-text-dark text-back-gray hover_border-white;
   }
 
   & .chip--selected {
-    @apply border-transparent;
+    @apply border-transparent hover_border-transparent;
   }
 
   & .chip--flat {
-    @apply border-transparent;
+    @apply border-transparent hover_border-transparent;
   }
 
   & .chip--inactive {
-    @apply border-transparent;
+    @apply border-transparent hover_border-transparent;
   }
 }
