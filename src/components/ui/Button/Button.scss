@@ -1,0 +1,46 @@
+.button {
+  @apply text-xl;
+  @apply py-3;
+  @apply md_py-0;
+  @apply mt-2;
+  @apply md_mt-0;
+  @apply transition;
+  @apply cursor-pointer;
+  @apply bg-additional-blue;
+  @apply hover_bg-primary-blue;
+  @apply text-primary-blue;
+  @apply hover_text-white;
+  @apply font-medium;
+  @apply rounded-2xl;
+  @apply px-4;
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  
+  &--inactive {
+    @apply bg-back-silver;
+    @apply hover_bg-back-silver;
+    @apply cursor-default;
+    @apply text-text-silver;
+    @apply hover_text-text-silver;
+  }
+
+  &--huge {
+    @apply py-3; 
+    @apply mt-2;
+  }
+}
+
+.dark {
+  & .button {
+    @apply bg-text-dark;
+    @apply text-white;
+    @apply hover_bg-primary-blue;
+
+    &--inactive {
+      @apply hover_bg-text-dark;
+      @apply hover_text-text-silver;
+      @apply text-text-silver;
+    }
+  }
+}

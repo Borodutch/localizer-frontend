@@ -1,10 +1,13 @@
 <template lang="pug">
-.v-container.pa-4
-  .body-1 {{ $t("description") }}
-  UsernameInput
-  PasswordInput(v-if='isAdmin')
-  SearchInput
-  LocalizationCards
+main.wrapper
+  .wrapper__inner
+    .greeting-text {{ $t("description") }}
+    .pt-5.space-y-3
+      .grid.gap-3(:class='isAdmin ? "grid-cols-2" : "grid-cols-1"')
+        UsernameInput
+        PasswordInput(v-if='isAdmin')
+      SearchInput
+      LocalizationCards
 </template>
 
 <script lang="ts">
@@ -30,3 +33,20 @@ export default class Home extends Vue {
   @AppStore.State isAdmin!: boolean
 }
 </script>
+
+<style lang="scss" scoped>
+.greeting-text {
+  @apply font-medium;
+  @apply pb-6;
+  @apply pt-4;
+  @apply md_pb-10;
+  @apply md_pt-8;
+  @apply text-text-dark;
+  @apply text-xl;
+  @apply md_text-2xl;
+}
+
+.dark .greeting-text {
+  @apply text-text-milk;
+}
+</style>

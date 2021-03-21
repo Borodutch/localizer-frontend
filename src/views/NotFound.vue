@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-flex.justify-center
+.flex.items-center
   .title-text {{ $t("notFound") }}
 </template>
 
@@ -8,7 +8,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component
-export default class NotFound extends Vue {}
+export default class NotFound extends Vue { }
 </script>
 
 <style scoped>

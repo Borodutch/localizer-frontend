@@ -1,5 +1,5 @@
 <template lang="pug">
-v-progress-linear.mb-4(v-if='loading', indeterminate)
+LoadingBar(v-if='loading')
 </template>
 
 <script lang="ts">

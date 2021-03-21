@@ -1,0 +1,49 @@
+.input {
+  @apply bg-transparent;
+  @apply font-medium;
+  @apply text-lg;
+  @apply md_text-xl;
+  @apply transition;
+  @apply text-text-dark;
+  @apply block;
+  @apply p-3;
+  @apply md_p-4;
+  @apply w-full;
+  @apply rounded-2xl;
+  @apply border-2;
+  @apply border-back-silver;
+  @apply focus_border-primary-blue;
+  @apply focus_ring-0;
+  @apply placeholder-text-light;
+  
+  &--user {
+    @apply pl-12;
+    background-image: url('../../../assets/icons/smile.svg');
+    background-repeat: no-repeat;
+    background-position: 14px center;
+    background-size: 20px;
+  }
+  
+  &--password {
+    @apply pl-12;
+    background-image: url('../../../assets/icons/key.svg');
+    background-repeat: no-repeat;
+    background-position: 14px center;
+    background-size: 24px;
+  }
+  
+  &--search {
+    @apply pl-12;
+    background-image: url('../../../assets/icons/search.svg');
+    background-repeat: no-repeat;
+    background-position: 13px center;
+    background-size: 25px;
+  }
+}
+
+.dark .input {
+  @apply border-dark-card-border;
+  @apply focus_border-primary-blue;
+  @apply text-text-milk;
+  @apply placeholder-text-dark;
+}

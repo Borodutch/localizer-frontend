@@ -1,78 +1,70 @@
 <template lang="pug">
-div(style='width: 100%')
-  .my-1
-    .mr-2
-      v-chip.px-1(
-        dark,
-        x-small,
-        color='red',
+.variant
+  .variant__actions
+    .variant__icons(v-if='isAdmin && !selectOrDeleteVariantsEnabled')
+      Icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
-        @click='deleteVariant',
-        :loading='loading'
+        :loading='loading',
+        @click='deleteVariant'
       )
-        v-icon(x-small, color='white') delete
-      v-chip.px-1(
-        dark,
-        x-small,
-        color='green',
-        v-if='isAdmin && !selectOrDeleteVariantsEnabled',
-        @click='selectVariant',
-        :loading='loading'
+        img(src='../assets/icons/close.svg') 
+      Icon(
+        v-if='isAdmin && !selectOrDeleteVariantsEnabled && !variant.selected',
+        :loading='loading',
+        @click='selectVariant'
       )
-        v-icon(x-small, color='white') done
-      v-chip.px-1.mr-2(
-        dark,
-        x-small,
+        img(src='../assets/icons/done.svg', width=26) 
+      Icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
         @click='editTextEnabled = !editTextEnabled',
-        :class='editTextEnabled ? "green darken-2" : ""',
         :loading='loading'
       )
-        v-icon(x-small, color='white') edit
-      v-chip.px-1(dark, x-small, :color='colors[variant.language]') {{ variant.language }}
-      v-chip.px-1(dark, x-small, v-if='variant.username') {{ variant.username.substr(0, 25) }}
-      v-chip.px-1(dark, x-small, v-if='variant.createdAt') {{ dateDisplay(variant.createdAt) }}
-      v-chip.green.px-1(dark, x-small, v-if='variant.selected')
-        v-icon(small, color='white') done
-      v-chip.px-2.ml-2(
-        x-small,
-        :disabled='loading',
-        @click='downvote',
-        :class='this.downvoted[variant._id] ? "red darken-2" : ""'
-      ) {{ loading ? "🤔" : "👎" }}{{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
-      v-chip.px-2(
-        dark,
-        x-small,
-        :disabled='loading',
-        @click='upvote',
-        :class='this.upvoted[variant._id] ? "green darken-2" : ""'
-      ) {{ loading ? "🤔" : "👍" }}{{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
-      v-chip.mx-2(
-        dark,
-        x-small,
-        @click='commentsOpen = !commentsOpen',
-        :class='commentsOpen ? "green darken-2" : hasNewComments(variant) ? "primary" : ""'
-      ) {{ $t("comment.comments") }}{{ variant.comments.length ? ` ${variant.comments.length}` : "" }}{{ hasNewComments(variant) ? `, ${$t("new")}` : "" }}
-      v-chip.px-1(
-        x-small,
+        img(src='../assets/icons/edit.svg') 
+    .flex.items-center.space-x-2.flex-wrap
+      Chip(:color='colors[variant.language]', selected, small, inactive) {{ variant.language }}
+      Chip(v-if='variant.username', small, flat, inactive) {{ variant.username.substr(0, 25) }}
+      Chip(v-if='variant.createdAt', small, flat, inactive) {{ dateDisplay(variant.createdAt) }}
+      Chip(
+        isNew,
+        small,
         v-if='!viewedItems[variant._id]',
-        dark,
-        @click='setViewedProxy',
-        color='primary'
+        @click='setViewedProxy'
       ) {{ $t("new") }}
-    p.mb-0 {{ variant.text.replace(/\n/gi, "\\n") }}
-    EditVariant(
-      v-if='editTextEnabled',
-      :variant='variant',
-      :localizationKey='localization.key',
-      :closeEditText='() => { editTextEnabled = false; }'
-    )
-    Comments(
-      v-if='commentsOpen',
-      :variant='variant',
-      :localizationKey='localization.key'
-    )
-  v-divider
+      Icon(inactive, v-if='variant.selected')
+        img(src='../assets/icons/done.svg', width=26)
+    .variant__ratings
+      Icon(@click='downvote', :loading='loading') 
+        img(
+          v-if='this.downvoted[variant._id]',
+          src='../assets/icons/down-active.svg',
+          width=26
+        ) 
+        img(v-else, src='../assets/icons/down.svg', width=26) 
+        span.card__icon-text(v-if='!!variant.downvotes') {{ variant.downvotes ? ` ${variant.downvotes}` : "" }}
+      Icon(@click='upvote', :loading='loading') 
+        img(
+          v-if='this.upvoted[variant._id]',
+          src='../assets/icons/up-active.svg',
+          width=26
+        ) 
+        img(v-else, src='../assets/icons/up.svg', width=26) 
+        span(v-if='!!variant.upvotes') {{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
+    .variant__link(
+      @click='commentsOpen = !commentsOpen',
+      :class='commentsOpen ? "variant__link--active" : ""'
+    ) {{ $t("comment.comments") }}{{ variant.comments.length ? ` ${variant.comments.length}` : "" }}{{ hasNewComments(variant) ? `, ${$t("new")}` : "" }}
+  .variant__content {{ variant.text.replace(/\n/gi, "\\n") }}
+  EditVariant(
+    v-if='editTextEnabled',
+    :variant='variant',
+    :localizationKey='localization.key',
+    :closeEditText='() => { editTextEnabled = false; }'
+  )
+  Comments(
+    v-if='commentsOpen',
+    :variant='variant',
+    :localizationKey='localization.key'
+  )
 </template>
 
 <script lang="ts">
@@ -95,6 +87,7 @@ const AppStore = namespace('AppStore')
     variant: Object,
     localization: Object,
     selectOrDeleteVariantsEnabled: Boolean,
+    selected: Boolean,
   },
   components: {
     Comments,
@@ -214,3 +207,55 @@ export default class Variant extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.variant {
+  @apply w-full;
+
+  &__actions {
+    @apply flex;
+    @apply flex-wrap;
+    @apply items-center;
+
+    & > * {
+      @apply pt-2;
+      @apply pr-3;
+      @apply md_pt-0;
+    }
+  }
+
+  &__icons {
+    @apply flex;
+    @apply items-center;
+    @apply place-self-start;
+    @apply space-x-1;
+  }
+
+  &__ratings {
+    @apply flex;
+    @apply items-center;
+    @apply space-x-2;
+    @apply mx-3;
+    @apply ml-0;
+    @apply md_ml-3;
+  }
+
+  &__content {
+    @apply pt-5;
+    @apply font-medium;
+    @apply text-text-silver;
+  }
+
+  &__link {
+    @apply transition;
+    @apply font-medium;
+    @apply text-text-silver;
+    @apply cursor-pointer;
+    @apply hover_text-primary-blue;
+
+    &--active {
+      @apply text-primary-blue;
+    }
+  }
+}
+</style>

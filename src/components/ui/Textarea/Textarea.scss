@@ -1,0 +1,24 @@
+.textarea {
+  @apply font-medium;
+  @apply text-lg;
+  @apply md_text-xl;
+  @apply transition;
+  @apply block;
+  @apply p-3;
+  @apply md_p-4;
+  @apply w-full;
+  @apply rounded-2xl;
+  @apply border-back-silver;
+  @apply focus_border-primary-blue;
+  @apply focus_ring-0;
+  @apply placeholder-text-light;
+  resize: none;
+}
+
+.dark {
+  & .textarea {
+    background-color: #0D0D0D;
+    @apply border-text-dark;
+    @apply focus_border-primary-blue;
+  }
+}

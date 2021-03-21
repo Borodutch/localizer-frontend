@@ -1,0 +1,27 @@
+.icon {
+  @apply cursor-pointer;
+  @apply transition;
+  @apply transform;
+  @apply hover_scale-125;
+  @apply flex;
+  @apply space-x-1;
+  @apply items-center;
+  @apply font-medium;
+  @apply text-text-silver;
+
+  &__text {
+    @apply ml-1;
+    @apply mr-2;
+  }
+
+  &--clicked {
+    @apply transform;
+    @apply scale-110;
+    @apply -translate-y-1;
+  }
+
+  &--inactive {
+    @apply cursor-default;
+    @apply hover_scale-100;
+  }
+}

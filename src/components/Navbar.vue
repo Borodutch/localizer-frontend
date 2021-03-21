@@ -1,33 +1,26 @@
 <template lang="pug">
-nav
-  v-app-bar(app, flat, :color='dark ? "#0D0D0D" : "white"')
-    // Title
-    img.logo(src='/img/logo.svg', @click='goHome')
-    v-spacer
-    // Language picker
-    v-menu(offset-y)
-      template(v-slot:activator='{ on }')
-        v-btn.navbar-button(text, v-on='on')
-          .mt-1 {{ currentLocale.icon }}
-      v-list
-        v-list-item.text-center(
-          v-for='locale in locales',
-          @click='changeLanguage(locale.code)',
-          :key='locale.code'
-        )
-          v-list-item-title.mt-1 {{ locale.icon }}
-    // Dark theme
-    v-btn.navbar-button(text, @click='toggleDark')
-      img(src='/img/moon.svg')
-    // Admin
-    v-btn(text, :color='isAdmin ? "primary" : "grey"', @click='toggleAdmin')
-      v-icon(small) vpn_key
-    // Code
-    v-btn(text, icon, color='grey', @click='$router.replace("/code")')
-      v-icon(small) code
-    // Refresh
-    v-btn(text, icon, color='grey', @click='refresh')
-      v-icon(small) autorenew
+header.header(:class='scrolled ? "header--shadow" : ""')
+  .header__inner
+    .header__logo
+      img.logo(src='/img/logo.svg', alt='Localizer', @click='goHome')
+    .header__menu(:class='scrolled ? "header__menu--scroll" : ""')
+      Icon(@click='toggleDark')
+        img(v-if='dark', src='@/assets/icons/sun.svg')
+        img(v-else, src='@/assets/icons/moon.svg')
+      Icon(@click='toggleAdmin')
+        img(v-if='isAdmin', src='@/assets/icons/key-active.svg')
+        img(v-else, src='@/assets/icons/key.svg')
+      Icon(@click='goCode')
+        img(v-if='isCode', src='@/assets/icons/arrows-active.svg')
+        img(v-else, src='@/assets/icons/arrows.svg')
+      Icon(@click='refresh')
+        img(src='@/assets/icons/layers.svg')
+      Dropdown(
+        flat,
+        :items='locales.map((locale) => locale.code)',
+        @click='changeLanguage',
+        :label='currentLocale.code'
+      )
 </template>
 
 <script lang="ts">
@@ -49,6 +42,24 @@ export default class Navbar extends Vue {
   @AppStore.Mutation toggleAdmin!: () => void
   @DataStore.Mutation setLoading!: (loading: boolean) => void
   @DataStore.Action loadData!: () => void
+
+  scrolled = false;
+  isCode = false;
+
+  created() {
+    window.addEventListener('scroll', this.handleScroll);
+    if (this.$router.currentRoute.path === '/code') {
+      this.isCode = true;
+    }
+  }
+
+  destroyed() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll() {
+    this.scrolled = window.scrollY > 0;
+  }
 
   get locales() {
     return [
@@ -73,12 +84,27 @@ export default class Navbar extends Vue {
 
   toggleDark() {
     this.setDark(!this.dark)
-    ;(this.$vuetify.theme as any).dark = this.dark
+    if (this.dark) {
+      document.body.classList.add('dark')
+    } else {
+      document.body.classList.remove('dark')
+    }
   }
 
   goHome() {
     if (this.$router.currentRoute.path !== '/') {
+      this.isCode = false;
       this.$router.replace('/')
+    }
+  }
+
+  goCode() {
+    if (this.$router.currentRoute.path === '/code') {
+      this.$router.replace('/')
+      this.isCode = false;
+    } else {
+      this.$router.replace('/code')
+      this.isCode = true;
     }
   }
 
@@ -95,8 +121,67 @@ export default class Navbar extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 .logo {
-  cursor: pointer;
+  @apply cursor-pointer;
+}
+
+.header {
+  @apply p-5;
+  @apply md_sticky;
+  @apply top-0;
+  @apply shadow-none;
+  @apply transition-shadow;
+  @apply z-30;
+  @apply bg-white;
+
+  &--shadow {
+    @apply shadow-none;
+    @apply md_shadow-sm;
+  }
+
+  &__inner {
+    @apply max-w-screen-xl;
+    @apply mx-auto;
+    @apply flex;
+    @apply flex-col;
+    @apply md_flex-row;
+    @apply items-center;
+    @apply justify-center;
+    @apply space-y-3;
+    @apply md_space-y-0;
+    @apply md_justify-between;
+  }
+
+  &__menu {
+    @apply bg-back-gray;
+    @apply rounded-lg;
+    @apply py-3;
+    @apply px-4;
+    @apply inline-flex;
+    @apply transition;
+    @apply space-x-5;
+  }
+
+  &__menu--scroll {
+    @apply bg-back-gray;
+    @apply bg-opacity-60;
+    @apply md_bg-transparent;
+  }
+}
+
+.dark {
+  & .header {
+    @apply bg-back-dark;
+
+    &__menu {
+      @apply bg-back-light-dark;
+      @apply bg-opacity-80;
+    }
+
+    &__menu--scroll {
+      @apply bg-transparent;
+    }
+  }
 }
 </style>

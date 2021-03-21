@@ -1,5 +1,5 @@
 <template lang="pug">
-v-text-field(:label='$t("username")', v-model='usernameProxy')
+Input(:label='$t("username")', v-model='usernameProxy', icon='user')
 </template>
 
 <script lang="ts">
@@ -12,14 +12,15 @@ const AppStore = namespace('AppStore')
 @Component
 export default class UsernameInput extends Vue {
   @AppStore.State username!: string
-
   @AppStore.Mutation setUsername!: (username: string) => void
 
   get usernameProxy() {
     return this.username
   }
+
   set usernameProxy(newUsername: string) {
     this.setUsername(newUsername)
   }
+
 }
 </script>

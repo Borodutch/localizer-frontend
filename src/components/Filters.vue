@@ -1,40 +1,29 @@
 <template lang="pug">
-.mb-2.d-flex.flex-wrap.justify-center.white--text
-  v-chip.mx-1.my-1(
-    dark,
+.flex.flex-wrap.items-center
+  Chip(
     v-for='tag in tags',
     :key='tag',
-    :color='selectedTags.includes(tag) ? colors[tag] : undefined',
+    :selected='selectedTags.includes(tag)',
+    :color='colors[tag]',
     @click='toggleTag(tag)'
   ) {{ tag }}
-  v-chip.mx-1.my-1(
-    dark,
+  Chip(
     v-for='language in languages',
     :key='language',
-    :color='selectedLanguages.includes(language) ? colors[language] : undefined',
+    :color='colors[language]',
+    :selected='selectedLanguages.includes(language)',
     @click='toggleLanguage(language)'
   ) {{ language }}
-  v-chip.mx-1.my-1(
-    dark,
+  Chip(
     v-for='nonlanguage in languages',
     :key='`no-${nonlanguage}`',
-    :color='selectedNonlanguages.includes(nonlanguage) ? colors[nonlanguage] : undefined',
+    :color='colors[nonlanguage]',
+    :selected='selectedNonlanguages.includes(nonlanguage)',
     @click='toggleNonlanguage(nonlanguage)'
   ) {{ $t("no") }} {{ nonlanguage }}
-  v-chip.mx-1.my-1(
-    dark,
-    :color='newFilterEnabled ? "primary" : undefined',
-    @click='toggleNewFilterEnabled'
-  ) {{ $t("new") }}
-  v-menu(offset-y)
-    template(v-slot:activator='{ on }')
-      v-btn.ml-2.mt-1(v-on='on', text, icon)
-        v-icon keyboard_arrow_down
-    v-list
-      v-list-item(@click='markAllLocalizationsViewed')
-        v-list-item-title Make all viewed
-      v-list-item(@click='markAllLocalizationsNew')
-        v-list-item-title Make all new
+  Chip(:isNew='newFilterEnabled', @click='toggleNewFilterEnabled') {{ $t("new") }}
+  Chip(isNew, @click='markAllLocalizationsViewed') Make all viewed
+  Chip(isNew, @click='markAllLocalizationsNew') Make all new
 </template>
 
 <script lang="ts">

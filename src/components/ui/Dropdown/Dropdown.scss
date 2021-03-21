@@ -1,0 +1,43 @@
+.dropdown {
+  @apply relative;
+  @apply transition;
+
+  &__text {
+    @apply cursor-pointer;
+    @apply text-text-silver; 
+    @apply font-medium; 
+
+    &--selected {
+      @apply text-primary-blue;
+    }
+  }
+
+  &__menu {
+    @apply absolute;
+    @apply -right-5;
+    @apply top-8;
+    @apply py-3;
+    @apply shadow-md;
+    @apply rounded-2xl;
+    @apply bg-white;
+  }
+
+  &__item {
+    @apply px-5; 
+    @apply py-3;
+    @apply text-text-silver;
+    @apply hover_bg-back-gray;
+  }
+}
+
+.dark {
+  & .dropdown {
+    &__menu {
+      @apply bg-back-light-dark;
+    }
+    &__item {
+      @apply hover_bg-text-dark;
+      @apply hover_text-white;
+    }
+  }
+}

@@ -1,15 +1,7 @@
 <template lang="pug">
-.ml-4.mt-2
-  v-textarea.mb-1.mt-0(
-    rows='1',
-    auto-grow,
-    no-resize,
-    compact,
-    v-model='text',
-    :append-outer-icon='!!text ? "send" : undefined',
-    @click:append-outer='save',
-    :disabled='loading'
-  )
+.mt-5.flex.flex-col
+  Textarea(v-model='text', rows=5)
+  Button(huge, @click='save', :inactive='!text', :loading='loading') Send
 </template>
 
 <script lang="ts">

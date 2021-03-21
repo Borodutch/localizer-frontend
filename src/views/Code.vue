@@ -1,7 +1,9 @@
 <template lang="pug">
-.v-container.pa-4
-  v-progress-linear.mb-4(v-if='loading', indeterminate)
-  code(v-if='data') {{ data }}
+main.wrapper
+  .wrapper__inner
+    LoadingBar(v-if='loading')
+    .code(v-if='data') 
+      pre {{ data }}
 </template>
 
 <script lang="ts">
@@ -36,3 +38,20 @@ export default class Code extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.code {
+  @apply p-5;
+  @apply bg-back-gray;
+  @apply rounded-2xl;
+  @apply text-sm;
+  @apply text-text-dark;
+  @apply overflow-y-scroll;
+  @apply mb-10;
+}
+
+.dark .code {
+  @apply bg-text-dark;
+  @apply text-white;
+}
+</style>

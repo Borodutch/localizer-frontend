@@ -1,8 +1,9 @@
 <template lang="pug">
-div
+.localizations
   LoadingIndicator
   Filters
-  Pagination
+  .mt-10
+    Pagination
   LocalizationCard(
     v-for='localization in filteredAndPaginatedData',
     :key='localization.key',

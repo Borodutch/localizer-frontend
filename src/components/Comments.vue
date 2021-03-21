@@ -1,40 +1,26 @@
 <template lang="pug">
-.ml-4.mt-2
-  .my-0(v-for='comment in variant.comments')
-    div
-      v-chip.px-1(
-        dark,
-        x-small,
-        color='red',
-        v-if='isAdmin',
-        @click='deleteVariantComment(comment)',
-        :loading='loading',
-        :disabled='loading'
-      )
-        v-icon(x-small, color='white') delete
-      v-chip.px-1(dark, x-small, v-if='comment.username') {{ comment.username }}
-      v-chip.px-1(dark, x-small, v-if='comment.createdAt') {{ dateDisplay(comment.createdAt) }}
-      v-chip.px-1(
-        x-small,
-        v-if='!viewedItems[comment._id]',
-        dark,
-        @click='setViewedProxy(comment._id)',
-        color='primary'
-      ) {{ $t("new") }}
-    p.ma-0 {{ comment.text }}
-    v-divider
-  v-textarea.mb-1.mt-0(
-    :label='$t("comment.new")',
-    clearable,
-    rows='1',
-    auto-grow,
-    no-resize,
-    compact,
-    v-model='commentText',
-    :append-outer-icon='!!commentText ? "send" : undefined',
-    @click:append-outer='save',
-    :disabled='loading'
-  )
+.mt-5
+  .comment(v-for='comment in variant.comments')
+    .comment__head
+      .flex.flex-wrap.items-center.space-x-2
+        Icon(
+          v-if='isAdmin',
+          @click='deleteVariantComment(comment)',
+          :loading='loading'
+        )
+          img(src='../assets/icons/close.svg', alt='Delete')
+        Chip(small, flat, inactive, v-if='comment.username') {{ comment.username }}
+        Chip(small, flat, inactive, v-if='comment.createdAt') {{ dateDisplay(comment.createdAt) }}
+        Chip(
+          small,
+          isNew,
+          v-if='!viewedItems[comment._id]',
+          @click='setViewedProxy(comment._id)'
+        ) {{ $t("new") }}
+    .comment__body {{ comment.text }}
+  .flex.flex-col.md_flex-row.md_space-x-2.space-y-2.md_space-y-0
+    Input(:label='$t("comment.new")', v-model='commentText')
+    Button(:inactive='!commentText', :loading='loading', @click='save') {{ $t("add.save") }}
 </template>
 
 <script lang="ts">
@@ -137,3 +123,26 @@ export default class Comments extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.comment {
+  @apply ml-8;
+  @apply mb-5;
+  @apply pl-4;
+  @apply border-l-2;
+  @apply border-back-silver;
+  @apply font-medium;
+
+  &__head {
+    @apply mb-3;
+  }
+
+  &__body {
+    @apply text-text-silver;
+  }
+}
+
+.dark .comment {
+  @apply border-text-dark;
+}
+</style>

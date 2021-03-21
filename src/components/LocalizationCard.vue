@@ -1,129 +1,83 @@
 <template lang="pug">
-v-card.mb-2
-  v-card-title
-    v-btn.mr-1(
-      v-if='isAdmin',
-      color='red',
-      small,
-      icon,
-      @click='deleteLocalization(localization.key)',
-      :loading='loading'
-    )
-      v-icon(small) delete
-    v-btn.mr-1(
-      v-if='isAdmin',
-      small,
-      icon,
-      @click='selectOrDeleteVariantsEnabled = !selectOrDeleteVariantsEnabled',
-      :loading='loading',
-      :class='selectOrDeleteVariantsEnabled ? "green darken-2" : ""'
-    )
-      v-icon(small) edit
-    v-btn.mr-1(
-      small,
-      icon,
-      @click='toggleAddVariantEnabled',
-      :color='addVariantEnabled ? "red" : undefined'
-    )
-      v-icon(small) {{ addVariantEnabled ? "clear" : "add" }}
-    span.mx-1 {{ localization.key }}
-    v-chip.mx-1(
-      dark,
-      small,
-      v-for='tag in localization.tags',
-      :key='tag',
-      :color='colors[tag]'
-    )
-      span {{ tag }}
-      .ml-2(
-        small,
+.card
+  .card__head
+    .card__icons
+      Icon(
         v-if='isAdmin',
-        @click='deleteTag(localization.key, tag)',
-        :disabled='loading'
-      )
-        v-icon(small, v-if='!loading') close
-        span(v-else) 🤔
-    v-chip.mx-1.px-1(
-      v-if='!viewedItems[localization._id]',
-      dark,
-      small,
-      @click='setViewedProxy',
-      color='primary'
-    ) {{ $t("new") }}
-    v-chip.ma-1.px-1(
-      dark,
-      small,
-      v-if='isAdmin && !loading',
-      :color='addTagEnabled ? "green darken-2" : ""',
-      @click='toggleAddTagEnabled'
-    )
-      v-icon(small) {{ addTagEnabled ? "close" : "add" }}
-    v-text-field.mx-1.mb-0.mt-4.px-0.py-0(
-      :label='$t("tag.new")',
-      v-if='addTagEnabled && isAdmin',
-      clearable,
-      rows='1',
-      auto-grow,
-      no-resize,
-      compact,
-      v-model='addTagText',
-      :append-outer-icon='!!addTagText ? "send" : undefined',
-      @click:append-outer='addTag',
-      :disabled='loading'
-    )
-  v-card-text
-    div(v-if='addVariantEnabled')
-      v-textarea.mb-1.mt-0.pt-0(
-        :label='$t("add.text")',
-        clearable,
-        rows='1',
-        :rules='textRules',
-        auto-grow,
-        no-resize,
-        compact,
-        v-model='addVariantText'
-      )
-      .d-flex
-        v-select.mb-1.mt-0.pt-0(
-          :label='$t("add.language")',
-          :items='languages',
-          :rules='languageRules',
-          v-model='addVariantLanguage'
-        )
-        v-btn.ml-2(
-          color='primary',
-          :disabled='!addVariantText || !addVariantLanguage',
-          @click='addVariant()',
-          :loading='loading'
-        ) {{ $t("add.save") }}
-    div(v-if='selectOrDeleteVariantsEnabled')
-      v-chip.px-1(
-        dark,
-        x-small,
-        color='red',
-        @click='deleteVariants',
+        @click='deleteLocalization(localization.key)',
+        :loading='loading'
+      ) 
+        img(src='../assets/icons/close.svg', alt='Delete') 
+      Icon(
+        v-if='isAdmin',
+        @click='selectOrDeleteVariantsEnabled = !selectOrDeleteVariantsEnabled',
         :loading='loading'
       )
-        v-icon(x-small, color='white') delete
-      v-chip.px-1(
-        dark,
-        x-small,
-        color='green',
-        @click='selectVariants',
-        :loading='loading'
+        img(src='../assets/icons/edit.svg', alt='Edit') 
+      Icon(@click='toggleAddVariantEnabled', :loading='loading') 
+        img(src='../assets/icons/add.svg', alt='Add') 
+    h2.card__title {{ localization.key }}
+    .card__chips
+      .flex.items-center.space-x-2.flex-wrap
+        Chip(
+          v-for='tag in localization.tags',
+          :key='tag',
+          :color='colors[tag]',
+          small,
+          selected,
+          inactive
+        ) 
+          span {{ tag }}
+          Icon(
+            v-if='isAdmin',
+            @click='deleteTag(localization.key, tag)',
+            :loading='loading'
+          )
+            img(src='../assets/icons/x.svg', width=15) 
+        Chip(
+          isNew,
+          small,
+          v-if='!viewedItems[localization._id]',
+          @click='setViewedProxy'
+        ) {{ $t("new") }}
+        Icon(v-if='isAdmin && !loading', @click='toggleAddTagEnabled') 
+          img(src='../assets/icons/add.svg', alt='Add')
+  .card__controls
+    .input-group(v-if='addTagEnabled && isAdmin')
+      Input(type='text', :label='$t("tag.new")', v-model='addTagText')
+      Button(:inactive='!addTagText', @click='addTag') {{ $t("add.save") }}
+    .input-group(v-if='addVariantEnabled')
+      Input(type='text', :label='$t("add.text")', v-model='addVariantText')
+      Select(
+        @click='setVariantLanguage',
+        :items='languages',
+        :label='$t("add.language")'
       )
-        v-icon(x-small, color='white') done
-    div(v-for='variant in localization.variants')
-      .d-flex.direction-row
-        v-checkbox(
-          v-if='selectOrDeleteVariantsEnabled',
-          v-model='selectedVariants[variant._id]'
-        )
-        VariantView(
-          :variant='variant',
-          :localization='localization',
-          :selectOrDeleteVariantsEnabled='selectOrDeleteVariantsEnabled'
-        )
+      Button(
+        :inactive='!(addVariantText && addVariantLanguage)',
+        @click='addVariant'
+      ) {{ $t("add.save") }}
+  div(v-if='selectOrDeleteVariantsEnabled')
+    .flex.items-center.pl-5.pb-5
+      Chip(@click='deleteVariants', :loading='loading') Delete
+      Chip(@click='selectVariants', :loading='loading') Mark as done
+  .card__body(
+    v-for='variant in localization.variants',
+    :class='selectedVariants[variant._id] ? "card__body--selected" : ""'
+  )
+    .flex.flex-row.space-x-3.items-center
+      div(v-if='selectOrDeleteVariantsEnabled')
+        Button(
+          huge,
+          v-model='selectedVariants[variant._id]',
+          @click='addToSelected(variant._id)'
+        ) {{ selectedVariants[variant._id] ? "Unselect" : "Select" }}
+      VariantView(
+        :variant='variant',
+        :localization='localization',
+        :selected='selectedVariants[variant._id]',
+        :selectOrDeleteVariantsEnabled='selectOrDeleteVariantsEnabled'
+      )
 </template>
 
 <script lang="ts">
@@ -201,6 +155,18 @@ export default class LocalizationCard extends Vue {
       await api.deleteLocalization(key)
       this.removeLocalization(key)
     })
+  }
+
+  setVariantLanguage(variant: string) {
+    this.addVariantLanguage = variant;
+  }
+
+  addToSelected(id: string) {
+    if (this.selectedVariants[id]) {
+      this.selectedVariants[id] = undefined
+    } else {
+      this.selectedVariants = { ...this.selectedVariants, [id]: true }
+    }
   }
 
   async addVariant() {
@@ -304,7 +270,118 @@ export default class LocalizationCard extends Vue {
 
   resetAddVariant() {
     this.addVariantText = ''
+    this.addVariantLanguage = ''
     this.addVariantEnabled = false
   }
 }
 </script>
+
+<style lang="scss">
+.card {
+  @apply transition;
+  @apply mb-5;
+  @apply border;
+  @apply border-back-silver;
+  @apply rounded-lg;
+  @apply shadow-sm;
+  @apply bg-white;
+
+  &__head {
+    @apply p-5;
+    @apply flex;
+    @apply justify-start;
+    @apply space-x-0;
+    @apply md_space-x-5;
+    @apply flex-col;
+    @apply md_flex-row;
+    @apply items-center;
+    @apply space-y-2;
+    @apply md_space-y-0;
+  }
+
+  &__title {
+    @apply font-medium;
+    @apply text-text-dark;
+    @apply text-lg;
+    @apply break-all;
+    @apply place-self-start;
+  }
+
+  &__variant {
+    @apply w-full;
+  }
+
+  &__chips {
+    @apply place-self-start;
+  }
+
+  &__controls {
+    @apply flex;
+    @apply flex-col;
+  }
+
+  &__icons {
+    @apply flex;
+    @apply items-center;
+    @apply place-self-start;
+    @apply space-x-1;
+  }
+
+  &__body {
+    @apply transition;
+    @apply border-t-2;
+    @apply border-back-silver;
+    @apply p-5;
+
+    &--selected {
+      @apply shadow-inner;
+      @apply opacity-70;
+    }
+  }
+
+  &__comments {
+    @apply mt-5;
+  }
+}
+
+.select {
+  min-width: 150px;
+  @apply bg-transparent;
+  @apply text-xl;
+  @apply cursor-pointer;
+  @apply text-text-silver;
+  @apply font-sans;
+  @apply font-medium;
+  @apply transition;
+  @apply block;
+  @apply p-3;
+  @apply md_p-4;
+  @apply rounded-2xl;
+  @apply border-2;
+  @apply border-back-silver;
+  @apply focus_border-primary-blue;
+  @apply focus_ring-0;
+  @apply placeholder-text-light;
+}
+
+.dark .select {
+  @apply border-dark-card-border;
+  @apply focus_border-primary-blue;
+  @apply text-text-milk;
+  @apply placeholder-text-dark;
+}
+
+.dark .card {
+  @apply bg-black;
+  @apply border-dark-card-border;
+  @apply shadow-none;
+
+  &__title {
+    @apply text-text-milk;
+  }
+
+  &__body {
+    @apply border-dark-card-border;
+  }
+}
+</style>
