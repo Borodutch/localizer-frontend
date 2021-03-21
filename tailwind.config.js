@@ -24,6 +24,8 @@ module.exports = {
         'back-silver': '#EDEEF6',
         'back-dark': '#0D0D0D',
         'back-light-dark': '#171717',
+        'dark-card-border': '#202020',
+        'text-milk': '#E0E0E0',
       },
       boxShadow: {
         blue: '0 20px 30px 0 rgba(0, 0, 255, 0.05)',

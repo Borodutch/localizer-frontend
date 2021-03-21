@@ -1,21 +1,46 @@
 .button {
-  @apply text-xl py-3 md_py-0 mt-2 md_mt-0 transition cursor-pointer bg-additional-blue hover_bg-primary-blue text-primary-blue hover_text-white font-medium rounded-2xl px-4 flex items-center justify-center;
-
+  @apply text-xl;
+  @apply py-3;
+  @apply md_py-0;
+  @apply mt-2;
+  @apply md_mt-0;
+  @apply transition;
+  @apply cursor-pointer;
+  @apply bg-additional-blue;
+  @apply hover_bg-primary-blue;
+  @apply text-primary-blue;
+  @apply hover_text-white;
+  @apply font-medium;
+  @apply rounded-2xl;
+  @apply px-4;
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  
   &--inactive {
-    @apply bg-back-silver hover_bg-back-silver cursor-default text-text-silver hover_text-text-silver;
+    @apply bg-back-silver;
+    @apply hover_bg-back-silver;
+    @apply cursor-default;
+    @apply text-text-silver;
+    @apply hover_text-text-silver;
   }
 
   &--huge {
-    @apply py-3 mt-2;
+    @apply py-3; 
+    @apply mt-2;
   }
 }
 
 .dark {
   & .button {
-    @apply bg-text-dark text-white;
+    @apply bg-text-dark;
+    @apply text-white;
+    @apply hover_bg-primary-blue;
 
     &--inactive {
-      @apply hover_bg-text-dark hover_text-white;
+      @apply hover_bg-text-dark;
+      @apply hover_text-text-silver;
+      @apply text-text-silver;
     }
   }
 }

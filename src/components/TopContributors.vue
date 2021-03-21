@@ -32,4 +32,14 @@ export default class TopContributors extends Vue {
     @apply font-bold mb-2 text-primary-blue text-lg;
   }
 }
+
+.dark {
+  & .contributors {
+    @apply bg-text-dark shadow-none;
+
+    &__title {
+      @apply text-white;
+    }
+  }
+}
 </style>

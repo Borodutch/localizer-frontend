@@ -9,16 +9,21 @@ import Button from '@/components/ui/Button/Button.vue'
 import Icon from '@/components/ui/Icon/Icon.vue'
 import LoadingBar from '@/components/ui/LoadingBar/LoadingBar.vue'
 import Input from '@/components/ui/Input/Input.vue'
+import Textarea from '@/components/ui/Textarea/Textarea.vue'
+import Dropdown from '@/components/ui/Dropdown/Dropdown.vue'
 
 import '@/index.css'
 import '@/styles/main.scss'
 
 Vue.config.productionTip = true
+
 Vue.component('Chip', Chip)
 Vue.component('Button', Button)
 Vue.component('Icon', Icon)
 Vue.component('LoadingBar', LoadingBar)
 Vue.component('Input', Input)
+Vue.component('Textarea', Textarea)
+Vue.component('Dropdown', Dropdown)
 
 new Vue({
   router,

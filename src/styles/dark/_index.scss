@@ -2,30 +2,3 @@ body.dark {
   background-color: #0D0D0D;
   @apply text-back-gray;
 }
-
-.dark {
-  & .greeting-text {
-    @apply text-back-gray;
-  }
-
-  & .input, & .select {
-    background-color: #0D0D0D;
-    @apply border-text-dark;
-  }
-
-  & .contributors {
-    @apply bg-text-dark shadow-none;
-  }
-
-  & .contributors__title {
-    @apply text-white;
-  }
-
-  & .comment {
-    @apply border-text-dark;
-  }
-
-  & .code {
-    @apply bg-text-dark text-white;
-  }
-}

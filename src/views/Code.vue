@@ -43,4 +43,10 @@ export default class Code extends Vue {
 .code {
   @apply p-5 bg-back-gray rounded-2xl text-sm text-text-dark overflow-y-scroll mb-10;
 }
+
+.dark {
+  & .code {
+    @apply bg-text-dark text-white;
+  }
+}
 </style>

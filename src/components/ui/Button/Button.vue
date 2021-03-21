@@ -1,6 +1,6 @@
 <template lang="pug">
 .button(
-  @click='$emit("click")',
+  @click='inactive ? "" : $emit("click")',
   :class='{ "button--inactive": inactive, loading: loading, "button--huge": huge }'
 )
   slot

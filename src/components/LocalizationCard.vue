@@ -336,15 +336,15 @@ export default class LocalizationCard extends Vue {
 
 .dark {
   & .card {
-    @apply bg-black border-text-dark shadow-none;
+    @apply bg-black border-dark-card-border shadow-none;
   }
 
   & .card__title {
-    @apply text-white;
+    @apply text-text-milk;
   }
 
   & .card__body {
-    @apply border-text-dark;
+    @apply border-dark-card-border;
   }
 }
 </style>

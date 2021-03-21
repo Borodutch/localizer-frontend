@@ -29,7 +29,7 @@
 
 .dark {
   & .chip {
-    @apply bg-back-light-dark border-text-dark text-back-gray hover_border-white;
+    @apply bg-back-light-dark border-dark-card-border text-back-gray hover_border-text-dark;
   }
 
   & .chip--selected {

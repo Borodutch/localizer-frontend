@@ -15,12 +15,12 @@ header.header(:class='scrolled ? "header--shadow" : ""')
         img(v-else, src='@/assets/icons/arrows.svg')
       Icon(@click='refresh')
         img(src='@/assets/icons/layers.svg')
-      .text-text-silver.font-medium.cursor-pointer(
-        v-for='locale in locales',
-        @click='changeLanguage(locale.code)',
-        :key='locale.code',
-        v-if='locale.code !== currentLocale.code'
-      ) {{ locale.code }}
+      Dropdown(
+        flat,
+        :items='locales.map((locale) => locale.code)',
+        @click='changeLanguage',
+        :label='currentLocale.code'
+      )
 </template>
 
 <script lang="ts">
@@ -93,6 +93,7 @@ export default class Navbar extends Vue {
 
   goHome() {
     if (this.$router.currentRoute.path !== '/') {
+      this.isCode = false;
       this.$router.replace('/')
     }
   }
@@ -128,8 +129,7 @@ export default class Navbar extends Vue {
   @apply shadow-none;
   @apply transition-shadow;
   @apply z-30;
-  backdrop-filter: blur(5px) saturate(200%);
-  background: rgba(255, 255, 255, 0.8);
+  @apply bg-white;
 
   &--shadow {
     @apply shadow-none;
@@ -168,13 +168,16 @@ export default class Navbar extends Vue {
 
 .dark {
   & .header {
-    @apply bg-opacity-60;
     @apply bg-back-dark;
   }
 
   & .header__menu {
     @apply bg-back-light-dark;
     @apply bg-opacity-80;
+  }
+
+  & .header__menu--scroll {
+    @apply bg-transparent;
   }
 }
 

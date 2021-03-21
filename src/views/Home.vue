@@ -2,12 +2,11 @@
 main.wrapper
   .wrapper__inner
     .greeting-text {{ $t("description") }}
-    .content-block.space-y-3
+    .pt-5.space-y-3
       .grid.gap-3(:class='isAdmin ? "grid-cols-2" : "grid-cols-1"')
         UsernameInput
         PasswordInput(v-if='isAdmin')
       SearchInput
-    .page-block
       LocalizationCards
 </template>
 
@@ -34,3 +33,15 @@ export default class Home extends Vue {
   @AppStore.State isAdmin!: boolean
 }
 </script>
+
+<style lang="scss" scoped>
+.greeting-text {
+  @apply font-medium pb-6 pt-4 md_pb-10 md_pt-8 text-text-dark text-xl md_text-2xl;
+}
+
+.dark {
+  & .greeting-text {
+    @apply text-text-milk;
+  }
+}
+</style>

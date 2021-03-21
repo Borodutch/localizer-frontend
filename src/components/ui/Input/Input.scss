@@ -1,5 +1,5 @@
 .input {
-  @apply font-medium text-lg md_text-xl transition block p-3 md_p-4 w-full rounded-2xl border-back-silver focus_border-primary-blue focus_ring-0 placeholder-text-light;
+  @apply bg-transparent font-medium text-lg md_text-xl transition text-text-dark block p-3 md_p-4 w-full rounded-2xl border-2 border-back-silver focus_border-primary-blue focus_ring-0 placeholder-text-light;
   
   &--user {
     @apply pl-12;
@@ -23,5 +23,14 @@
     background-repeat: no-repeat;
     background-position: 13px center;
     background-size: 25px;
+  }
+}
+
+.dark {
+  & .input {
+    @apply border-dark-card-border;
+    @apply focus_border-primary-blue;
+    @apply text-text-milk;
+    @apply placeholder-text-dark;
   }
 }

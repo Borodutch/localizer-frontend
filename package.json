@@ -18,6 +18,7 @@
     "tailwindcss-filters": "2.x",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",
+    "vue-click-outside": "^1.1.0",
     "vue-cookie-law": "^1.13.3",
     "vue-i18n": "^8.22.4",
     "vue-property-decorator": "^9.1.2",

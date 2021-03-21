@@ -1,8 +1,7 @@
 <template lang="pug">
 .mt-5.flex.flex-col
-  textarea.input.mb-1.mt-0(v-model='text', rows=5)
-  .button.button--huge(v-if='!!text', @click='save') Send
-  .button.button--inactive.button--huge(v-else) Send
+  Textarea(v-model='text', rows=5)
+  Button(huge, @click='save', :inactive='!text') Send
 </template>
 
 <script lang="ts">

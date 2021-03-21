@@ -41,7 +41,7 @@ export default class Snackbar extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .snackbar {
   @apply fixed;
   @apply top-28;
@@ -59,12 +59,12 @@ export default class Snackbar extends Vue {
     @apply items-center;
     @apply space-x-3;
 
-    .snackbar &--error {
+    &--error {
       @apply text-primary-red;
       @apply bg-additional-red;
     }
 
-    .snackbar &--success {
+    &--success {
       @apply text-primary-green;
       @apply bg-additional-green;
     }
