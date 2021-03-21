@@ -1,9 +1,23 @@
 body {
-  @apply transition antialiased;
+  @apply transition;
+  @apply antialiased;
+  @apply bg-white;
+}
+
+body.dark {
+  background-color: #0D0D0D;
+  @apply text-back-gray;
 }
 
 .input-group {
-  @apply pt-0 p-5 flex flex-col md_flex-row md_space-x-2 space-y-2 md_space-y-0
+  @apply pt-0; 
+  @apply p-5; 
+  @apply flex; 
+  @apply flex-col; 
+  @apply md_flex-row; 
+  @apply md_space-x-2; 
+  @apply space-y-2; 
+  @apply md_space-y-0
 }
 
 .loading {
@@ -22,5 +36,11 @@ body {
   opacity: 0;
 }
 
-@import 'dark/index';
-@import 'light/index';
+.wrapper {
+  @apply px-5;
+
+  &__inner {
+    @apply max-w-screen-xl;
+    @apply mx-auto;
+  }
+}

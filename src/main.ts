@@ -12,7 +12,7 @@ import Input from '@/components/ui/Input/Input.vue'
 import Textarea from '@/components/ui/Textarea/Textarea.vue'
 import Dropdown from '@/components/ui/Dropdown/Dropdown.vue'
 
-import '@/index.css'
+import '@/tailwind.css'
 import '@/styles/main.scss'
 
 Vue.config.productionTip = true

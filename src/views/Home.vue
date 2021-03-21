@@ -36,12 +36,17 @@ export default class Home extends Vue {
 
 <style lang="scss" scoped>
 .greeting-text {
-  @apply font-medium pb-6 pt-4 md_pb-10 md_pt-8 text-text-dark text-xl md_text-2xl;
+  @apply font-medium;
+  @apply pb-6;
+  @apply pt-4;
+  @apply md_pb-10;
+  @apply md_pt-8;
+  @apply text-text-dark;
+  @apply text-xl;
+  @apply md_text-2xl;
 }
 
-.dark {
-  & .greeting-text {
-    @apply text-text-milk;
-  }
+.dark .greeting-text {
+  @apply text-text-milk;
 }
 </style>

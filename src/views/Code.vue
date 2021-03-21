@@ -41,12 +41,17 @@ export default class Code extends Vue {
 
 <style lang="scss">
 .code {
-  @apply p-5 bg-back-gray rounded-2xl text-sm text-text-dark overflow-y-scroll mb-10;
+  @apply p-5;
+  @apply bg-back-gray;
+  @apply rounded-2xl;
+  @apply text-sm;
+  @apply text-text-dark;
+  @apply overflow-y-scroll;
+  @apply mb-10;
 }
 
-.dark {
-  & .code {
-    @apply bg-text-dark text-white;
-  }
+.dark .code {
+  @apply bg-text-dark;
+  @apply text-white;
 }
 </style>
