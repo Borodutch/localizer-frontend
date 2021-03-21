@@ -122,6 +122,10 @@ export default class Navbar extends Vue {
 </script>
 
 <style lang="scss">
+.logo {
+  @apply cursor-pointer;
+}
+
 .header {
   @apply p-5;
   @apply md_sticky;
@@ -169,19 +173,15 @@ export default class Navbar extends Vue {
 .dark {
   & .header {
     @apply bg-back-dark;
-  }
 
-  & .header__menu {
-    @apply bg-back-light-dark;
-    @apply bg-opacity-80;
-  }
+    &__menu {
+      @apply bg-back-light-dark;
+      @apply bg-opacity-80;
+    }
 
-  & .header__menu--scroll {
-    @apply bg-transparent;
+    &__menu--scroll {
+      @apply bg-transparent;
+    }
   }
-}
-
-.logo {
-  @apply cursor-pointer;
 }
 </style>

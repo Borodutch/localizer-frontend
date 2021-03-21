@@ -26,16 +26,25 @@ export default class TopContributors extends Vue {
 
 <style lang="scss">
 .contributors {
-  @apply my-10 p-5 bg-additional-blue rounded-lg text-center shadow-blue;
+  @apply my-10;
+  @apply p-5;
+  @apply bg-additional-blue;
+  @apply rounded-lg;
+  @apply text-center;
+  @apply shadow-blue;
 
   &__title {
-    @apply font-bold mb-2 text-primary-blue text-lg;
+    @apply font-bold;
+    @apply mb-2;
+    @apply text-primary-blue;
+    @apply text-lg;
   }
 }
 
 .dark {
   & .contributors {
-    @apply bg-text-dark shadow-none;
+    @apply bg-text-dark;
+    @apply shadow-none;
 
     &__title {
       @apply text-white;

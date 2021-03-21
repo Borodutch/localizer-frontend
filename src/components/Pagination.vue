@@ -43,31 +43,56 @@ export default class Pagination extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .pagination {
-  @apply flex space-x-2 flex-wrap my-5 justify-center font-medium text-text-silver;
+  @apply transition;
+  @apply flex;
+  @apply space-x-2;
+  @apply flex-wrap;
+  @apply my-5;
+  @apply justify-center;
+  @apply font-medium;
+  @apply text-text-silver;
 
   &__action {
-    @apply px-3 py-2 rounded-lg border-2 mt-2 hover_border-primary-blue flex items-center cursor-pointer;
+    @apply px-3;
+    @apply py-2;
+    @apply rounded-lg;
+    @apply border-2;
+    @apply mt-2;
+    @apply hover_border-primary-blue;
+    @apply flex;
+    @apply items-center;
+    @apply cursor-pointer;
   }
 
   &__page {
-    @apply px-3 py-2 rounded-lg border-2 mt-2 hover_border-primary-blue cursor-pointer transition;
+    @apply px-3;
+    @apply py-2;
+    @apply rounded-lg;
+    @apply border-2;
+    @apply mt-2;
+    @apply hover_border-primary-blue;
+    @apply cursor-pointer;
 
     &--active {
-      @apply bg-primary-blue border-transparent text-white;
+      @apply bg-primary-blue;
+      @apply border-transparent;
+      @apply text-white;
     }
   }
 }
 
 .dark {
-  & .pagination__action,
-  & .pagination__page {
-    @apply border-dark-card-border;
-  }
+  & .pagination {
+    &__action,
+    &__page {
+      @apply border-dark-card-border;
+    }
 
-  & .pagination__page--active {
-    @apply border-primary-blue;
+    &__page--active {
+      @apply border-primary-blue;
+    }
   }
 }
 </style>

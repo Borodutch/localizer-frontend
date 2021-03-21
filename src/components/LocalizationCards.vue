@@ -1,7 +1,7 @@
 <template lang="pug">
-.localization-cards
+.localizations
   LoadingIndicator
-  .page-block
+  .mt-5
     Filters
   Pagination
   LocalizationCard(

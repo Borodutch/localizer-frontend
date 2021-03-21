@@ -142,9 +142,7 @@ export default class Comments extends Vue {
   }
 }
 
-.dark {
-  & .comment {
-    @apply border-text-dark;
-  }
+.dark .comment {
+  @apply border-text-dark;
 }
 </style>
