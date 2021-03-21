@@ -271,18 +271,37 @@ export default class LocalizationCard extends Vue {
 
 <style lang="scss">
 .card {
-  @apply transition mb-5 border border-back-silver rounded-lg shadow-sm bg-white;
+  @apply transition;
+  @apply mb-5;
+  @apply border;
+  @apply border-back-silver;
+  @apply rounded-lg;
+  @apply shadow-sm;
+  @apply bg-white;
 
-  &__variant {
-    @apply w-full;
+  &__head {
+    @apply p-5;
+    @apply flex;
+    @apply justify-start;
+    @apply space-x-0;
+    @apply md_space-x-5;
+    @apply flex-col;
+    @apply md_flex-row;
+    @apply items-center;
+    @apply space-y-2;
+    @apply md_space-y-0;
   }
 
   &__title {
-    @apply font-medium text-text-dark text-lg break-all place-self-start;
+    @apply font-medium;
+    @apply text-text-dark;
+    @apply text-lg;
+    @apply break-all;
+    @apply place-self-start;
   }
 
-  &__head {
-    @apply p-5 flex justify-start space-x-0 md_space-x-5 flex-col md_flex-row items-center space-y-2 md_space-y-0;
+  &__variant {
+    @apply w-full;
   }
 
   &__chips {
@@ -290,43 +309,27 @@ export default class LocalizationCard extends Vue {
   }
 
   &__controls {
-    @apply flex flex-col;
+    @apply flex;
+    @apply flex-col;
   }
 
   &__icons {
-    @apply flex items-center place-self-start space-x-1;
+    @apply flex;
+    @apply items-center;
+    @apply place-self-start;
+    @apply space-x-1;
   }
 
   &__body {
-    @apply transition border-t-2 border-back-silver p-5;
+    @apply transition;
+    @apply border-t-2;
+    @apply border-back-silver;
+    @apply p-5;
 
     &--selected {
-      @apply shadow-inner opacity-70;
+      @apply shadow-inner;
+      @apply opacity-70;
     }
-  }
-
-  &__content {
-    @apply pt-5 font-medium text-text-silver;
-  }
-
-  &__actions {
-    @apply flex flex-wrap items-center;
-
-    & > * {
-      @apply pt-2 pr-3 md_pt-0;
-    }
-  }
-
-  &__link {
-    @apply transition font-medium text-text-silver cursor-pointer hover_text-primary-blue;
-  }
-
-  &__link--active {
-    @apply text-primary-blue;
-  }
-
-  &__ratings {
-    @apply flex items-center space-x-2 mx-3 ml-0 md_ml-3;
   }
 
   &__comments {
@@ -334,16 +337,43 @@ export default class LocalizationCard extends Vue {
   }
 }
 
-.dark {
-  & .card {
-    @apply bg-black border-dark-card-border shadow-none;
-  }
+.select {
+  min-width: 150px;
+  @apply bg-transparent;
+  @apply text-xl;
+  @apply cursor-pointer;
+  @apply text-text-silver;
+  @apply font-sans;
+  @apply font-medium;
+  @apply transition;
+  @apply block;
+  @apply p-3;
+  @apply md_p-4;
+  @apply rounded-2xl;
+  @apply border-2;
+  @apply border-back-silver;
+  @apply focus_border-primary-blue;
+  @apply focus_ring-0;
+  @apply placeholder-text-light;
+}
 
-  & .card__title {
+.dark .select {
+  @apply border-dark-card-border;
+  @apply focus_border-primary-blue;
+  @apply text-text-milk;
+  @apply placeholder-text-dark;
+}
+
+.dark .card {
+  @apply bg-black;
+  @apply border-dark-card-border;
+  @apply shadow-none;
+
+  &__title {
     @apply text-text-milk;
   }
 
-  & .card__body {
+  &__body {
     @apply border-dark-card-border;
   }
 }

@@ -41,11 +41,9 @@
   }
 }
 
-.dark {
-  & .input {
-    @apply border-dark-card-border;
-    @apply focus_border-primary-blue;
-    @apply text-text-milk;
-    @apply placeholder-text-dark;
-  }
+.dark .input {
+  @apply border-dark-card-border;
+  @apply focus_border-primary-blue;
+  @apply text-text-milk;
+  @apply placeholder-text-dark;
 }

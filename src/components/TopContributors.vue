@@ -26,6 +26,7 @@ export default class TopContributors extends Vue {
 
 <style lang="scss">
 .contributors {
+  @apply transition;
   @apply my-10;
   @apply p-5;
   @apply bg-additional-blue;
@@ -41,14 +42,12 @@ export default class TopContributors extends Vue {
   }
 }
 
-.dark {
-  & .contributors {
-    @apply bg-text-dark;
-    @apply shadow-none;
+.dark .contributors {
+  @apply bg-text-dark;
+  @apply shadow-none;
 
-    &__title {
-      @apply text-white;
-    }
+  &__title {
+    @apply text-white;
   }
 }
 </style>

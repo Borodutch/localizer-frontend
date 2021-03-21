@@ -45,7 +45,6 @@ export default class Pagination extends Vue {
 
 <style lang="scss" scoped>
 .pagination {
-  @apply transition;
   @apply flex;
   @apply space-x-2;
   @apply flex-wrap;
@@ -55,6 +54,7 @@ export default class Pagination extends Vue {
   @apply text-text-silver;
 
   &__action {
+    @apply transition;
     @apply px-3;
     @apply py-2;
     @apply rounded-lg;
@@ -67,6 +67,7 @@ export default class Pagination extends Vue {
   }
 
   &__page {
+    @apply transition;
     @apply px-3;
     @apply py-2;
     @apply rounded-lg;

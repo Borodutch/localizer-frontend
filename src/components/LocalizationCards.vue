@@ -1,8 +1,7 @@
 <template lang="pug">
 .localizations
   LoadingIndicator
-  .mt-5
-    Filters
+  Filters
   Pagination
   LocalizationCard(
     v-for='localization in filteredAndPaginatedData',

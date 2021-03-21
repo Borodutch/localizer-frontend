@@ -1,6 +1,6 @@
 <template lang="pug">
 .icon(
-  @click='$emit("click")',
+  @click='inactive || loading ? "" : $emit("click")',
   :class='{ loading: loading, "icon--inactive": inactive }'
 )
   slot

@@ -1,7 +1,7 @@
 <template lang="pug">
-.card__variant
-  .card__actions
-    .card__icons(v-if='isAdmin && !selectOrDeleteVariantsEnabled')
+.variant
+  .variant__actions
+    .variant__icons(v-if='isAdmin && !selectOrDeleteVariantsEnabled')
       Icon(
         v-if='isAdmin && !selectOrDeleteVariantsEnabled',
         :loading='loading',
@@ -32,7 +32,7 @@
       ) {{ $t("new") }}
       Icon(inactive, v-if='variant.selected')
         img(src='../assets/icons/done.svg', width=26)
-    .card__ratings
+    .variant__ratings
       Icon(@click='downvote', :loading='loading') 
         img(
           v-if='this.downvoted[variant._id]',
@@ -49,11 +49,11 @@
         ) 
         img(v-else, src='../assets/icons/up.svg', width=26) 
         span(v-if='!!variant.upvotes') {{ variant.upvotes ? ` ${variant.upvotes}` : "" }}
-    .card__link(
+    .variant__link(
       @click='commentsOpen = !commentsOpen',
-      :class='commentsOpen ? "card__link--active" : ""'
+      :class='commentsOpen ? "variant__link--active" : ""'
     ) {{ $t("comment.comments") }}{{ variant.comments.length ? ` ${variant.comments.length}` : "" }}{{ hasNewComments(variant) ? `, ${$t("new")}` : "" }}
-  .card__content {{ variant.text.replace(/\n/gi, "\\n") }}
+  .variant__content {{ variant.text.replace(/\n/gi, "\\n") }}
   EditVariant(
     v-if='editTextEnabled',
     :variant='variant',
@@ -207,3 +207,55 @@ export default class Variant extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.variant {
+  @apply w-full;
+
+  &__actions {
+    @apply flex;
+    @apply flex-wrap;
+    @apply items-center;
+
+    & > * {
+      @apply pt-2;
+      @apply pr-3;
+      @apply md_pt-0;
+    }
+  }
+
+  &__icons {
+    @apply flex;
+    @apply items-center;
+    @apply place-self-start;
+    @apply space-x-1;
+  }
+
+  &__ratings {
+    @apply flex;
+    @apply items-center;
+    @apply space-x-2;
+    @apply mx-3;
+    @apply ml-0;
+    @apply md_ml-3;
+  }
+
+  &__content {
+    @apply pt-5;
+    @apply font-medium;
+    @apply text-text-silver;
+  }
+
+  &__link {
+    @apply transition;
+    @apply font-medium;
+    @apply text-text-silver;
+    @apply cursor-pointer;
+    @apply hover_text-primary-blue;
+
+    &--active {
+      @apply text-primary-blue;
+    }
+  }
+}
+</style>
