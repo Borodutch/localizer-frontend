@@ -55,25 +55,30 @@
 
 }
 
-.dark {
-  & .chip {
-    @apply bg-back-light-dark;
-    @apply border-dark-card-border;
-    @apply text-back-gray;
-    @apply hover_border-text-dark;
+.dark .chip {
+  @apply bg-back-light-dark;
+  @apply border-dark-card-border;
+  @apply text-back-gray;
+  @apply hover_border-text-dark;
+  
+  &--new {
+    @apply border-primary-blue;
+    @apply hover_border-blue-900;
+    @apply text-primary-blue;
   }
 
-  & .chip--selected {
+  &--selected {
     @apply border-transparent;
     @apply hover_border-transparent;
   }
 
-  & .chip--flat {
+
+  &--flat {
     @apply border-transparent;
     @apply hover_border-transparent;
   }
 
-  & .chip--inactive {
+  &--inactive {
     @apply border-transparent;
     @apply hover_border-transparent;
   }
