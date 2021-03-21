@@ -11,6 +11,7 @@ import LoadingBar from '@/components/ui/LoadingBar/LoadingBar.vue'
 import Input from '@/components/ui/Input/Input.vue'
 import Textarea from '@/components/ui/Textarea/Textarea.vue'
 import Dropdown from '@/components/ui/Dropdown/Dropdown.vue'
+import Select from '@/components/ui/Select/Select.vue'
 
 import '@/tailwind.css'
 import '@/styles/main.scss'
@@ -24,6 +25,7 @@ Vue.component('LoadingBar', LoadingBar)
 Vue.component('Input', Input)
 Vue.component('Textarea', Textarea)
 Vue.component('Dropdown', Dropdown)
+Vue.component('Select', Select)
 
 new Vue({
   router,

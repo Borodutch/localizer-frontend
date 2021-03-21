@@ -10,8 +10,8 @@ body.dark {
 }
 
 .input-group {
-  @apply pt-0; 
   @apply p-5; 
+  @apply pt-0; 
   @apply flex; 
   @apply flex-col; 
   @apply md_flex-row; 

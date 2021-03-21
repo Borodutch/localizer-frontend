@@ -48,12 +48,14 @@
       Button(:inactive='!addTagText', @click='addTag') {{ $t("add.save") }}
     .input-group(v-if='addVariantEnabled')
       Input(type='text', :label='$t("add.text")', v-model='addVariantText')
-      select.select(v-model='addVariantLanguage')
-        option(disabled) {{ $t("add.language") }}
-        option(v-for='lang in languages', :value='lang') {{ lang }}
+      Select(
+        @click='setVariantLanguage',
+        :items='languages',
+        :label='$t("add.language")'
+      )
       Button(
         :inactive='!(addVariantText && addVariantLanguage)',
-        @click='addVariant()'
+        @click='addVariant'
       ) {{ $t("add.save") }}
   div(v-if='selectOrDeleteVariantsEnabled')
     .flex.items-center.pl-5.pb-5
@@ -153,6 +155,10 @@ export default class LocalizationCard extends Vue {
       await api.deleteLocalization(key)
       this.removeLocalization(key)
     })
+  }
+
+  setVariantLanguage(variant: string) {
+    this.addVariantLanguage = variant;
   }
 
   addToSelected(id: string) {
@@ -264,6 +270,7 @@ export default class LocalizationCard extends Vue {
 
   resetAddVariant() {
     this.addVariantText = ''
+    this.addVariantLanguage = ''
     this.addVariantEnabled = false
   }
 }

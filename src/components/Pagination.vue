@@ -84,16 +84,15 @@ export default class Pagination extends Vue {
   }
 }
 
-.dark {
-  & .pagination {
-    &__action,
-    &__page {
-      @apply border-dark-card-border;
-    }
+.dark .pagination {
+  &__action,
+  &__page {
+    @apply border-dark-card-border;
+    @apply hover_border-primary-blue;
+  }
 
-    &__page--active {
-      @apply border-primary-blue;
-    }
+  &__page--active {
+    @apply border-primary-blue;
   }
 }
 </style>

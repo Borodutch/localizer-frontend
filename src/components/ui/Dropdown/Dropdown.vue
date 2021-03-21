@@ -21,7 +21,7 @@ import ClickOutside from 'vue-click-outside'
 @Component({
   props: {
     flat: Boolean,
-    items: Object,
+    items: Array,
     label: String,
   },
   directives: {

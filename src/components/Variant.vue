@@ -20,7 +20,7 @@
         :loading='loading'
       )
         img(src='../assets/icons/edit.svg') 
-    .flex.items-center.space-x-2
+    .flex.items-center.space-x-2.flex-wrap
       Chip(:color='colors[variant.language]', selected, small, inactive) {{ variant.language }}
       Chip(v-if='variant.username', small, flat, inactive) {{ variant.username.substr(0, 25) }}
       Chip(v-if='variant.createdAt', small, flat, inactive) {{ dateDisplay(variant.createdAt) }}

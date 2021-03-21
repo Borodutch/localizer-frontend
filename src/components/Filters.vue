@@ -22,8 +22,8 @@
     @click='toggleNonlanguage(nonlanguage)'
   ) {{ $t("no") }} {{ nonlanguage }}
   Chip(:isNew='newFilterEnabled', @click='toggleNewFilterEnabled') {{ $t("new") }}
-  Chip(dashed, @click='markAllLocalizationsViewed') Make all viewed
-  Chip(dashed, @click='markAllLocalizationsNew') Make all new
+  Chip(isNew, @click='markAllLocalizationsViewed') Make all viewed
+  Chip(isNew, @click='markAllLocalizationsNew') Make all new
 </template>
 
 <script lang="ts">
