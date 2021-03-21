@@ -1,5 +1,17 @@
 .textarea {
-  @apply font-medium text-lg md_text-xl transition block p-3 md_p-4 w-full rounded-2xl border-back-silver focus_border-primary-blue focus_ring-0 placeholder-text-light;
+  @apply font-medium;
+  @apply text-lg;
+  @apply md_text-xl;
+  @apply transition;
+  @apply block;
+  @apply p-3;
+  @apply md_p-4;
+  @apply w-full;
+  @apply rounded-2xl;
+  @apply border-back-silver;
+  @apply focus_border-primary-blue;
+  @apply focus_ring-0;
+  @apply placeholder-text-light;
   resize: none;
 }
 

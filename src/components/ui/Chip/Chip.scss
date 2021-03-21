@@ -1,16 +1,40 @@
 .chip {
-  @apply select-none flex items-center space-x-2 text-sm transition border bg-white border-gray-200 hover_border-text-light px-4 py-2 text-gray-700 font-medium rounded-lg mr-2 mt-2 cursor-pointer;
+  @apply select-none;
+  @apply flex;
+  @apply items-center;
+  @apply space-x-2;
+  @apply text-sm;
+  @apply transition;
+  @apply border;
+  @apply bg-white;
+  @apply border-gray-200;
+  @apply hover_border-text-light;
+  @apply px-4;
+  @apply py-2;
+  @apply text-gray-700;
+  @apply font-medium;
+  @apply rounded-lg;
+  @apply mr-2;
+  @apply mt-2;
+  @apply cursor-pointer;
+
 
   &--inactive {
-    @apply cursor-default border-transparent hover_border-transparent;
+    @apply cursor-default;
+    @apply border-transparent;
+    @apply hover_border-transparent;
   }
   
   &--selected {
-    @apply border-transparent text-white hover_border-transparent;
+    @apply border-transparent;
+    @apply text-white;
+    @apply hover_border-transparent;
   }
 
   &--sm {
-    @apply px-3 py-1 m-0;
+    @apply px-3;
+    @apply py-1;
+    @apply m-0;
   }
 
   &--dashed {
@@ -18,29 +42,39 @@
   }
 
   &--flat {
-    @apply bg-gray-200 m-0 hover_border-transparent;
+    @apply bg-gray-200;
+    @apply m-0;
+    @apply hover_border-transparent;
   }
 
   &--new {
-    @apply border-additional-blue hover_border-primary-blue text-primary-blue;
+    @apply border-additional-blue;
+    @apply hover_border-primary-blue;
+    @apply text-primary-blue;
   }
 
 }
 
 .dark {
   & .chip {
-    @apply bg-back-light-dark border-dark-card-border text-back-gray hover_border-text-dark;
+    @apply bg-back-light-dark;
+    @apply border-dark-card-border;
+    @apply text-back-gray;
+    @apply hover_border-text-dark;
   }
 
   & .chip--selected {
-    @apply border-transparent hover_border-transparent;
+    @apply border-transparent;
+    @apply hover_border-transparent;
   }
 
   & .chip--flat {
-    @apply border-transparent hover_border-transparent;
+    @apply border-transparent;
+    @apply hover_border-transparent;
   }
 
   & .chip--inactive {
-    @apply border-transparent hover_border-transparent;
+    @apply border-transparent;
+    @apply hover_border-transparent;
   }
 }

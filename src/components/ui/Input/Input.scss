@@ -1,5 +1,20 @@
 .input {
-  @apply bg-transparent font-medium text-lg md_text-xl transition text-text-dark block p-3 md_p-4 w-full rounded-2xl border-2 border-back-silver focus_border-primary-blue focus_ring-0 placeholder-text-light;
+  @apply bg-transparent;
+  @apply font-medium;
+  @apply text-lg;
+  @apply md_text-xl;
+  @apply transition;
+  @apply text-text-dark;
+  @apply block;
+  @apply p-3;
+  @apply md_p-4;
+  @apply w-full;
+  @apply rounded-2xl;
+  @apply border-2;
+  @apply border-back-silver;
+  @apply focus_border-primary-blue;
+  @apply focus_ring-0;
+  @apply placeholder-text-light;
   
   &--user {
     @apply pl-12;
