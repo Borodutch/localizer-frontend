@@ -110,7 +110,13 @@ export default class DataStore extends VuexModule {
         })
         // Take query into account
         .filter((l) => {
-          return !this.query || l.key.indexOf(this.query) > -1
+          return (
+            !this.query ||
+            l.key.indexOf(this.query) > -1 ||
+            l.variants.filter(
+              (v) => v.text.toLowerCase().indexOf(this.query.toLowerCase()) > -1
+            )[0] !== undefined
+          )
         })
     )
   }
